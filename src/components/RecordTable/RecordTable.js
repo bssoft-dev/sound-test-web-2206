@@ -24,6 +24,22 @@ export default function RecordTable({ regions, setFile, rows, fetchData }){
     fetchData();
   }, []);
 
+  function download(downloadUrl, recKey, fileNameTail){
+    axios({
+      url: downloadUrl,
+      method: 'GET',
+      responseType: 'blob', // important
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', recKey+ '-' + fileNameTail);
+        document.body.appendChild(link);
+        link.click();
+    });
+  }
+
+  // 재생 버튼 클릭 callback
   function showWav(data) {
     const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
     console.log(data);
@@ -39,25 +55,20 @@ export default function RecordTable({ regions, setFile, rows, fetchData }){
     });
     setFile(tempData);
   }
-  
+
+  // 다운 버튼 클릭 callback  
   function downWav(data) {
     const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
     // wav 파일의 url 주소를 파싱하여 recKey-ori와 같은 형식으로 만들어 줌 
     const recKey = data.id
     const wavType = data.field.split('Sta')[0];
-    const downloadUrl = baseUrl + recKey + '-' + wavType + '_ch0.wav';
-    axios({
-      url: downloadUrl,
-      method: 'GET',
-      responseType: 'blob', // important
-    }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', recKey+ '-' + wavType + '.wav');
-        document.body.appendChild(link);
-        link.click();
-    });
+    if (wavType !== 'sep') {
+      const downloadUrl = baseUrl + recKey + '-' + wavType + '_ch0.wav';
+      download(downloadUrl, recKey, wavType+'.wav');
+    } else {
+      const downloadUrl = 'http://sound.bs-soft.co.kr/download/' + recKey + '-sep';
+      download(downloadUrl, recKey, wavType+'.zip');
+    }
   }
 
   function memoPost(data) {
@@ -72,6 +83,7 @@ export default function RecordTable({ regions, setFile, rows, fetchData }){
     });
   }
 
+  // 테이블 각 셀 내 value 및 버튼 구현을 위한 함수
   function soundFields(params) {
     return (
       <>
@@ -102,7 +114,9 @@ export default function RecordTable({ regions, setFile, rows, fetchData }){
 
   const headersByType = {
     ori: '원음',
-    reduc: '노이즈 제거'
+    reduc: '노이즈 제거',
+    reduc2: '노이즈 제거2',
+    sep: '1파일 화자분리'
   }
 
   function setColumn(type) {
@@ -116,16 +130,22 @@ export default function RecordTable({ regions, setFile, rows, fetchData }){
     };
   }
   
+  // API를 통해 응답 받아오는 필드들 정의
   const columns = [
     { field: "id", hide: true },
     { field: "recKey", headerName: "recKey", width: 150 },
     setColumn('ori'),
     setColumn('reduc'),
+    setColumn('reduc2'),
+    setColumn('sep'),
     { field: "oriUrlBase", headerName: "음원 URL", hide: true },
     { field: "reducUrlBase", headerName: "노이즈 제거 URL", hide: true },
+    { field: "reduc2UrlBase", headerName: "노이즈 제거2 URL", hide: true },
     { field: "receivedTime", headerName: "업로드 시각", width: 150 },
     { field: "duration", headerName: "음원 길이"},
     { field: "reducprocTime", headerName: "노이즈 제거 처리시간", width: 150},
+    { field: "reduc2procTime", headerName: "노이즈 제거2 처리시간", width: 150},
+    { field: "sepprocTime", headerName: "1파일 화자분리 처리시간", width: 150},
     { field: "memo", headerName: "메모", editable: true, width: 500 },
   ];
   
