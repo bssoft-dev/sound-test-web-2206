@@ -1,0 +1,36 @@
+.sideNav {
+    min-width: 240px;
+    height: 100%; 
+    border-right: var(--border);
+}
+.SideNavTop {
+    height: var(--headerHight);
+    align-items: center;
+    border-bottom: var(--border);
+    overflow: hidden;
+}
+.SideNavTop .logo {
+    height: 100%;
+}
+.SideMenu {
+    margin-top: 16px;
+    padding-inline: 10px;
+}
+.SideMenu a {
+    width: 100%;
+    display: block;
+    line-height: 1;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    padding-block: 12px;
+    padding-left: 10px;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.SideMenu a:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+.SideMenu a.active {
+    color: #1976d2;
+    background-color: #f0f7ff;
+    font-weight: 600;
+}

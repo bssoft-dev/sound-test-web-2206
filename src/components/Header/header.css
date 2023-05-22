@@ -1,0 +1,15 @@
+header {
+    height: var(--headerHight);
+    border-bottom: var(--border);
+    align-items: center;
+}
+.headerRight {
+    height: inherit;
+    margin-left: auto;
+    border-left: var(--border);
+}
+.settingMenu, .settingBtn {
+    height: inherit;
+    min-width: var(--headerHight) !important;
+    border-left: var(--border);
+}

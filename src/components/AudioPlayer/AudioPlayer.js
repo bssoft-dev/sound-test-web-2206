@@ -27,9 +27,9 @@ import ListItemText from "@mui/material/ListItemText";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 2400,
+    maxWidth: '100%',
     minWidth: 240,
-    margin: 10,
+    marginBottom: 10,
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     width: "100%",

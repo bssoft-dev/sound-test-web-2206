@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: 380, 
     width: '100%',
-    margin: 10
+    marginBottom: 24,
   }
 }));
 

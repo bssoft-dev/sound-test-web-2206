@@ -1,0 +1,11 @@
+.innerHeader {
+    height: var(--headerHight);
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border);
+    padding-inline: 20px;
+}
+.innerHeader .title {
+    font-size: 1.6rem;
+    line-height: 1;
+}
