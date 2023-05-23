@@ -1,5 +1,5 @@
 .sideNav {
-    min-width: 240px;
+    width: var(--sideNavWidth);
     height: 100%; 
     border-right: var(--border);
 }
@@ -9,7 +9,7 @@
     border-bottom: var(--border);
     overflow: hidden;
 }
-.SideNavTop .logo {
+.SideNavTop :is(a, .logo) {
     height: 100%;
 }
 .SideMenu {

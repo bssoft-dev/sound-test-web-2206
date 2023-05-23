@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function SoundTestPage() {
+function BssTestPage() {
   const classes = useStyles();
 
   const [files, setFiles] = useState([null]);
@@ -42,7 +42,7 @@ function SoundTestPage() {
   const [rows, setRows] = useState([]);
   
   const fetchData = () => {
-    axios.get("http://sound.bs-soft.co.kr/status")
+    axios.get("http://bss.bs-soft.co.kr/status")
         .then((response)=> {
             console.log('response status: ',response.data);
             setRows(response.data);
@@ -51,9 +51,9 @@ function SoundTestPage() {
             console.log(error);
         })
   }
-
+  
   return (
-    <Layout title="사운드 처리 테스트" fetchData={fetchData} >
+    <Layout title="화자 분리 테스트">
       <>
         <RecordTable regions={regions} setFile={setFile} fetchData={fetchData} rows={rows} />
         <Grid container direction="column">
@@ -69,4 +69,4 @@ function SoundTestPage() {
 }
 
 
-export default SoundTestPage;
+export default BssTestPage;

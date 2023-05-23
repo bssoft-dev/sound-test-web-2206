@@ -23,18 +23,23 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import { keyframes } from "@emotion/react";
+import { FavoriteBorderOutlined } from "@mui/icons-material";
+
+import { red, blue } from "@mui/material/colors";
 
 
 const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: '100%',
     minWidth: 240,
-    marginBottom: 10,
+    marginBottom: 16,
     transition: "0.3s",
     boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
     width: "100%",
+    animation: '$fadeIn 2s',
     "&:hover": {
-      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
+      boxShadow: "0 3px 21px -4.125px rgba(0,0,0,0.2)"
     }
   },
   media: {
@@ -58,7 +63,11 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     display: "inline-block"
-  }
+  },
+  '@keyframes fadeIn': {
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+  },
 }));
 
 
@@ -73,7 +82,7 @@ function AudioPlayer({ file, regions, setRegion }) {
     wavesurfer.current = WaveSurfer.create({
       container: `#${wavesurferId}`,
       waveColor: "grey",
-      progressColor: "tomato",
+      progressColor: red['A200'],
       height: 70,
       cursorWidth: 2,
       cursorColor: "lightgray",
@@ -123,7 +132,7 @@ function AudioPlayer({ file, regions, setRegion }) {
         id: 'region-1',
         start: wavesurfer.current.regions.list["region-1"].start,
         end: wavesurfer.current.regions.list["region-1"].end,
-        color: "rgba(60, 179, 113, 0.3)"
+        color: "rgba(144, 202, 249, 0.3)"
       });
     });
     window.addEventListener("resize", handleResize, false);

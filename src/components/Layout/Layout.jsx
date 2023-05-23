@@ -1,5 +1,5 @@
-import MainContainer from "../MainContainer/MainContainer";
-import SideNav from "../SideNav/SideNav";
+import MainContainer from "./MainContainer/MainContainer";
+import SideNav from "./SideNav/SideNav";
 
 import "./layout.css";
 
