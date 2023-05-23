@@ -1,11 +1,24 @@
-
 import axios from "axios";
+
+function download(downloadUrl, recKey, fileNameTail){
+  axios({
+    url: downloadUrl,
+    method: 'GET',
+    responseType: 'blob', // important
+  }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', recKey+ '-' + fileNameTail);
+      document.body.appendChild(link);
+      link.click();
+  });
+}
 
 export default class SoundUtils {
   // 재생 버튼 클릭 callback
   static showWav(data, setFile) {
     const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
-    console.log(data);
     // data.field 값의 예시 - oriStatus, bssStatus, bss2Status
     const wavType = data.field.split('Sta')[0];
     const url = data.row[wavType+'UrlBase']
@@ -18,34 +31,20 @@ export default class SoundUtils {
     });
     setFile(tempData);
   }
-  
-  static download(downloadUrl, recKey, fileNameTail){
-    axios({
-      url: downloadUrl,
-      method: 'GET',
-      responseType: 'blob', // important
-    }).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', recKey+ '-' + fileNameTail);
-        document.body.appendChild(link);
-        link.click();
-    });
-  }
 
   // 다운 버튼 클릭 callback  
   static downWav(data) {
+    console.log('data: ', data);
     const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
     // wav 파일의 url 주소를 파싱하여 recKey-ori와 같은 형식으로 만들어 줌 
     const recKey = data.id
     const wavType = data.field.split('Sta')[0];
     if (wavType !== 'sep') {
       const downloadUrl = baseUrl + recKey + '-' + wavType + '_ch0.wav';
-      this.download(downloadUrl, recKey, wavType+'.wav');
+      download(downloadUrl, recKey, wavType+'.wav');
     } else {
       const downloadUrl = 'http://sound.bs-soft.co.kr/download/' + recKey + '-sep';
-      this.download(downloadUrl, recKey, wavType+'.zip');
+      download(downloadUrl, recKey, wavType+'.zip');
     }
   }
 
