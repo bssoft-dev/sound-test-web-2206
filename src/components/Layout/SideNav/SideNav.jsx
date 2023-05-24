@@ -1,11 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
+import logoImage from "../../../static/images/logo.png"
 import "./sideNav.css"
 
 export default function SideNav() {
     return(<div className="sideNav">
         <div className="SideNavTop row">
             <Link to='/'>
-                <img src="https://cdn.imweb.me/thumbnail/20220630/a1c0de7604910.png" className="logo" alt="비에스소프트" />
+                <img src={logoImage} className="logo" alt="비에스소프트" />
             </Link>
         </div>
         <aside className="SideMenu">

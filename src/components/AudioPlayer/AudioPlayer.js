@@ -35,12 +35,9 @@ const useStyles = makeStyles(theme => ({
     minWidth: 240,
     marginBottom: 16,
     transition: "0.3s",
-    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    boxShadow: 1,
     width: "100%",
     animation: '$fadeIn 2s',
-    "&:hover": {
-      boxShadow: "0 3px 21px -4.125px rgba(0,0,0,0.2)"
-    }
   },
   media: {
     width: "100%"
@@ -203,7 +200,8 @@ function AudioPlayer({ file, regions, setRegion }) {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card className={classes.card} 
+        sx={{ "&:hover": { boxShadow: 3 } }}>
         <Grid container direction="column">
           <Grid item>
             <List className={classes.list}>
