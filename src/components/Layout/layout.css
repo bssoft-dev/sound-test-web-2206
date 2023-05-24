@@ -1,0 +1,15 @@
+#root {
+    width: 100vw;
+    height: 100vh;
+}
+:root {
+    --headerHight: 60px;
+    --sideNavWidth: 240px;
+    --mainWidth: calc(100vw - var(--sideNavWidth));
+    --border: 1px solid #eee;
+}
+
+.layout {
+    width: 100%;
+    height: 100%;
+}

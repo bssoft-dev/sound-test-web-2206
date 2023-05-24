@@ -1,0 +1,15 @@
+.innerHeader {
+    width: var(--mainWidth);
+    height: var(--headerHight);
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border);
+    padding-inline: 20px;
+    background-color: rgba(255,255,255,0.9);
+    position: fixed;
+    top: var(--headerHight);
+    z-index: 100;
+}
+.innerHeader .title {
+    line-height: 1;
+}
