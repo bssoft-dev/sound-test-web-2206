@@ -23,6 +23,12 @@ export default function SideNav() {
                         isPending ? "pending" : isActive ? "active" : ""
                     }>화자 분리 테스트</NavLink>
                 </li>
+                <li>
+                    <NavLink to='/test'
+                        className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }>테스트</NavLink>
+                </li>
             </ul>
         </aside>
     </div>)

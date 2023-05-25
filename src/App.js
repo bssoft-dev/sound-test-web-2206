@@ -7,6 +7,7 @@ import SoundTestPage from "./pages/SoundTestPage";
 import BssTestPage from "./pages/BssTestPage";
 
 import './styles.css';
+import TestPage from "./pages/TestPage";
 
 const theme = createTheme({
   typography: {
@@ -17,13 +18,14 @@ const theme = createTheme({
 function App() {
   return (<>
   <ThemeProvider theme={theme}>
-    <Router>
-      <Routes>
-        <Route path="/" element={<IndexPage />} />
-        <Route path="/sound-test" element={<SoundTestPage />} />
-        <Route path="/bss-test" element={<BssTestPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/sound-test" element={<SoundTestPage />} />
+          <Route path="/bss-test" element={<BssTestPage />} />
+          <Route path="/test" element={<TestPage />} />
+        </Routes>
+      </Router>
   </ThemeProvider>
   </>)
   

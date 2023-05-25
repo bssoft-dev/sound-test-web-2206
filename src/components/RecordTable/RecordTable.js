@@ -1,6 +1,5 @@
 import {React, useState, useEffect} from "react";
 import { makeStyles } from "@mui/styles";
-import { useLocation } from "react-router-dom";
 import { Button } from "@mui/material";
 import { alpha, styled } from '@mui/material/styles';
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
@@ -11,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import BssUtils from "../../utils/BssUtils";
 import SoundUtils from "../../utils/SoundUtils";
+import { useCtx } from "../../context/Context";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,16 +64,17 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 
 
 export default function RecordTable({ regions, setFile, rows, fetchData, isBss }) {
-  const classes = useStyles();
-	const location = useLocation();
+  const context = useCtx();
+  const {pathname} = context;
 
-  
+  const classes = useStyles();
+
   useEffect(() => {
     console.log("Loading...");
     fetchData();
   }, []);
 
-  const { showWav, downWav, memoPost, headersByType, getColumns } = location.pathname === "/sound-test" ? SoundUtils : BssUtils;
+  const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
  
   function soundFields(params) {
     return (
