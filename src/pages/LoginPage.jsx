@@ -1,6 +1,5 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import logoImage from "../static/images/logo-white.png"
 import Login from "../components/User/Login/Login";
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +24,7 @@ export default function LoginPage() {
             position='absolute' bottom={0} zIndex='-1' >
         </Grid>
         <Grid container sx={{ p: 2, pb:0, boxSizing: 'border-box', height: '60px' }}>
-            <img src={logoImage} className="logo" alt="비에스소프트" 
+            <img src="/images/logo-white.png" className="logo" alt="비에스소프트" 
                 height="100%"/>
         </Grid>
         <Grid container

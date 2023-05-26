@@ -29,7 +29,7 @@ export default function Login() {
             sx={{ maxWidth: 400, boxShadow: 3, mt: '-60px' }} >
             <CardHeader sx={{ pt: 3 }}
                 title={
-                <Typography variant="h4" fontWeight={600} color="text.secondary"
+                <Typography variant="h4" color="text.secondary"
                     sx={{ fontSize: '1.8rem', textAlign: 'center' }}>
                         사운드 테스트 페이지
                 </Typography>
@@ -78,6 +78,6 @@ export default function Login() {
                 </Button>
             </CardActions>
         </Card>
-        <ForGotPassword open={open} handleOpen={handleOpen} handleClose={handleClose} />
+        <ForGotPassword open={open} handleClose={handleClose} />
     </>)
 }
