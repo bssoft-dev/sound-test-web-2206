@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import RecordTable from "../components/RecordTable/RecordTable";
@@ -6,6 +6,7 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { useCtx } from "../context/Context";
 
 const useStyles = makeStyles(theme => ({
     item: {
@@ -15,6 +16,12 @@ const useStyles = makeStyles(theme => ({
 
 function BssTestPage() {
   const classes = useStyles();
+  const context = useCtx();  
+  const { setTitle } = context;
+
+  useEffect(() => {
+    setTitle("화자 분리 테스트")
+  }, []);
 
   const [files, setFiles] = useState([null]);
 
@@ -53,7 +60,7 @@ function BssTestPage() {
   }
   
   return (
-    <Layout title="화자 분리 테스트">
+    <Layout>
       <>
         <RecordTable regions={regions} setFile={setFile} fetchData={fetchData} rows={rows} />
         <Grid container direction="column">

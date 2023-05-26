@@ -4,8 +4,11 @@ import TutorialModal from "../Modal/TutorialModal";
 
 import './innerHeader.css'
 import FileUploadButton from "../../FileUploadButton/FileUploadButton";
+import { useCtx } from "../../../context/Context";
 
-export default function InnerHeader({title, fetchData}) {
+export default function InnerHeader({fetchData}) {
+    const context = useCtx();
+    const {title} = context;
 
     return (<div className="innerHeader row">
         <Typography variant="h5" className="title" color="text.primary">

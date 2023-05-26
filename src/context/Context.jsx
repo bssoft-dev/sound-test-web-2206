@@ -6,6 +6,7 @@ export const Context = createContext({});
 export function ContextProvider({children}) {
     const location = useLocation();
     const [pathname, setPathname] = useState(location.pathname);
+    const [title, setTitle] = useState('비에스 소프트')
     const [isAlert, setIsAlert] = useState({
         open: false,
         type: 'warning',
@@ -17,7 +18,7 @@ export function ContextProvider({children}) {
     }, [location.pathname]);
 
     return (<Context.Provider value={{
-            pathname, isAlert, setIsAlert
+            pathname, isAlert, setIsAlert, title, setTitle
         }}>
         {children}
     </Context.Provider>)

@@ -6,12 +6,10 @@ import SideNav from "./SideNav/SideNav";
 import "./layout.css";
 
 export default function Layout(props) {
-    const {children, title, fetchData} = props;
-    return (<ContextProvider>
-        <div className="row layout">
-            <Alert />
-            <SideNav />
-            <MainContainer content={children} title={title} fetchData={fetchData}  />
-        </div>
-    </ContextProvider>)
+    const {children, fetchData} = props;
+    return (<div className="row layout">
+        <Alert />
+        <SideNav />
+        <MainContainer content={children} fetchData={fetchData}  />
+    </div>)
 }
