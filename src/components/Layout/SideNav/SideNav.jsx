@@ -12,6 +12,12 @@ export default function SideNav() {
         <aside className="SideMenu">
             <ul>
                 <li>
+                    <NavLink to='/login'
+                        className={({ isActive, isPending }) =>
+                        isPending ? "pending" : isActive ? "active" : ""
+                    }>로그인</NavLink>
+                </li>
+                <li>
                     <NavLink to='/sound-test'
                         className={({ isActive, isPending }) =>
                         isPending ? "pending" : isActive ? "active" : ""
@@ -23,12 +29,12 @@ export default function SideNav() {
                         isPending ? "pending" : isActive ? "active" : ""
                     }>화자 분리 테스트</NavLink>
                 </li>
-                <li>
+                {/* <li>
                     <NavLink to='/test'
                         className={({ isActive, isPending }) =>
                         isPending ? "pending" : isActive ? "active" : ""
                     }>테스트</NavLink>
-                </li>
+                </li> */}
             </ul>
         </aside>
     </div>)
