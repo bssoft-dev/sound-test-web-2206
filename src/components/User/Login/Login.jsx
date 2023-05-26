@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -7,6 +8,8 @@ import ForGotPassword from "./ForGotPassword";
 export default function Login() {    
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
+
+    const navigate = useNavigate();
     
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -22,6 +25,7 @@ export default function Login() {
             userId: data.get('userId'),
             password: data.get('password'),
         });
+        navigate('/');
     };
     
     return (<>
