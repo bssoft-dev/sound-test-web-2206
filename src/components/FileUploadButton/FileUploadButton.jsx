@@ -31,6 +31,7 @@ export default function FileUploadButton({fetchData}) {
         //   formData.append('files', file);
         // });
         console.log(files.length);
+        console.log('formData', formData)
         console.log(files[0]);
         
         if(isMultiple && files.length != 4) {

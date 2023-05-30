@@ -17,21 +17,11 @@ const useStyles = makeStyles(theme => ({
 function SoundTestPage() {
   const classes = useStyles();
   const context = useCtx();  
-  const { setTitle } = context;
+  const { setTitle, files, setFile  } = context;
 
   useEffect(() => {
     setTitle("사운드 처리 테스트")
   }, []);
-
-  const [files, setFiles] = useState([null]);
-
-  const pushFile = file => {
-    setFiles([...files, file]);
-  };
-
-  const setFile = file => {
-    setFiles(file);
-  };
 
   const [regions, setRegions] = useState([
       {

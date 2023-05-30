@@ -13,12 +13,23 @@ export function ContextProvider({children}) {
         message: ''
     });
 
+    const [files, setFiles] = useState([null]);
+
+    const pushFile = file => {
+        setFiles([...files, file]);
+    };
+
+    const setFile = file => {
+        setFiles(file);
+    };
+
     useEffect(() => {
         setPathname(location.pathname);
     }, [location.pathname]);
 
     return (<Context.Provider value={{
-            pathname, isAlert, setIsAlert, title, setTitle
+            pathname, isAlert, setIsAlert, title, setTitle,
+            files, pushFile, setFile
         }}>
         {children}
     </Context.Provider>)

@@ -17,21 +17,11 @@ const useStyles = makeStyles(theme => ({
 function BssTestPage() {
   const classes = useStyles();
   const context = useCtx();  
-  const { setTitle } = context;
+  const { setTitle, files, setFile  } = context;
 
   useEffect(() => {
     setTitle("화자 분리 테스트")
   }, []);
-
-  const [files, setFiles] = useState([null]);
-
-  const pushFile = file => {
-    setFiles([...files, file]);
-  };
-
-  const setFile = file => {
-    setFiles(file);
-  };
 
   const [regions, setRegions] = useState([
       {
@@ -50,13 +40,13 @@ function BssTestPage() {
   
   const fetchData = () => {
     axios.get("http://bss.bs-soft.co.kr/status")
-        .then((response)=> {
-            console.log('response status: ',response.data);
-            setRows(response.data);
-        })
-        .catch((error)=> {
-            console.log(error);
-        })
+      .then((response)=> {
+          console.log('response status: ',response.data);
+          setRows(response.data);
+      })
+      .catch((error)=> {
+          console.log(error);
+      })
   }
   
   return (
