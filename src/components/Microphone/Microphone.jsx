@@ -1,41 +1,12 @@
 import React, { useState, useRef, useEffect, createContext } from "react";
 import axios from 'axios'
-import ReactMicComp from "./ReactMicComp";
-import ButtonWrap from "./ButtonWrap";
-
-import { Button, Grid, IconButton, Slide } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import CloseIcon from '@mui/icons-material/Close';
-import WaveSurferComp from "./WaveSurferComp";
+import RecordDialog from "./RecordDialog";
 import { useCtx } from "../../context/Context";
-import { red } from "@mui/material/colors";
-
-
-const useStyles = makeStyles(theme => ({
-  flex: {
-    flex: 1, 
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  }, 
-  '@keyframes fadeIn': {
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-  },
-}));
+import { Button } from "@mui/material";
 
 export const MicrophoneContext = createContext();
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
 export default function Microphone() {
-  const classes = useStyles();
   const context = useCtx();
   const {pathname, setIsAlert, pushFile} = context;
 
@@ -162,7 +133,7 @@ export default function Microphone() {
     <MicrophoneContext.Provider value={{
       record, tempFile, isPlaying, downloadLinkURL, open,
       wavesurfer, onStop, onData, onSave, setPlayerReady, setIsPlaying,
-      togglePlayback, stopPlayback, handleDone,
+      togglePlayback, stopPlayback, handleDone, handleCancel,
       startRecording, stopRecording, restartRecording
     }}>
       
@@ -172,30 +143,7 @@ export default function Microphone() {
         녹음하기
       </Button>
 
-      <Dialog 
-        fullWidth
-        maxWidth="sm" 
-        TransitionComponent={Transition}
-        open={open} 
-        onClose={handleCancel}
-      >
-        <DialogTitle component="div"
-          className={classes.flex}>
-          녹음하기
-            <IconButton onClick={handleCancel}
-              sx={{ mr: '-12px' }}>
-              <CloseIcon />
-            </IconButton>
-        </DialogTitle>
-
-        <DialogContent sx={{py: 3}}>
-          {tempFile ? <WaveSurferComp /> : <ReactMicComp />}
-        </DialogContent>
-        <DialogActions
-          sx={{py: 2, justifyContent: 'center'}}>
-          <ButtonWrap />
-        </DialogActions>
-      </Dialog>
+      <RecordDialog />
     </MicrophoneContext.Provider>
   );
 }
