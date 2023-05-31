@@ -82,13 +82,13 @@ export default function RecordTable({ isBss }) {
  
   function soundFields(params) {
     return ( <>
-      {params.value.toString()}
+      {String(params.value)}
       <Button
         variant="contained"
         color="primary"
         size="small"
         style={{ marginLeft: "10px" }}
-        disabled={params.value.toString() === 'Ready' ? true : false}
+        disabled={String(params.value) === 'Ready' ? true : false}
         onClick={() => showWav(params, setFile)}
       >
         재생
@@ -98,7 +98,7 @@ export default function RecordTable({ isBss }) {
         color="info"
         size="small"
         style={{ marginLeft: "10px" }}
-        disabled={params.value.toString() === 'Ready' ? true : false}
+        disabled={String(params.value) === 'Ready' ? true : false}
         onClick={() => downWav(params)}
       >
         다운
