@@ -17,6 +17,7 @@ export default function Microphone() {
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [downloadLinkURL, setDownloadLinkURL] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     console.log("tempFile", tempFile);
@@ -104,10 +105,12 @@ export default function Microphone() {
   const startRecording = () => {
     setTempFile(null);
     setRecord(true);
+    setIsRunning(true);
   };
 
   const stopRecording = () => {
     setRecord(false);
+    setIsRunning(false);
   };
 
   const restartRecording = () => {
@@ -134,7 +137,8 @@ export default function Microphone() {
       record, tempFile, isPlaying, downloadLinkURL, open,
       wavesurfer, onStop, onData, onSave, setPlayerReady, setIsPlaying,
       togglePlayback, stopPlayback, handleDone, handleCancel,
-      startRecording, stopRecording, restartRecording
+      startRecording, stopRecording, restartRecording,
+      isRunning, setIsRunning
     }}>
       
       <Button variant="outlined" color="error"

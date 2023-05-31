@@ -36,7 +36,7 @@ export default function RecordDialog() {
         maxWidth="sm" 
         TransitionComponent={Transition}
         open={open} 
-        onClose={handleCancel}
+        // onClose={handleCancel}
       >
         <DialogTitle component="div"
           className={classes.flex}>
