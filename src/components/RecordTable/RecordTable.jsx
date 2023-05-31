@@ -70,10 +70,10 @@ export default function RecordTable({ isBss }) {
     console.log("Loading...");
     switch(pathname) {
       case "/sound-test":
-          fetchData('http://sound.bs-soft.co.kr/status');
+          fetchData('https://sound.bs-soft.co.kr/status');
         break;
       case "/bss-test":
-          fetchData('http://bss.bs-soft.co.kr/status');
+          fetchData('https://bss.bs-soft.co.kr/status');
         break; 
     }
   }, [pathname]);

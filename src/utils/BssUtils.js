@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class BssUtils {
   static showWav(data, setFile) {
-    const baseUrl = 'http://bss.bs-soft.co.kr/download-single/';
+    const baseUrl = 'https://bss.bs-soft.co.kr/download-single/';
     const wavType = data.field.split('Sta')[0];
     const url = data.row[wavType + 'UrlBase'];
     let tempData = url.map(function(item) {
@@ -15,7 +15,7 @@ export default class BssUtils {
   }
 
   static downWav(data) {
-    const baseUrl = 'http://bss.bs-soft.co.kr/download/';
+    const baseUrl = 'https://bss.bs-soft.co.kr/download/';
     const wavType = data.field.split('Sta')[0];
     const url = data.row[wavType + 'UrlBase'];
     const wavTag = url.toString().split('/')[5].split('_')[0];
@@ -36,7 +36,7 @@ export default class BssUtils {
 
   static memoPost(data, fetchData) {
     axios({
-      url: `http://bss.bs-soft.co.kr/data/memo`,
+      url: `https://bss.bs-soft.co.kr/data/memo`,
       method: 'POST',
       data: { recKey: data.id, content: data.value }
     }).then(res => {

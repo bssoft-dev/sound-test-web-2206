@@ -14,13 +14,13 @@ export default function FileUploadButton() {
     useEffect(() => {
       switch(pathname) {
         case "/sound-test":
-          setBaseUrl('http://sound.bs-soft.co.kr/analysis/uploadFile');
-          fetchData('http://sound.bs-soft.co.kr/status');
+          setBaseUrl('https://sound.bs-soft.co.kr/analysis/uploadFile');
+          fetchData('https://sound.bs-soft.co.kr/status');
           setIsMultiple(false);
           break;
         case "/bss-test":
-          setBaseUrl('http://bss.bs-soft.co.kr/analysis/uploadFiles');
-          fetchData('http://bss.bs-soft.co.kr/status');
+          setBaseUrl('https://bss.bs-soft.co.kr/analysis/uploadFiles');
+          fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
           break; 
       }

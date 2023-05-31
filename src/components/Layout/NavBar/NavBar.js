@@ -32,7 +32,7 @@ export default function NavBar({fetchData}) {
     console.log(event.target.files[0]);
     formData.append('file', event.target.files[0]);
     axios({
-      url: `http://sound.bs-soft.co.kr/analysis/uploadFile`,
+      url: `https://sound.bs-soft.co.kr/analysis/uploadFile`,
       method: 'POST',
       data: formData,
       headers: {
