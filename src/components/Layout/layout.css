@@ -6,7 +6,7 @@
     --headerHight: 60px;
     --sideNavWidth: 240px;
     --mainWidth: calc(100vw - var(--sideNavWidth));
-    --border: 1px solid #eee;
+    --border: 1px solid #ddd;
 }
 
 .layout {

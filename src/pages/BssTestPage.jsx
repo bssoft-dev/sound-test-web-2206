@@ -1,65 +1,37 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout/Layout";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
 import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
+import { useCtx } from "../context/Context";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(theme => ({
-    item: {
-      padding: '0 !important',
-    },
+  item: {
+    padding: '0 !important',
+  },
 }));
 
-function BssTestPage() {
+export default function BssTestPage() {
   const classes = useStyles();
+  const context = useCtx();  
+  const { setTitle, files  } = context;
 
-  const [files, setFiles] = useState([null]);
+  useEffect(() => {
+    setTitle("화자 분리 테스트")
+  }, []);
 
-  const pushFile = file => {
-    setFiles([...files, file]);
-  };
-
-  const setFile = file => {
-    setFiles(file);
-  };
-
-  const [regions, setRegions] = useState([
-      {
-        id: 'region-1',
-        start: 0,
-        end: 1,
-        color: "rgba(60, 179, 113, 0.3)"
-      }
-    ]);
-
-  const setRegion = region => {
-    setRegions([region]);
-  };
-
-  const [rows, setRows] = useState([]);
-  
-  const fetchData = () => {
-    axios.get("http://bss.bs-soft.co.kr/status")
-        .then((response)=> {
-            console.log('response status: ',response.data);
-            setRows(response.data);
-        })
-        .catch((error)=> {
-            console.log(error);
-        })
-  }
   
   return (
-    <Layout title="화자 분리 테스트">
+    <Layout>
       <>
-        <RecordTable regions={regions} setFile={setFile} fetchData={fetchData} rows={rows} />
+        <RecordTable />
         <Grid container direction="column">
           {files.map((file, index) => (
             <Grid key={index} item className={classes.item}>
-              <AudioPlayer file={file} regions={regions} setRegion={setRegion}/>
+              <AudioPlayer file={file} />
             </Grid>
           ))}
         </Grid>
@@ -67,6 +39,3 @@ function BssTestPage() {
     </Layout>
   )
 }
-
-
-export default BssTestPage;

@@ -7,8 +7,17 @@ import SoundTestPage from "./pages/SoundTestPage";
 import BssTestPage from "./pages/BssTestPage";
 
 import './styles.css';
+import TestPage from "./pages/TestPage";
+import LoginPage from "./pages/LoginPage";
+import { ContextProvider } from "./context/Context";
+import { red } from "@mui/material/colors";
 
 const theme = createTheme({
+  palette: {
+    error: {
+      main: red[500],
+    },
+  },
   typography: {
     fontFamily: 'Pretendard Variable'
   }
@@ -17,13 +26,17 @@ const theme = createTheme({
 function App() {
   return (<>
   <ThemeProvider theme={theme}>
-    <Router>
-      <Routes>
-        <Route path="/" element={<IndexPage />} />
-        <Route path="/sound-test" element={<SoundTestPage />} />
-        <Route path="/bss-test" element={<BssTestPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <ContextProvider>
+          <Routes>
+            <Route path="/" element={<IndexPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/sound-test" element={<SoundTestPage />} />
+            <Route path="/bss-test" element={<BssTestPage />} />
+            <Route path="/test" element={<TestPage />} />
+          </Routes>
+        </ContextProvider>
+      </Router>
   </ThemeProvider>
   </>)
   

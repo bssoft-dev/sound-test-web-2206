@@ -1,28 +1,30 @@
 import { Link, NavLink } from "react-router-dom";
-import logoImage from "../../../static/images/logo.png"
 import "./sideNav.css"
+
+const links = [
+    {name: '로그인', url: '/login' },
+    {name: '사운드 처리 테스트', url: '/sound-test' },
+    {name: '화자 분리 테스트', url: '/bss-test' },
+    {name: '테스트', url: '/test' },
+]
 
 export default function SideNav() {
     return(<div className="sideNav">
         <div className="SideNavTop row">
             <Link to='/'>
-                <img src={logoImage} className="logo" alt="비에스소프트" />
+                <img src="/images/logo.png" className="logo" alt="비에스소프트" />
             </Link>
         </div>
         <aside className="SideMenu">
             <ul>
-                <li>
-                    <NavLink to='/sound-test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>사운드 처리 테스트</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/bss-test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>화자 분리 테스트</NavLink>
-                </li>
+                {links.map((link) => (
+                    <li key={link.name}>
+                        <NavLink to={link.url}
+                            className={({ isActive, isPending }) =>
+                            isPending ? "pending" : isActive ? "active" : ""
+                        }>{ link.name }</NavLink>
+                    </li>
+                ))}
             </ul>
         </aside>
     </div>)

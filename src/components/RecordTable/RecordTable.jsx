@@ -1,16 +1,16 @@
 import {React, useState, useEffect} from "react";
-import { makeStyles } from "@mui/styles";
-import { useLocation } from "react-router-dom";
+import BssUtils from "../../utils/BssUtils";
+import SoundUtils from "../../utils/SoundUtils";
+import { useCtx } from "../../context/Context";
+
 import { Button } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { alpha, styled } from '@mui/material/styles';
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
-
 import { blue } from "@mui/material/colors";
 
 import { v4 as uuidv4 } from "uuid";
 
-import BssUtils from "../../utils/BssUtils";
-import SoundUtils from "../../utils/SoundUtils";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,11 +28,11 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     backgroundColor: theme.palette.grey[100],
     '&:hover, &.Mui-hovered': {
         backgroundColor: alpha(
-            theme.palette.grey[400],
-            ODD_OPACITY +
-              theme.palette.action.selectedOpacity +
-              theme.palette.action.hoverOpacity,
-          ),
+          theme.palette.grey[400],
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity,
+        ),
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -61,46 +61,49 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   }
 }));
 
-
-
-export default function RecordTable({ regions, setFile, rows, fetchData, isBss }) {
+export default function RecordTable({ isBss }) {
   const classes = useStyles();
-	const location = useLocation();
+  const context = useCtx();
+  const {pathname, setFile, rows, fetchData } = context;
 
-  
   useEffect(() => {
     console.log("Loading...");
-    fetchData();
-  }, []);
+    switch(pathname) {
+      case "/sound-test":
+          fetchData('http://sound.bs-soft.co.kr/status');
+        break;
+      case "/bss-test":
+          fetchData('http://bss.bs-soft.co.kr/status');
+        break; 
+    }
+  }, [pathname]);
 
-  const { showWav, downWav, memoPost, headersByType, getColumns } = location.pathname === "/sound-test" ? SoundUtils : BssUtils;
+  const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
  
   function soundFields(params) {
-    return (
-      <>
-        {params.value.toString()}
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginLeft: "10px" }}
-          disabled={params.value.toString() === 'Ready' ? true : false}
-          onClick={() => showWav(params, setFile)}
-        >
-          재생
-        </Button>
-        <Button
-          variant="contained"
-          color="info"
-          size="small"
-          style={{ marginLeft: "10px" }}
-          disabled={params.value.toString() === 'Ready' ? true : false}
-          onClick={() => downWav(params)}
-        >
-          다운
-        </Button>
-      </>
-    );
+    return ( <>
+      {params.value.toString()}
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        style={{ marginLeft: "10px" }}
+        disabled={params.value.toString() === 'Ready' ? true : false}
+        onClick={() => showWav(params, setFile)}
+      >
+        재생
+      </Button>
+      <Button
+        variant="contained"
+        color="info"
+        size="small"
+        style={{ marginLeft: "10px" }}
+        disabled={params.value.toString() === 'Ready' ? true : false}
+        onClick={() => downWav(params)}
+      >
+        다운
+      </Button>
+    </>);
   }
 
   function setColumn(type) {

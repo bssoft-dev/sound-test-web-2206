@@ -1,14 +1,15 @@
+import TutorialModal from "../Modal/TutorialModal";
+import Microphone from "../../Microphone/Microphone";
+import FileUploadButton from "../../FileUploadButton/FileUploadButton";
+import { useCtx } from "../../../context/Context";
+import './innerHeader.css'
+
 import { Typography } from "@mui/material";
 
-import TutorialModal from "../Modal/TutorialModal";
-
-import './innerHeader.css'
-import FileUploadButton from "../../FileUploadButton/FileUploadButton";
-import { useLocation } from "react-router-dom";
-
-export default function InnerHeader({title, fetchData}) {
-  const location = useLocation();
-
+export default function InnerHeader() {
+    const context = useCtx();
+    const { title } = context;
+    
     return (<div className="innerHeader row">
         <Typography variant="h5" className="title" color="text.primary">
             {title}
@@ -16,8 +17,8 @@ export default function InnerHeader({title, fetchData}) {
         <div className="btnWrap">
           {/* 도움말은 해당 페이지에 맞춰서 변경 될 필요 있음 */}
           <TutorialModal />
-          {(location.pathname === "/sound-test" || location.pathname === "/bss-test") && 
-            <FileUploadButton fetchData={fetchData} /> }
+          <Microphone />
+          <FileUploadButton />
         </div>
     </div>)
 }

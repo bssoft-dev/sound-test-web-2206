@@ -5,6 +5,8 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Pretendard Variable';
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
 }
 body::-webkit-scrollbar {
   display: none;

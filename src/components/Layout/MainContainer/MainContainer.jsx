@@ -22,15 +22,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function MainContainer({content, title, fetchData}) {
+export default function MainContainer({content}) {
     const classes = useStyles();
 
     return (<div className={classes.mainContainer}>
         <Header />
         <main>
-            <InnerHeader title={title} fetchData={fetchData} />
+            <InnerHeader />
             <div className={classes.content}>
-                    {content}
+                {content}
             </div>
         </main>
     </div>)
