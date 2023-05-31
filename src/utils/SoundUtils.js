@@ -18,7 +18,7 @@ function download(downloadUrl, recKey, fileNameTail){
 export default class SoundUtils {
   // 재생 버튼 클릭 callback
   static showWav(data, setFile) {
-    const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
+    const baseUrl = 'https://sound.bs-soft.co.kr/download-single/';
     // data.field 값의 예시 - oriStatus, bssStatus, bss2Status
     const wavType = data.field.split('Sta')[0];
     const url = data.row[wavType+'UrlBase']
@@ -35,7 +35,7 @@ export default class SoundUtils {
   // 다운 버튼 클릭 callback  
   static downWav(data) {
     console.log('data: ', data);
-    const baseUrl = 'http://sound.bs-soft.co.kr/download-single/';
+    const baseUrl = 'https://sound.bs-soft.co.kr/download-single/';
     // wav 파일의 url 주소를 파싱하여 recKey-ori와 같은 형식으로 만들어 줌 
     const recKey = data.id
     const wavType = data.field.split('Sta')[0];
@@ -43,14 +43,14 @@ export default class SoundUtils {
       const downloadUrl = baseUrl + recKey + '-' + wavType + '_ch0.wav';
       download(downloadUrl, recKey, wavType+'.wav');
     } else {
-      const downloadUrl = 'http://sound.bs-soft.co.kr/download/' + recKey + '-sep';
+      const downloadUrl = 'https://sound.bs-soft.co.kr/download/' + recKey + '-sep';
       download(downloadUrl, recKey, wavType+'.zip');
     }
   }
 
   static memoPost(data, fetchData) {
     axios({
-      url: `http://sound.bs-soft.co.kr/data/memo`,
+      url: `https://sound.bs-soft.co.kr/data/memo`,
       method: 'POST',
       data: {recKey:data.id, content:data.value}
     }).then(res => {
