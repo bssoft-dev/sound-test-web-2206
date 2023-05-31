@@ -1,19 +1,19 @@
 import React from 'react';
 import { Box, Button, Dialog, DialogContent, DialogTitle, Slide, TextField } from '@mui/material';
 
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ForGotPassword({open, handleClose}) {
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log({
-          name: data.get('name')
-      });
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+        name: data.get('name')
+    });
+  };
+  
   return (<>
       <Dialog
         open={open}

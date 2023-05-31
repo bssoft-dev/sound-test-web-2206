@@ -1,12 +1,12 @@
-import { Button, Grid, IconButton } from "@mui/material";
+import { useContext } from "react";
+import { MicrophoneContext } from "./Microphone";
 
+import { Button, Grid, IconButton } from "@mui/material";
 import StopIcon from "@mui/icons-material/Stop";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { grey } from "@mui/material/colors";
-import { useContext } from "react";
-import { MicrophoneContext } from "./Microphone";
 
 export default function ButtonWrap() {
   const microphoneContext = useContext(MicrophoneContext);

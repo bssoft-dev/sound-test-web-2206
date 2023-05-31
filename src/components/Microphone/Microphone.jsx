@@ -8,7 +8,7 @@ export const MicrophoneContext = createContext();
 
 export default function Microphone() {
   const context = useCtx();
-  const {pathname, setIsAlert, pushFile} = context;
+  const {pathname, setAlert, pushFile} = context;
 
   const wavesurfer = useRef(null);
   const [record, setRecord] = useState(false);
@@ -57,13 +57,13 @@ export default function Microphone() {
     })
     .then((response) => {
       if(response.status != 200) {
-        setIsAlert({
+        setAlert({
           open: true, 
           type: "warning",
           message: "파일을 다시 확인해주세요."
         });
       }
-      setIsAlert({
+      setAlert({
         open: true, 
         type: "success",
         message: "업로드를 완료하였습니다."
@@ -71,7 +71,7 @@ export default function Microphone() {
       console.log('response status: ', response.data);
     })
     .catch((error) => {
-      setIsAlert({
+      setAlert({
         open: true, 
         type: "error",
         message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."

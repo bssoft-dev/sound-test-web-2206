@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ForGotPassword from "./ForGotPassword";
+
 import { Box, Button, Card, CardActions, CardContent, CardHeader, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ForGotPassword from "./ForGotPassword";
 
 export default function Login() {    
     const [showPassword, setShowPassword] = useState(false);

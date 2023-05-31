@@ -1,6 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import "./sideNav.css"
 
+const links = [
+    {name: '로그인', url: '/login' },
+    {name: '사운드 처리 테스트', url: '/sound-test' },
+    {name: '화자 분리 테스트', url: '/bss-test' },
+    {name: '테스트', url: '/test' },
+]
+
 export default function SideNav() {
     return(<div className="sideNav">
         <div className="SideNavTop row">
@@ -10,30 +17,14 @@ export default function SideNav() {
         </div>
         <aside className="SideMenu">
             <ul>
-                <li>
-                    <NavLink to='/login'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>로그인</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/sound-test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>사운드 처리 테스트</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/bss-test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>화자 분리 테스트</NavLink>
-                </li>
-                <li>
-                    <NavLink to='/test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>테스트</NavLink>
-                </li>
+                {links.map((link) => (
+                    <li key={link.name}>
+                        <NavLink to={link.url}
+                            className={({ isActive, isPending }) =>
+                            isPending ? "pending" : isActive ? "active" : ""
+                        }>{ link.name }</NavLink>
+                    </li>
+                ))}
             </ul>
         </aside>
     </div>)

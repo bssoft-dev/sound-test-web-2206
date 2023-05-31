@@ -1,11 +1,12 @@
-import { Button } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useCtx } from "../../context/Context";
 
-export default function FileUploadButton({fetchData}) {
+import { Button } from "@mui/material";
+
+export default function FileUploadButton() {
     const context = useCtx();
-    const {pathname, setIsAlert} = context;
+    const {pathname, setAlert, fetchData} = context;
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);
@@ -14,14 +15,16 @@ export default function FileUploadButton({fetchData}) {
       switch(pathname) {
         case "/sound-test":
           setBaseUrl('http://sound.bs-soft.co.kr/analysis/uploadFile');
+          fetchData('http://sound.bs-soft.co.kr/status');
           setIsMultiple(false);
           break;
         case "/bss-test":
           setBaseUrl('http://bss.bs-soft.co.kr/analysis/uploadFiles');
+          fetchData('http://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
           break; 
       }
-    }, [pathname])
+    }, [pathname]);
 
 
     const uploadHandler = (event) => {
@@ -35,7 +38,7 @@ export default function FileUploadButton({fetchData}) {
       console.log(files[0]);
       
       if(isMultiple && files.length != 4) {
-        setIsAlert({
+        setAlert({
           open: true, 
           type: "warning",
           message: "4개의 파일을 선택해 주세요."
@@ -51,13 +54,13 @@ export default function FileUploadButton({fetchData}) {
           }
         }).then(res => {
           if(res.status != 200) {
-            setIsAlert({
+            setAlert({
               open: true, 
               type: "warning",
               message: "파일을 다시 확인해주세요."
             });
           }
-          setIsAlert({
+          setAlert({
             open: true, 
             type: "success",
             message: "업로드를 완료하였습니다."
@@ -65,7 +68,7 @@ export default function FileUploadButton({fetchData}) {
           fetchData();
           console.log(res);
         }).catch(err => {
-          setIsAlert({
+          setAlert({
             open: true, 
             type: "error",
             message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
@@ -79,14 +82,14 @@ export default function FileUploadButton({fetchData}) {
     }
 
     return (
-        <Button variant="contained" component="label"
-            sx={{marginLeft: 2}}>
-            파일업로드
-            <input type="file" hidden
-              sx={{ display: "none" }} 
-              onChange={uploadHandler} 
-              accept=".wav"
-              multiple={isMultiple} />
-        </Button>
+      <Button variant="contained" component="label"
+        sx={{marginLeft: 2}}>
+        파일업로드
+        <input type="file" hidden
+          sx={{ display: "none" }} 
+          onChange={uploadHandler} 
+          accept=".wav"
+          multiple={isMultiple} />
+      </Button>
     )
 }

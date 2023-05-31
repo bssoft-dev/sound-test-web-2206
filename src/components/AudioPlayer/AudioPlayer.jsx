@@ -1,33 +1,28 @@
 /* eslint-disable */
 import React, { useEffect, useRef, useState } from "react";
+import { useCtx } from "../../context/Context";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min";
 import CursorPlugin from "wavesurfer.js/dist/plugin/wavesurfer.cursor.min";
 import {v4 as uuidv4} from "uuid";
 
+import { makeStyles } from "@mui/styles";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PlayArrowIconOutlined from "@mui/icons-material/PlayArrowOutlined";
 import StopIcon from "@mui/icons-material/Stop";
-import { makeStyles } from "@mui/styles";
+import PauseIcon from "@mui/icons-material/Pause";
 // import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 // import ShareIcon from "@mui/icons-material/Share";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
-// import { green, red, blue } from "@mui/material/colors";
 
-import PauseIcon from "@mui/icons-material/Pause";
-import Grid from "@mui/material/Grid";
-
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { keyframes } from "@emotion/react";
-import { FavoriteBorderOutlined } from "@mui/icons-material";
-
-import { red, blue } from "@mui/material/colors";
-
+import { red } from "@mui/material/colors";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -67,9 +62,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-function AudioPlayer({ file, regions, setRegion }) {
+export default function AudioPlayer({ file }) {
+  const context = useCtx();  
+  const { regions, setRegion, pathname, setFiles } = context;
   const classes = useStyles();
+
   const wavesurfer = useRef(null);
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -105,19 +102,15 @@ function AudioPlayer({ file, regions, setRegion }) {
         })
       ]
     });
-
-    const wav = require("../../static/blob.wav");
-
-    wavesurfer.current.load(wav);
-    wavesurfer.current.on("ready", () => {
-      setPlayerReady(true);
-    });
-
+    
     const handleResize = wavesurfer.current.util.debounce(() => {
       wavesurfer.current.empty();
       wavesurfer.current.drawBuffer();
     }, 150);
-
+    
+    wavesurfer.current.on("ready", () => {
+      setPlayerReady(true);
+    });
     wavesurfer.current.on("play", () => setIsPlaying(true));
     wavesurfer.current.on("pause", () => setIsPlaying(false));
     wavesurfer.current.on("region-play", () => setIsPlaying(true));
@@ -132,12 +125,20 @@ function AudioPlayer({ file, regions, setRegion }) {
         color: "rgba(144, 202, 249, 0.3)"
       });
     });
+
     window.addEventListener("resize", handleResize, false);
+
+    // return () => {
+    //   window.removeEventListener('resize', handleResize, false);
+    // };
   }, []);
 
   useEffect(() => {
     if (file) {
       wavesurfer.current.load(file.blobURL);
+    } else {
+      const wav = require("../../static/blob.wav");
+      wavesurfer.current.load(wav);
     }
   }, [file]);
 
@@ -215,9 +216,9 @@ function AudioPlayer({ file, regions, setRegion }) {
           </Grid>
           <Grid item id={wavesurferId} />
           <Grid item id={wavesurferId+"-timeline"} />
-          <Grid item container className={classes.buttons}>
+          <Grid item container justifyContent='center' className={classes.buttons}>
             {/* <Grid item xs={5}> */}
-            <Grid item xs={50}>
+            <Grid item>
               {transportPlayButton}
               {transportRegionPlayButton}
               <IconButton onClick={stopPlayback}>
@@ -264,5 +265,3 @@ function AudioPlayer({ file, regions, setRegion }) {
     </>
   );
 }
-
-export default AudioPlayer;

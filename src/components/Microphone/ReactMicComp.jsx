@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
     }
   }));
   
-
 export default function ReactMicComp() {
     const classes = useStyles();
     const microphoneContext = useContext(MicrophoneContext);

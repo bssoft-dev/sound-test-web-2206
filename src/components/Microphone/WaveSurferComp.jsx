@@ -1,9 +1,9 @@
-import { makeStyles } from "@mui/styles";
+import { useContext, useEffect } from "react";
 import { MicrophoneContext } from "./Microphone";
 import WaveSurfer from "wavesurfer.js";
-
 import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min";
-import { useContext, useEffect } from "react";
+
+import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/material";
 import { red } from "@mui/material/colors";
 
@@ -47,18 +47,19 @@ export default function WaveSurferComp() {
           })
         ]
       });
-  
-      wavesurfer.current.on("ready", () => {
-        setPlayerReady(true);
-      });
-  
+
       const handleResize = wavesurfer.current.util.debounce(() => {
         wavesurfer.current.empty();
         wavesurfer.current.drawBuffer();
       }, 150);
   
+      wavesurfer.current.on("ready", () => {
+        setPlayerReady(true);
+      });
+  
       wavesurfer.current.on("play", () => setIsPlaying(true));
       wavesurfer.current.on("pause", () => setIsPlaying(false));
+      
       window.addEventListener("resize", handleResize, false);
     }, [open, tempFile]);
 
