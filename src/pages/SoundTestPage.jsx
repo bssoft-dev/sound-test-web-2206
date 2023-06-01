@@ -7,6 +7,7 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 import { useCtx } from "../context/Context";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { TimerContextProvider } from "../context/TimerContext";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -23,7 +24,7 @@ export default function SoundTestPage() {
     setTitle("사운드 처리 테스트")
   }, []);
 
-  return (
+  return (<TimerContextProvider>
     <Layout>
       <>
         <RecordTable />
@@ -36,5 +37,5 @@ export default function SoundTestPage() {
         </Grid>
       </>
     </Layout>
-  )
+  </TimerContextProvider>)
 }

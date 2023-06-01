@@ -1,14 +1,16 @@
-import React, { useState, useRef, useEffect, createContext } from "react";
+import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import axios from 'axios'
 import RecordDialog from "./RecordDialog";
 import { useCtx } from "../../context/Context";
 import { Button } from "@mui/material";
-
+import { TimerCtx } from "../../context/TimerContext";
 export const MicrophoneContext = createContext();
 
 export default function Microphone() {
   const context = useCtx();
   const {pathname, setAlert, pushFile} = context;
+  const timerContext = TimerCtx();
+  const {isRunning, setIsRunning} = timerContext;
 
   const wavesurfer = useRef(null);
   const [record, setRecord] = useState(false);
@@ -17,7 +19,6 @@ export default function Microphone() {
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [downloadLinkURL, setDownloadLinkURL] = useState(null);
-  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     console.log("tempFile", tempFile);
@@ -121,7 +122,7 @@ export default function Microphone() {
   const onData = recordedBlob => {
     console.log("chunk of real-time data is: ", recordedBlob); // 'audio/ogg'
   };
-
+  
   const onStop = recordedBlob => {
     setTempFile(recordedBlob); // 'audio/wav'
   };
@@ -140,13 +141,11 @@ export default function Microphone() {
       startRecording, stopRecording, restartRecording,
       isRunning, setIsRunning
     }}>
-      
       <Button variant="outlined" color="error"
         onClick={handleClickOpen}
         sx={{marginLeft: 2, boxShadow: 1}}>
         녹음하기
       </Button>
-
       <RecordDialog />
     </MicrophoneContext.Provider>
   );

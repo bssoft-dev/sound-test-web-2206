@@ -1,12 +1,10 @@
 import { Typography } from "@mui/material";
-import { MicrophoneContext } from "./Microphone";
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { TimerCtx } from "../../context/TimerContext";
 
 export default function Timer() {
-    const microphoneContext = useContext(MicrophoneContext);
-    const { isRunning , setIsRunning } = microphoneContext;
-
-    const [timer, setTimer] = useState(0);
+    const timerContext = TimerCtx();
+    const { isRunning , setIsRunning, timer, setTimer } = timerContext;
 
     useEffect(() => {
         let intervaltimer;

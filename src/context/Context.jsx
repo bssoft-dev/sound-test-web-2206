@@ -53,10 +53,13 @@ export function ContextProvider({children}) {
           });
     }, [location.pathname]);
 
+    const [isRunning, setIsRunning] = useState(false);
+
     return (<Context.Provider value={{
             pathname, isAlert, setAlert, title, setTitle,
             regions, setRegion, rows, fetchData,
-            files, pushFile, setFile
+            files, pushFile, setFile,
+            isRunning, setIsRunning
         }}>
         {children}
     </Context.Provider>)

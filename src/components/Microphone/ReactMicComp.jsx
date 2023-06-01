@@ -3,7 +3,7 @@ import { MicrophoneContext } from "./Microphone";
 import { ReactMic } from "react-mic";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Timer from "./Timer";
+import Timer from "../Timer/Timer";
 
 const useStyles = makeStyles(theme => ({
     reactmic: {

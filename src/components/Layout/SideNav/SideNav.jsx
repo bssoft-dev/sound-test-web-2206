@@ -5,7 +5,8 @@ const links = [
     {name: '로그인', url: '/login' },
     {name: '사운드 처리 테스트', url: '/sound-test' },
     {name: '화자 분리 테스트', url: '/bss-test' },
-    {name: '테스트', url: '/test' },
+    {name: '오디오 스트리밍 테스트', url: '/audio-test' },
+    // {name: '테스트', url: '/test' },
 ]
 
 export default function SideNav() {

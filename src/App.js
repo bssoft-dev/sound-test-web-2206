@@ -11,6 +11,7 @@ import TestPage from "./pages/TestPage";
 import LoginPage from "./pages/LoginPage";
 import { ContextProvider } from "./context/Context";
 import { red } from "@mui/material/colors";
+import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 
 const theme = createTheme({
   palette: {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/sound-test" element={<SoundTestPage />} />
             <Route path="/bss-test" element={<BssTestPage />} />
+            <Route path="/audio-test" element={<AudioStreamingTestPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>
         </ContextProvider>
