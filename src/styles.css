@@ -31,3 +31,10 @@ a {
 .App {
   text-align: center;
 }
+.audioContainer {
+  display: flex;
+}
+.audioContainer > div:nth-child(1) {
+  text-align: center;
+  margin-left: 1rem;
+}

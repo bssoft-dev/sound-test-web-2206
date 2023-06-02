@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { TimerCtx } from "../../context/TimerContext";
 import { Button, Grid } from "@mui/material";
+import ButtonWrap from "./ButtonWrap";
 
 export default function AudioStream() {
     const timerContext = TimerCtx();
@@ -57,41 +58,24 @@ export default function AudioStream() {
         stopCallback,
         onRecordCallback,
         errorCallback,
-        backgroundColor: 'white',
-        strokeColor: 'grey'
+        backgroundColor: 'transparent',
+        strokeColor: 'grey',
+        height: 37
     };
 
     const handleStartStop = () => {
+        setTimer(0);
         setIsRunning(prevIsRunning => !prevIsRunning);
     };
 
     const handleReset = () => {
-        setTimer(0);
+        // setTimer(0);
         setIsRunning(false);
     };
 
-
     return ( <>
         <AudioAnalyser {...audioProps}>
-            <Grid container justifyContent="center">
-                {status !== "recording" && (
-                    <Button color="error" variant="contained"
-                        onClick={() => controlAudio("recording")}>
-                        시작
-                        </Button>
-                )}
-                {status === "recording" && (
-                    <Button color="inherit" variant="contained"
-                        onClick={() => controlAudio("paused")}>
-                        일시 정지
-                    </Button>
-                )}
-                <Button color="inherit" variant="contained"
-                    sx={{ml: 2}}
-                    onClick={() => controlAudio("inactive")}>
-                    정지
-                </Button>
-            </Grid>
+            <ButtonWrap status={status} controlAudio={controlAudio} />
         </AudioAnalyser>
         {/* <p>Choose output type</p>
         <select name="" id="" onChange={(e) => changeScheme(e)} value={audioType}>

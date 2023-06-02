@@ -10,7 +10,7 @@ import './styles.css';
 import TestPage from "./pages/TestPage";
 import LoginPage from "./pages/LoginPage";
 import { ContextProvider } from "./context/Context";
-import { red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 
 const theme = createTheme({
@@ -18,6 +18,11 @@ const theme = createTheme({
     error: {
       main: red[500],
     },
+    Secondary: {
+      light: grey[300],
+      main: grey[500],
+      dark: grey[700]
+    }
   },
   typography: {
     fontFamily: 'Pretendard Variable'
