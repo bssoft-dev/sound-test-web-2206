@@ -59,7 +59,7 @@ export default function Timer() {
   
   return (<Grid container
     justifyContent='center' alignItems="center"
-    sx={{position: 'relative', width: 'fit-content', mx: 'auto'}}>
+    sx={{position: 'relative', width: 'fit-content'}}>
     <Typography variant="h4" 
         color="text.secondary" fontWeight={200} textAlign="center">
           <Box component="span" 

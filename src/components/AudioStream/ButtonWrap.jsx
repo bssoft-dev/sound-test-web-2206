@@ -5,12 +5,15 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { makeStyles } from "@mui/styles";
 import { grey } from "@mui/material/colors";
+import { StreamCtx } from "../../context/StreamContext";
 
-export default function ButtonWrap({ status, controlAudio }) {
+export default function ButtonWrap() {
+    const streamContext = StreamCtx();
+    const { status, controlAudio } = streamContext;
     
     return(<Grid container 
         justifyContent="center" position="relative"
-        sx={{ backgroundColor: '#fff', order: -1 }}>
+        sx={{ backgroundColor: '#fff', mb: 2 }}>
         {status !== "recording" && (
             <IconButton aria-label="녹음"
                 sx={{border: '1px solid', borderColor: grey[300], p: 0 }}

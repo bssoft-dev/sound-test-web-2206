@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { TimerCtx } from "../../context/TimerContext";
-import { Button, Grid } from "@mui/material";
-import ButtonWrap from "./ButtonWrap";
+import { StreamCtx } from "../../context/StreamContext";
 
-export default function AudioStream() {
+export default function AudioStream({audioAnalyserRefWidth}) {
+
     const timerContext = TimerCtx();
     const {setIsRunning, setTimer} = timerContext;
-
-    const [status, setStatus] = useState("");
-    const [audioSrc, setAudioSrc] = useState("");
+    const streamContext = StreamCtx();
+    const { setAudioSrc, handleStreamList, setRecordedData, status, setAudioData } = streamContext;
+    
     // const [audioType, setAudioType] = useState("audio/wav");
-    const [audioBlob, setAudioBlob] = useState("");
-
-    const controlAudio = (status) => {
-        setStatus(status);
-        console.log("status", status);
-    };
+    
 
     // const changeScheme = (e) => {
     //     setAudioType(e.target.value);
@@ -34,12 +29,25 @@ export default function AudioStream() {
 
     const stopCallback = (recordedBlob) => {
         setAudioSrc(URL.createObjectURL(recordedBlob));
-        setAudioBlob(recordedBlob);
+        const date = Date.now();
+        setRecordedData({
+            recordedBlob: recordedBlob,
+            blobUrl: URL.createObjectURL(recordedBlob),
+            Date: date,
+        });
+        setAudioData({
+            blobUrl: URL.createObjectURL(recordedBlob),
+            reckey: String(date).slice(7)
+        })
         console.log("succ stop", URL.createObjectURL(recordedBlob));
-        handleReset()
+        handleReset();
     };
 
     const onRecordCallback = (recordedBlob) => {
+        handleStreamList({
+            timestamp: Date.now(),
+            url: URL.createObjectURL(recordedBlob)
+        });
         console.log("recording", URL.createObjectURL(recordedBlob));
     };
 
@@ -60,7 +68,8 @@ export default function AudioStream() {
         errorCallback,
         backgroundColor: 'transparent',
         strokeColor: 'grey',
-        height: 37
+        width: audioAnalyserRefWidth,
+        height: 100,
     };
 
     const handleStartStop = () => {
@@ -74,9 +83,8 @@ export default function AudioStream() {
     };
 
     return ( <>
-        <AudioAnalyser {...audioProps}>
-            <ButtonWrap status={status} controlAudio={controlAudio} />
-        </AudioAnalyser>
+        {audioAnalyserRefWidth && <AudioAnalyser {...audioProps}></AudioAnalyser>}
+        
         {/* <p>Choose output type</p>
         <select name="" id="" onChange={(e) => changeScheme(e)} value={audioType}>
             <option value="audio/webm">audio/webm (default)</option>
