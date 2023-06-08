@@ -116,7 +116,7 @@ function stableSort(array, comparator) {
 
 export default function StreamTable() {
   const streamContext = StreamCtx();
-  const { rows, setRecordedData, setAudioData } = streamContext;
+  const { rows, setRecordedData, setTempFile } = streamContext;
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -134,8 +134,8 @@ export default function StreamTable() {
   const handleClick = (event, name, url, reckey) => {
     setSelected([name]);
     setSelectedValue(name);
-    setAudioData({
-      blobUrl: url,
+    setTempFile({
+      blobURL: url,
       reckey: String(reckey).slice(7),
     });
   };

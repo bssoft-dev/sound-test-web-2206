@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { MicrophoneContext } from "./Microphone";
+import { RecordCtx } from "../../context/RecordContext";
 import { ReactMic } from "react-mic";
 import { Box, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -14,8 +13,8 @@ const useStyles = makeStyles(theme => ({
   
 export default function ReactMicComp() {
     const classes = useStyles();
-    const microphoneContext = useContext(MicrophoneContext);
-    const {record, onSave, onStop, onData} = microphoneContext;
+    const recordContext = RecordCtx();
+    const {record, onSave, onStop, onData} = recordContext;
 
     return (<Grid container justifyContent="center"
       sx={{width: '90%', mx: 'auto', mt: 3}}>

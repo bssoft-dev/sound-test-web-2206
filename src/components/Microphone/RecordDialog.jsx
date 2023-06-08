@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
-import WaveSurferComp from "./WaveSurferComp";
 import ReactMicComp from "./ReactMicComp";
 import ButtonWrap from "./ButtonWrap";
-import { MicrophoneContext } from "./Microphone";
+import { RecordCtx } from "../../context/RecordContext";
+import RecordWaveSurfer from "../WaveSurferComp/RecordWaveSurfer";
 
 import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from "@mui/styles";
+import { MicrophoneContext } from "./Microphone";
 
 const useStyles = makeStyles(theme => ({
     flex: {
@@ -29,7 +30,9 @@ export default function RecordDialog() {
     const classes = useStyles();
 
     const microphoneContext = useContext(MicrophoneContext);
-    const {tempFile, open, handleCancel} = microphoneContext;
+    const {open, handleCancel} = microphoneContext;
+    const recordContext = RecordCtx();
+    const { tempFile } = recordContext;
 
     return (<Dialog 
         fullWidth
@@ -48,7 +51,7 @@ export default function RecordDialog() {
         </DialogTitle>
 
         <DialogContent sx={{py: 3}}>
-          {tempFile ? <WaveSurferComp /> : <ReactMicComp />}
+          {tempFile ? <RecordWaveSurfer /> : <ReactMicComp />}
         </DialogContent>
         <DialogActions
           sx={{py: 2, justifyContent: 'center'}}>

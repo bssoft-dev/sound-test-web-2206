@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { TimerContextProvider } from "../context/TimerContext";
 import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
 import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
@@ -7,7 +8,6 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 import { useCtx } from "../context/Context";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { TimerContextProvider } from "../context/TimerContext";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -25,17 +25,17 @@ export default function SoundTestPage() {
   }, []);
 
   return (<TimerContextProvider>
-    <Layout>
-      <>
-        <RecordTable />
-        <Grid container direction="column">
-          {files.map((file, index) => (
-            <Grid key={index} item className={classes.item}>
-              <AudioPlayer file={file} />
-            </Grid>
-          ))}
-        </Grid>
-      </>
-    </Layout>
+      <Layout>
+        <>
+          <RecordTable />
+          <Grid container direction="column">
+            {files.map((file, index) => (
+              <Grid key={index} item className={classes.item}>
+                <AudioPlayer file={file} />
+              </Grid>
+            ))}
+          </Grid>
+        </>
+      </Layout>
   </TimerContextProvider>)
 }

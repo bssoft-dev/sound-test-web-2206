@@ -8,7 +8,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
     const timerContext = TimerCtx();
     const {setIsRunning, setTimer} = timerContext;
     const streamContext = StreamCtx();
-    const { setAudioSrc, handleStreamList, setRecordedData, status, setAudioData } = streamContext;
+    const { setAudioSrc, handleStreamList, setRecordedData, status, setTempFile } = streamContext;
     
     // const [audioType, setAudioType] = useState("audio/wav");
     
@@ -32,11 +32,11 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         const date = Date.now();
         setRecordedData({
             recordedBlob: recordedBlob,
-            blobUrl: URL.createObjectURL(recordedBlob),
+            blobURL: URL.createObjectURL(recordedBlob),
             Date: date,
         });
-        setAudioData({
-            blobUrl: URL.createObjectURL(recordedBlob),
+        setTempFile({
+            blobURL: URL.createObjectURL(recordedBlob),
             reckey: String(date).slice(7)
         })
         console.log("succ stop", URL.createObjectURL(recordedBlob));

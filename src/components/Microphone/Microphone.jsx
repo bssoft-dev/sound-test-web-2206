@@ -1,31 +1,27 @@
 import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import axios from 'axios'
-import RecordDialog from "./RecordDialog";
-import { useCtx } from "../../context/Context";
-import { Button } from "@mui/material";
+import { RecordCtx } from "../../context/RecordContext";
 import { TimerCtx } from "../../context/TimerContext";
+import { useCtx } from "../../context/Context";
+import RecordDialog from "./RecordDialog";
+import { Button } from "@mui/material";
+
 export const MicrophoneContext = createContext();
 
 export default function Microphone() {
   const context = useCtx();
-  const {pathname, setAlert, pushFile} = context;
+  const {setAlert, pushFile} = context;
   const timerContext = TimerCtx();
   const {isRunning, setIsRunning} = timerContext;
+  const recordContext = RecordCtx();
+  const { setRecord, tempFile, setTempFile } = recordContext;
 
   const wavesurfer = useRef(null);
-  const [record, setRecord] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [tempFile, setTempFile] = React.useState(null);
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [downloadLinkURL, setDownloadLinkURL] = useState(null);
 
-  useEffect(() => {
-    console.log("tempFile", tempFile);
-    if (tempFile) {
-      wavesurfer.current.load(tempFile.blobURL);
-    }
-  }, [tempFile]);
+  useEffect(()=> {}, )
 
   const togglePlayback = () => {
     if (!isPlaying) {
@@ -50,7 +46,7 @@ export default function Microphone() {
     //   console.log('formData',value)
     // }
     axios({
-      url: `http://172.30.1.17:22104/v1/upload-raw/test`,
+      url: `https://sound.bs-soft.co.kr/analysis/stt/blob`,
       method: 'POST',
       data: formData,
       headers: {
@@ -58,6 +54,7 @@ export default function Microphone() {
       }
     })
     .then((response) => {
+      console.log(response);
       if(response.status != 200) {
         setAlert({
           open: true, 
@@ -119,24 +116,11 @@ export default function Microphone() {
     setRecord(false);
   }
 
-  const onData = recordedBlob => {
-    console.log("chunk of real-time data is: ", recordedBlob); // 'audio/ogg'
-  };
-  
-  const onStop = recordedBlob => {
-    setTempFile(recordedBlob); // 'audio/wav'
-  };
-
-  const onSave = recordedBlob => {
-    setDownloadLinkURL(recordedBlob.blobURL);
-  }
-  
-  if(!(pathname === '/sound-test')) return '';
 
   return (
-    <MicrophoneContext.Provider value={{
-      record, tempFile, isPlaying, downloadLinkURL, open,
-      wavesurfer, onStop, onData, onSave, setPlayerReady, setIsPlaying,
+      <MicrophoneContext.Provider value={{
+      isPlaying, open,
+      wavesurfer, setPlayerReady, setIsPlaying,
       togglePlayback, stopPlayback, handleDone, handleCancel,
       startRecording, stopRecording, restartRecording,
       isRunning, setIsRunning

@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import { useCtx } from "../context/Context";
-import { Card, CardActions, CardContent, Divider, Grid, Paper, Typography } from "@mui/material";
+import { TimerContextProvider } from "../context/TimerContext";
+import { StreamContextProvider, StreamCtx } from "../context/StreamContext";
+import StreamWaveSurfer from "../components/WaveSurferComp/StreamWaveSurfer";
 import Timer from "../components/Timer/Timer";
 import AudioStream from "../components/AudioStream/AudioStream";
-import { TimerContextProvider } from "../context/TimerContext";
-import StreamTable from "../components/StreamTable/StreamTable";
-import { StreamContextProvider, StreamCtx } from "../context/StreamContext";
 import ButtonWrap from "../components/AudioStream/ButtonWrap";
-import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
-import WaveSurferComp from "../components/AudioStream/WaveSurferComp";
+import StreamTable from "../components/StreamTable/StreamTable";
+import { Grid, Paper } from "@mui/material";
 
 export default function AudioStreamingTestPage() {
     const context = useCtx();  
@@ -39,7 +38,7 @@ export default function AudioStreamingTestPage() {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper sx={{height: '100%', py: 2, px: 5}}>
-                            <WaveSurferComp />
+                            <StreamWaveSurfer />
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>

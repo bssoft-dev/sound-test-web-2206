@@ -11,6 +11,7 @@ import { red, grey } from "@mui/material/colors";
 import StopIcon from "@mui/icons-material/Stop";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import { RecordCtx } from "../../context/RecordContext";
 
 const useStyles = makeStyles(theme => ({
     wavesurferWrap: {
@@ -26,11 +27,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function WaveSurferComp() {
+export default function WaveSurferComp({ tempFile }) {
   const wavesurfer = useRef(null);
   const classes = useStyles();
-  const streamContext = StreamCtx();
-  const { audioData } = streamContext;
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [regions, setRegions] = useState([ ]);
@@ -94,10 +93,11 @@ export default function WaveSurferComp() {
     }, []);
 
     useEffect(() => {
-      if (audioData) {
-        wavesurfer.current.load(audioData.blobUrl);
-      } 
-    }, [audioData]);
+      console.log("tempFile", tempFile);
+      if (tempFile != null && wavesurfer.current != null) {
+        wavesurfer.current.load(tempFile.blobURL);
+      }
+    }, [tempFile, wavesurfer.current]);
 
     
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function WaveSurferComp() {
   return (<>
     <Grid>
       <Typography>
-        {audioData ? audioData.reckey : 'Adudio reckey'}
+        {tempFile ? tempFile.reckey : 'Adudio reckey'}
       </Typography>
     </Grid>
     <Grid className={classes.wavesurferWrap}

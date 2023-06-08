@@ -5,7 +5,7 @@ export const StreamContext = createContext({});
 export function StreamContextProvider({children}) {
     const [streamList, setStreamList] = useState([]);
     const [audioSrc, setAudioSrc] = useState(null);
-    const [audioData, setAudioData] = useState(null);
+    const [tempFile, setTempFile] = useState(null);
     const [status, setStatus] = useState("");
     const controlAudio = (status) => {
         setStatus(status);
@@ -29,7 +29,7 @@ export function StreamContextProvider({children}) {
         if (recordedData && streamList) {
           const newRow = createData(
             recordedData.Date,
-            recordedData.blobUrl,
+            recordedData.blobURL,
             recordedData.Date,
             '1s',
             streamList
@@ -45,7 +45,7 @@ export function StreamContextProvider({children}) {
     console.log(rows);
 
     return(<StreamContext.Provider 
-        value={{ audioSrc, setAudioSrc, audioData, setAudioData,
+        value={{ audioSrc, setAudioSrc, tempFile, setTempFile,
             rows, streamList, handleStreamList, recordedData, setRecordedData,
             status, controlAudio }}>
         { children }

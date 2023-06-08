@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { MicrophoneContext } from "./Microphone";
+import { RecordCtx } from "../../context/RecordContext";
 
 import { Button, Grid, IconButton } from "@mui/material";
 import StopIcon from "@mui/icons-material/Stop";
@@ -10,7 +11,9 @@ import { grey } from "@mui/material/colors";
 
 export default function ButtonWrap() {
   const microphoneContext = useContext(MicrophoneContext);
-  const {record, tempFile, isPlaying, downloadLinkURL, startRecording, stopRecording, restartRecording, togglePlayback, stopPlayback, handleDone} = microphoneContext;
+  const {isPlaying, startRecording, stopRecording, restartRecording, togglePlayback, stopPlayback, handleDone} = microphoneContext;
+  const recordContext = RecordCtx();
+  const { record, tempFile } = recordContext;
 
   return (<>
     {!record && !tempFile && (
