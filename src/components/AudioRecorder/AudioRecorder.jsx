@@ -326,9 +326,9 @@ class AudioRecorder extends React.Component {
       await this.start()
     } else {
       await this.stop(true);
-      setTimeout(() => {
-        this.websocket.close();
-      }, 500)
+      // setTimeout(() => {
+      //   this.websocket.close();
+      // }, 500)
     }
   }
 

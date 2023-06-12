@@ -9,6 +9,14 @@ import { Grid, IconButton, Paper } from "@mui/material";
 import SttRecord from "../components/SttRecord/SttRecord";
 import Loading from "../components/Loading/Loading";
 import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles(theme => ({
+    dataWrap: {
+        width: '100%',
+        height: '100%'
+    }
+}));
 
 export const recorderParams = {
     text: "Click to record",
@@ -25,6 +33,7 @@ export const recorderParams = {
 };
 
 export default function SttTestPage() {
+    const classes = useStyles();
     const context = useCtx();  
     const { setTitle, loading } = context;
 
@@ -37,11 +46,12 @@ export default function SttTestPage() {
             <Layout>
             <Grid container spacing={2}
                 flexDirection="column"
-                sx={{position: 'relative'}}>
+                sx={{position: 'relative', height: '100%'}}>
                   <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
-                  <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
-                  height="800px"
-                  ></embed>
+                  <Grid flex={1}>
+                    <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
+                    width="100%" height="100%"></embed>
+                  </Grid>
                 </Grid>
             </Layout>
         </RecordContextProvider>
