@@ -31,7 +31,7 @@ class AudioRecorder extends React.Component {
 
 
   componentDidMount() {
-    this.websocket = new WebSocket('wss://sound-stream.bs-soft.co.kr/ws');
+    this.websocket = new WebSocket('wss://sound.bs-soft.co.kr/ws/byte');
 
     // 웹소켓 이벤트 핸들러 등록
     this.websocket.onopen = this.handleWebSocketOpen;
@@ -54,7 +54,7 @@ class AudioRecorder extends React.Component {
 
   handleWebSocketMessage = (event) => {
     // 웹소켓 메시지 수신 시 처리할 로직
-    console.log(event)
+    console.log('수신받은 메시지: ', event)
   }
 
   handleWebSocketClose = () => {
@@ -297,13 +297,12 @@ class AudioRecorder extends React.Component {
     const blob = new Blob([view], { type: this.type });
     const audioUrl = URL.createObjectURL(blob);
 
-
-    await this.onStop({
-      blob: blob,
-      url: audioUrl,
-      type: this.type,
-    });
     if (!isFinish) {
+      await this.onStop({
+        blob: blob,
+        url: audioUrl,
+        type: this.type,
+      });
       await this.start();
     }
   };
@@ -334,17 +333,10 @@ class AudioRecorder extends React.Component {
   }
 
   onStop = async (data) => {
-    const buffer = await data.blob.arrayBuffer();
-    const json_string = JSON.stringify(Array.from(new Uint8Array(buffer)));
-    console.log(data);
-
-    const msg = {
-      data: Array.from(new Uint8Array(buffer)),
-      type: data.type
-    }
+    const byteObj = await data.blob;
     if (this.websocket.readyState === WebSocket.OPEN) {
       console.log('new message')
-      this.websocket.send(JSON.stringify(msg));
+      this.websocket.send(byteObj);
     }
   };
 

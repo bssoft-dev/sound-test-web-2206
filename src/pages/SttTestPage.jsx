@@ -39,7 +39,7 @@ export default function SttTestPage() {
                 flexDirection="column"
                 sx={{position: 'relative'}}>
                   <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
-                  <embed src="https://sound-stream.bs-soft.co.kr/receive/ws"
+                  <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
                   height="800px"
                   ></embed>
                 </Grid>
