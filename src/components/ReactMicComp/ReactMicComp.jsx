@@ -7,7 +7,7 @@ import Timer from "../Timer/Timer";
 const useStyles = makeStyles(theme => ({
     reactmic: {
       width: "100%",
-      height: 150, 
+      height: 100, 
     }
   }));
   

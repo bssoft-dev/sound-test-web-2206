@@ -7,10 +7,26 @@ import RecordWaveSurfer from "../components/WaveSurferComp/RecordWaveSurfer";
 
 import { Grid, IconButton, Paper } from "@mui/material";
 import SttRecord from "../components/SttRecord/SttRecord";
+import Loading from "../components/Loading/Loading";
+import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
+
+export const recorderParams = {
+    text: "Click to record",
+    // energy_threshold: [0.01, 0.1],
+    start_threshold: 0.01,
+    end_threshold: 0.01,
+    pause_threshold: 1.0,
+    neutral_color: "inherit",
+    recording_color: "error",
+    icon_name: "microphone",
+    icon_size: "3x",
+    sample_rate: 16000,
+    key: "audio_recorder",
+};
 
 export default function SttTestPage() {
     const context = useCtx();  
-    const { setTitle  } = context;
+    const { setTitle, loading } = context;
 
     useEffect(() => {
         setTitle('STT 기본모델 테스트');
@@ -19,28 +35,13 @@ export default function SttTestPage() {
     return(<TimerContextProvider>
         <RecordContextProvider>
             <Layout>
-            <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Paper>
-                        녹음하면 blob파일 api 전달해서 response가 넘어올 때 까지 로딩, 
-                response가 넘어오면 메세지 출력
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={6} >
-                        <Paper sx={{height: '100%', overflow: 'hidden', py: 2, px: 5}}>
-                            <SttRecord />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Paper sx={{height: '100%', py: 2, px: 5}}>
-                            <RecordWaveSurfer />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Paper>
-                            메세지 출력 될 영역
-                        </Paper>
-                    </Grid>
+            <Grid container spacing={2}
+                flexDirection="column"
+                sx={{position: 'relative'}}>
+                  <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
+                  <embed src="https://sound-stream.bs-soft.co.kr/receive/ws"
+                  height="800px"
+                  ></embed>
                 </Grid>
             </Layout>
         </RecordContextProvider>

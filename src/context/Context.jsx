@@ -7,6 +7,7 @@ export const Context = createContext({});
 export function ContextProvider({children}) {
     const location = useLocation();
     const [pathname, setPathname] = useState(location.pathname);
+    const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('비에스 소프트');
     const [isAlert, setIsAlert] = useState({
         open: false,
@@ -59,7 +60,7 @@ export function ContextProvider({children}) {
             pathname, isAlert, setAlert, title, setTitle,
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
-            isRunning, setIsRunning
+            isRunning, setIsRunning, loading, setLoading
         }}>
         {children}
     </Context.Provider>)

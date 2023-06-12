@@ -10,7 +10,7 @@ export const MicrophoneContext = createContext();
 
 export default function Microphone() {
   const context = useCtx();
-  const {setAlert, pushFile} = context;
+  const {setAlert, pushFile, setLoading} = context;
   const timerContext = TimerCtx();
   const {isRunning, setIsRunning} = timerContext;
   const recordContext = RecordCtx();
@@ -34,6 +34,8 @@ export default function Microphone() {
   const stopPlayback = () => wavesurfer.current.stop();
 
   const uploadTemplFile = (tempFile) => {
+    console.log(tempFile);
+    setLoading(true);
     const formData = new FormData();
     formData.append(
       "file",
@@ -42,41 +44,42 @@ export default function Microphone() {
     );
     console.log('formData', formData);
     console.log(formData.get('file'), '확인용');
-    // for (var value of formData.values()){
-    //   console.log('formData',value)
-    // }
-    axios({
-      url: `https://sound.bs-soft.co.kr/analysis/stt/blob`,
-      method: 'POST',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then((response) => {
-      console.log(response);
-      if(response.status != 200) {
-        setAlert({
-          open: true, 
-          type: "warning",
-          message: "파일을 다시 확인해주세요."
-        });
-      }
-      setAlert({
-        open: true, 
-        type: "success",
-        message: "업로드를 완료하였습니다."
-      });
-      console.log('response status: ', response.data);
-    })
-    .catch((error) => {
-      setAlert({
-        open: true, 
-        type: "error",
-        message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
-      });
-      console.log(error);
-    })
+    for (var value of formData.values()){
+      console.log('formData',value)
+    }
+    // axios({
+    //   url: `https://sound.bs-soft.co.kr/analysis/stt/blob`,
+    //   method: 'POST',
+    //   data: formData,
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data'
+    //   }
+    // })
+    // .then((response) => {
+    //   setLoading(false);
+    //   setOpen(false);
+    //   if(response.status != 200) {
+    //     setAlert({
+    //       open: true, 
+    //       type: "warning",
+    //       message: "파일을 다시 확인해주세요."
+    //     });
+    //   }
+    //   setAlert({
+    //     open: true, 
+    //     type: "success",
+    //     message: "업로드를 완료하였습니다."
+    //   });
+    //   console.log('response status: ', response.data);
+    // })
+    // .catch((error) => {
+    //   setAlert({
+    //     open: true, 
+    //     type: "error",
+    //     message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
+    //   });
+    //   console.log(error);
+    // })
   };
 
   const handleClickOpen = () => {
@@ -90,7 +93,6 @@ export default function Microphone() {
       pushFile(tempFile);
       setTempFile(null);
       setRecord(false);
-      setOpen(false);
     }
   };
 
@@ -119,7 +121,7 @@ export default function Microphone() {
 
   return (
       <MicrophoneContext.Provider value={{
-      isPlaying, open,
+      isPlaying, open, 
       wavesurfer, setPlayerReady, setIsPlaying,
       togglePlayback, stopPlayback, handleDone, handleCancel,
       startRecording, stopRecording, restartRecording,
