@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import "./sideNav.css"
-import { useCtx } from "../../../context/Context";
+import { useEffect, useState } from "react";
 
 const links = [
     {name: '사운드 처리 테스트', url: '/sound-test' },
@@ -12,8 +12,13 @@ const links = [
 ]
 
 export default function SideNav() {
-    const context = useCtx();
-    const { isHyperuser } = context;
+    const [isHyperuser, setIsHyperuser] = useState(false);
+
+    useEffect(() => {
+        if(localStorage.getItem('is_hyperuser')) {
+            setIsHyperuser(true);
+        }
+    }, [])
     
     return(<div className="sideNav">
         <div className="SideNavTop row">

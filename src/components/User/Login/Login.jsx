@@ -10,7 +10,7 @@ import { useCtx } from "../../../context/Context";
 
 export default function Login() {    
     const context = useCtx();
-    const { setAlert, setIsHyperuser } = context;
+    const { setAlert } = context;
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -40,7 +40,7 @@ export default function Login() {
         .then((res) => {
             sessionStorage.setItem('token', res.data.access_token);
             if(res.data.is_hyperuser) {
-                setIsHyperuser(true);
+                localStorage.setItem('is_hyperuser', true);
             }
             navigate('/');
         })

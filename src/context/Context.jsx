@@ -8,7 +8,6 @@ export function ContextProvider({children}) {
     const location = useLocation();
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
-    const [isHyperuser, setIsHyperuser] = useState(false);
     const [pathname, setPathname] = useState(location.pathname);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('비에스 소프트');
@@ -74,7 +73,7 @@ export function ContextProvider({children}) {
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
-            recordData, handleDataUpdate, isHyperuser, setIsHyperuser, token, setToken
+            recordData, handleDataUpdate, token, setToken
         }}>
         {children}
     </Context.Provider>)

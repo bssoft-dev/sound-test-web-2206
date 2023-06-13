@@ -11,13 +11,13 @@ import { useNavigate } from 'react-router-dom';
 export default function UserMenu() {
   const navigate = useNavigate('/login');
   const context = useCtx();
-  const { setToken, setIsHyperuser } = context;
+  const { setToken } = context;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleLogout = () => {
     sessionStorage.removeItem('token');
-    setIsHyperuser('');
+    localStorage.removeItem('is_hyperuser')
     setToken(false);
     navigate('/login')
   }
