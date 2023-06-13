@@ -28,7 +28,7 @@ export const recorderParams = {
     recording_color: "error",
     icon_name: "microphone",
     icon_size: "3x",
-    sample_rate: 16000,
+    sample_rate: null,
     key: "audio_recorder",
 };
 
