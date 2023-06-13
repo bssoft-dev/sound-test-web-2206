@@ -13,3 +13,8 @@
 .innerHeader .title {
     line-height: 1;
 }
+@media (max-width: 600px) {
+    .innerHeader .title {
+        font-size: 20px;
+    }
+}

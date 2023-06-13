@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
 
 import IndexPage from "./pages/IndexPage";
 import SoundTestPage from "./pages/SoundTestPage";
@@ -14,7 +14,7 @@ import { grey, red } from "@mui/material/colors";
 import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 import SttTestPage from "./pages/SttTestPage";
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     error: {
       main: red[500],
@@ -26,9 +26,23 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Pretendard Variable'
-  }
-})
+    fontFamily: 'Pretendard Variable',
+    '@media (max-width: 600px)' : {
+      fontSize: 14,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '@media (max-width:600px)': {
+            fontSize: 12,
+          }
+        },
+      },
+    },
+  },
+});
 
 function App() {
   return (<>

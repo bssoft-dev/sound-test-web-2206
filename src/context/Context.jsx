@@ -17,6 +17,11 @@ export function ContextProvider({children}) {
         message: ''
     });
     const setAlert = data => setIsAlert(data);
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+      };
 
     const [regions, setRegions] = useState([
         {
@@ -73,7 +78,7 @@ export function ContextProvider({children}) {
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
-            recordData, handleDataUpdate, token, setToken
+            recordData, handleDataUpdate, token, setToken, mobileOpen, handleDrawerToggle
         }}>
         {children}
     </Context.Provider>)

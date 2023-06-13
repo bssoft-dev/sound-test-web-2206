@@ -1,5 +1,5 @@
 .sideNav {
-    width: var(--sideNavWidth);
+    width: var(--sideNavWidth) !important;
     height: 100%; 
     border-right: var(--border);
 }
@@ -33,4 +33,10 @@
     color: #1976d2;
     background-color: #f0f7ff;
     font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .SideMenu {
+        width: 70vw;
+    }
 }

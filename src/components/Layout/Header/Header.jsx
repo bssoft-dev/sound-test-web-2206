@@ -1,17 +1,27 @@
+import { useCtx } from "../../../context/Context";
 import UserMenu from "../UserMenu/UserMenu";
-import { Button } from "@mui/material";
+
+import { Button, IconButton } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import './header.css'
 
 import SettingsIcon from '@mui/icons-material/Settings';
-
-import './header.css'
-import { useCtx } from "../../../context/Context";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function Header() {
     const context = useCtx();
-    const { token } = context;
+    const { token, handleDrawerToggle } = context;
     
     return (<header className="row">
+    <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        // edge="start"
+        onClick={handleDrawerToggle}
+        sx={{ display: { sm: 'none' } }}
+        >
+        <MenuIcon />
+    </IconButton>
     <div className="headerRight row">
         {token && <UserMenu></UserMenu>}
         <div className="settingMenu">

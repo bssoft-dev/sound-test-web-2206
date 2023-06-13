@@ -83,7 +83,7 @@ export default function FileUploadButton() {
 
     return (
       <Button variant="contained" component="label"
-        sx={{marginLeft: 2}}>
+        sx={{marginLeft: {xs: 1, sm: 2}}}>
         파일업로드
         <input type="file" hidden
           sx={{ display: "none" }} 

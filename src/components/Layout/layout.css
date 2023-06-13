@@ -8,6 +8,16 @@
     --mainWidth: calc(100vw - var(--sideNavWidth));
     --border: 1px solid #ddd;
 }
+@media (max-width: 600px) {
+    :root {
+        --mainWidth: 100%;
+        --headerHight: 48px;
+        --sideNavWidth: 70vw;
+    }
+    body {
+        font-size: 14px;
+    }
+}
 
 .layout {
     width: 100%;

@@ -1,49 +1,19 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./sideNav.css"
-import { useEffect, useState } from "react";
-
-const links = [
-    {name: '사운드 처리 테스트', url: '/sound-test' },
-    {name: '화자 분리 테스트', url: '/bss-test' },
-    {name: 'STT 기본모델 테스트', url: '/stt-test' },
-    // {name: '로그인', url: '/login' },
-    // {name: '오디오 스트리밍 테스트', url: '/audio-test' },
-    // {name: '테스트', url: '/test' },
-]
+import { Grid } from "@mui/material";
+import SideMenu from "./SideMenu";
 
 export default function SideNav() {
-    const [isHyperuser, setIsHyperuser] = useState(false);
-
-    useEffect(() => {
-        if(localStorage.getItem('is_hyperuser')) {
-            setIsHyperuser(true);
-        }
-    }, [])
     
-    return(<div className="sideNav">
-        <div className="SideNavTop row">
+    return(<Grid container 
+        flexDirection="column"
+        sx={{display: {xs: 'none', sm: 'flex'}}}
+        className="sideNav">
+        <Grid item className="SideNavTop row">
             <Link to='/'>
                 <img src="/images/logo.png" className="logo" alt="비에스소프트" />
             </Link>
-        </div>
-        <aside className="SideMenu">
-            <ul>
-                {isHyperuser && links.map((link) => (
-                    <li key={link.name}>
-                        <NavLink to={link.url}
-                            className={({ isActive, isPending }) =>
-                            isPending ? "pending" : isActive ? "active" : ""
-                        }>{ link.name }</NavLink>
-                    </li>
-                ))}
-                <li>
-                    <NavLink to='/audio-test'
-                        className={({ isActive, isPending }) =>
-                        isPending ? "pending" : isActive ? "active" : ""
-                    }>오디오 스트리밍 테스트</NavLink>
-                </li>
-                
-            </ul>
-        </aside>
-    </div>)
+        </Grid>
+        <SideMenu />
+    </Grid>)
 }

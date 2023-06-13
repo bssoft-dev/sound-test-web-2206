@@ -18,3 +18,11 @@ header {
     min-width: var(--headerHight) !important;
     border-left: var(--border);
 }
+@media (max-width: 600px) {
+    .headerRight {
+        border-left: none;
+    }
+    .settingMenu {
+        display: none;
+    }
+}

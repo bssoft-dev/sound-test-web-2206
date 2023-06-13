@@ -6,6 +6,9 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles(theme => ({
     mainContainer: {
       width: 'calc(100vw - var(--sideNavWidth))',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+      },
       height: '100vh',
       position: 'relative',
       display: 'flex',
@@ -19,6 +22,11 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         padding: '20px',
         paddingTop: '140px',
+        '@media (max-width:600px)': {
+          padding: '16px',
+          paddingTop: '120px',
+          
+        }
     }
 }));
 

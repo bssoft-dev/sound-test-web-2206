@@ -129,7 +129,7 @@ export default function Microphone() {
     }}>
       <Button variant="outlined" color="error"
         onClick={handleClickOpen}
-        sx={{marginLeft: 2, boxShadow: 1}}>
+        sx={{marginLeft: {xs: 1, sm: 2}, boxShadow: 1}}>
         녹음하기
       </Button>
       <RecordDialog />

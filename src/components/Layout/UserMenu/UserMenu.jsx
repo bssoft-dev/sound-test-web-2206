@@ -42,7 +42,7 @@ export default function UserMenu() {
         sx={{height: '100%', paddingInline: '16px'}}
       >
         <Avatar 
-            sx={{ width: 24, height: 24, marginRight: 1}}>
+            sx={{ width: 24, height: 24, marginRight: 1, display: {xs: 'none', sm: 'flex'}}}>
             <PersonIcon />
         </Avatar>
         로그아웃
