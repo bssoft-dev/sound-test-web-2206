@@ -41,9 +41,6 @@ export default function SttTestPage() {
     useEffect(() => {
         setTitle('STT 기본모델 테스트');
     }, []);
-    useEffect(() => {
-        console.log('recordData', recordData);
-    }, [recordData])
     
     return(<TimerContextProvider>
         <RecordContextProvider>

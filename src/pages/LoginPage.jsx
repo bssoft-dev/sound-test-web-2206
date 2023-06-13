@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Login from "../components/User/Login/Login";
+import Alert from "../components/Alert/Alert";
 
 const useStyles = makeStyles(theme => ({
     gradientBG: {
@@ -18,8 +19,8 @@ export default function LoginPage() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ minHeight: '100vh' }}
-        xs={12} >
+        sx={{ minHeight: '100vh' }} >
+            <Alert />
         <Grid className={classes.gradientBG}
             position='absolute' bottom={0} zIndex='-1' >
         </Grid>

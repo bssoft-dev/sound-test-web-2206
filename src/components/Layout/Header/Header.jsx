@@ -5,11 +5,15 @@ import { grey } from "@mui/material/colors";
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import './header.css'
+import { useCtx } from "../../../context/Context";
 
 export default function Header() {
+    const context = useCtx();
+    const { token } = context;
+    
     return (<header className="row">
     <div className="headerRight row">
-        <UserMenu></UserMenu>
+        {token && <UserMenu></UserMenu>}
         <div className="settingMenu">
             <Button className="settingBtn" color="inherit">
                 <SettingsIcon sx={{color: grey[400]}} />

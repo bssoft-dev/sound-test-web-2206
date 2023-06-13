@@ -5,13 +5,17 @@ import ForGotPassword from "./ForGotPassword";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from "axios";
+import { useCtx } from "../../../context/Context";
 
 export default function Login() {    
+    const context = useCtx();
+    const { setAlert, setIsHyperuser } = context;
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
 
     const navigate = useNavigate();
-    
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -22,16 +26,38 @@ export default function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            userId: data.get('userId'),
-            password: data.get('password'),
+        const params = new URLSearchParams();
+        params.append('username', data.get('username'));
+        params.append('password', data.get('password'));
+        axios({
+            url: 'https://sound.bs-soft.co.kr/auth/jwt/login',
+            method: 'POST',
+            data: params,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        .then((res) => {
+            sessionStorage.setItem('token', res.data.access_token);
+            if(res.data.is_hyperuser) {
+                setIsHyperuser(true);
+            }
+            navigate('/');
+        })
+        .catch(err => {
+            setAlert({
+                open: true, 
+                type: "error",
+                message: "아이디 혹은 비밀번호를 확인하세요."
+            })
         });
-        navigate('/');
     };
     
     return (<>
         <Card
-            sx={{ maxWidth: 400, boxShadow: 3, mt: '-60px' }} >
+            sx={{ maxWidth: {
+                xs: '80vw', sm: '400px'
+            }, boxShadow: 3, mt: '-60px' }} >
             <CardHeader sx={{ pt: 3 }}
                 title={
                 <Typography variant="h4" color="text.secondary"
@@ -42,10 +68,10 @@ export default function Login() {
             <CardContent sx={{ px: 3 }}>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                     <TextField required fullWidth autoFocus
-                        id="userId"
+                        id="username"
                         label="아이디"
-                        name="userId"
-                        autoComplete="userId"
+                        name="username"
+                        autoComplete="username"
                         sx={{marginBottom: 3}}
                         variant="standard"
                     />

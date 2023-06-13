@@ -1,11 +1,14 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
 
 export const Context = createContext({});
 
 export function ContextProvider({children}) {
     const location = useLocation();
+    const navigate = useNavigate();
+    const [token, setToken] = useState(null);
+    const [isHyperuser, setIsHyperuser] = useState(false);
     const [pathname, setPathname] = useState(location.pathname);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('비에스 소프트');
@@ -45,6 +48,13 @@ export function ContextProvider({children}) {
             console.log(error);
         })
     }
+    useEffect(() => {
+        if(sessionStorage.getItem('token')) {
+            setToken(sessionStorage.getItem('token'));
+        } else {
+            return navigate('/login');
+        }
+    }, [pathname]);
 
     useEffect(() => {
         setPathname(location.pathname);
@@ -64,7 +74,7 @@ export function ContextProvider({children}) {
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
-            recordData, handleDataUpdate
+            recordData, handleDataUpdate, isHyperuser, setIsHyperuser, token, setToken
         }}>
         {children}
     </Context.Provider>)
