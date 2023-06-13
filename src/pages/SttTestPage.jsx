@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import Layout from "../components/Layout/Layout";
 import { TimerContextProvider, TimerCtx } from "../context/TimerContext";
@@ -28,18 +28,22 @@ export const recorderParams = {
     recording_color: "error",
     icon_name: "microphone",
     icon_size: "3x",
-    sample_rate: null,
+    sample_rate: 16000,
     key: "audio_recorder",
 };
+
 
 export default function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
-    const { setTitle, loading } = context;
+    const { setTitle, loading, recordData, setRecordData } = context;
 
     useEffect(() => {
         setTitle('STT 기본모델 테스트');
     }, []);
+    useEffect(() => {
+        console.log('recordData', recordData);
+    }, [recordData])
     
     return(<TimerContextProvider>
         <RecordContextProvider>
@@ -47,8 +51,15 @@ export default function SttTestPage() {
             <Grid container spacing={2}
                 flexDirection="column"
                 sx={{position: 'relative', height: '100%'}}>
-                  <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
-                  <Grid flex={1}>
+                <Grid item>
+                    <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
+                </Grid>
+                <Grid item>
+                    {recordData && recordData.map((data, index) => {
+                        return (<p key={index}>{data}</p>)
+                    })}
+                </Grid>
+                <Grid item flex={1}>
                     <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
                     width="100%" height="100%"></embed>
                   </Grid>
@@ -57,3 +68,5 @@ export default function SttTestPage() {
         </RecordContextProvider>
       </TimerContextProvider>)
 }
+
+export const SttContext = createContext();

@@ -1,14 +1,21 @@
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 import React from "react";
+import { Context } from '../../context/Context';
 
 class AudioRecorder extends React.Component {
   constructor(props) { 
     super(props);
-    this.state = { color: this.props.args.get("neutral_color") }
+    this.state = { 
+      color: this.props.args.get("neutral_color"),
+      socketData: '',
+
+    }
     this.websocket = null; 
   }
 
-  context;
+  static contextType = Context;
+
+  // context;
   stream = null;
   AudioContext = window.AudioContext || window.webkitAudioContext;
   type = "audio/wav";
@@ -46,6 +53,12 @@ class AudioRecorder extends React.Component {
       this.websocket.close();
     }
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.props && prevState.socketData !== this.state.socketData) {
+      const { handleDataUpdate } = this.context;
+      handleDataUpdate(this.state.socketData);
+    }
+  }
 
   handleWebSocketOpen = () => {
     // 웹소켓 연결이 열릴 때 처리할 로직
@@ -54,7 +67,9 @@ class AudioRecorder extends React.Component {
 
   handleWebSocketMessage = (event) => {
     // 웹소켓 메시지 수신 시 처리할 로직
-    console.log('수신받은 메시지: ', event)
+    console.log('수신받은 메시지: ', event);
+    const msg = JSON.parse(event.data)
+    this.setState({ socketData: msg.data });
   }
 
   handleWebSocketClose = () => {
@@ -308,7 +323,7 @@ class AudioRecorder extends React.Component {
   };
 
   render = () => {
-    const text = this.props.args.get("text")
+    const text = this.props.args.get("text");
 
     return (
       <span>
@@ -326,9 +341,6 @@ class AudioRecorder extends React.Component {
       await this.start()
     } else {
       await this.stop(true);
-      // setTimeout(() => {
-      //   this.websocket.close();
-      // }, 500)
     }
   }
 

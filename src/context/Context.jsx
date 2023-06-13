@@ -32,6 +32,9 @@ export function ContextProvider({children}) {
 
     const [rows, setRows] = useState([]);
   
+    const [ recordData, setRecordData ] = useState([]);
+    const handleDataUpdate = (data) => setRecordData([...recordData, data]);
+
     const fetchData = (baseUrl) => {
         axios.get(baseUrl)
         .then((response)=> {
@@ -60,7 +63,8 @@ export function ContextProvider({children}) {
             pathname, isAlert, setAlert, title, setTitle,
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
-            isRunning, setIsRunning, loading, setLoading
+            isRunning, setIsRunning, loading, setLoading,
+            recordData, handleDataUpdate
         }}>
         {children}
     </Context.Provider>)
