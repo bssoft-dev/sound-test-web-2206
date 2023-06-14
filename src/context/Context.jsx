@@ -37,16 +37,19 @@ export function ContextProvider({children}) {
     const pushFile = file => setFiles([...files, file]);
     const setFile = file => setFiles(file);
 
-    const [rows, setRows] = useState([]);
-  
     const [ recordData, setRecordData ] = useState([]);
     const handleDataUpdate = (data) => setRecordData([...recordData, data]);
-
+    
+    const [rows, setRows] = useState([]);
+    const [serverHealth, setServerHealth] = useState(false);
     const fetchData = (baseUrl) => {
         axios.get(baseUrl)
         .then((response)=> {
             console.log('response status: ',response.data);
             setRows(response.data);
+            if(response.status === 200) {
+                setServerHealth(true)
+            }
         })
         .catch((error)=> {
             console.log(error);
@@ -78,7 +81,8 @@ export function ContextProvider({children}) {
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
-            recordData, handleDataUpdate, token, setToken, mobileOpen, handleDrawerToggle
+            recordData, handleDataUpdate, token, setToken, mobileOpen, handleDrawerToggle,
+            serverHealth, setServerHealth
         }}>
         {children}
     </Context.Provider>)

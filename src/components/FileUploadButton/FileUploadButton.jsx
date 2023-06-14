@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 
 export default function FileUploadButton() {
     const context = useCtx();
-    const {pathname, setAlert, fetchData} = context;
+    const {pathname, setAlert, fetchData, setServerHealth} = context;
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);
@@ -23,7 +23,11 @@ export default function FileUploadButton() {
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
           break; 
-      }
+        case "/audio-test":
+          setServerHealth(false);
+        default:
+          setServerHealth(false);
+        }
     }, [pathname]);
 
 

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Tooltip } from '@mui/material';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { grey } from "@mui/material/colors";
+import { green, grey } from "@mui/material/colors";
+import { useCtx } from '../../../context/Context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function TutorialModal() {
+  const context = useCtx();
+  const { serverHealth } = context;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,6 +36,11 @@ export default function TutorialModal() {
           <DialogContentText id="description">
             해당 페이지에 대해 안내합니다
           </DialogContentText>
+            <DialogContentText textAlign="center"
+              color={serverHealth ? green[600] : 'error'}
+              sx={{mt: 1}}>  
+              {serverHealth ? '서버 연결' : '서버 오류' }
+          </DialogContentText> 
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>확인</Button>

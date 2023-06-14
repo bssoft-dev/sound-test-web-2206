@@ -61,9 +61,11 @@ class AudioRecorder extends React.Component {
     }
   }
 
-  handleWebSocketOpen = () => {
+  handleWebSocketOpen = (event) => {
     // 웹소켓 연결이 열릴 때 처리할 로직
     console.log('웹소켓에 연결되었습니다.');
+    const { setServerHealth } = this.context;
+    setServerHealth(true);
   }
 
   handleWebSocketMessage = (event) => {
@@ -73,9 +75,11 @@ class AudioRecorder extends React.Component {
     this.setState({ socketData: msg.data });
   }
 
-  handleWebSocketClose = () => {
+  handleWebSocketClose = (event) => {
     // 웹소켓 연결이 닫힐 때 처리할 로직
     console.log('웹소켓이 종료되었습니다');
+    const { setServerHealth } = this.context;
+    setServerHealth(false);
   }
 
   handleWebSocketError = (error) => {
