@@ -10,7 +10,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function TutorialModal() {
   const context = useCtx();
-  const { serverHealth } = context;
+  const { serverHealth, pathname } = context;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,9 +37,13 @@ export default function TutorialModal() {
             해당 페이지에 대해 안내합니다
           </DialogContentText>
             <DialogContentText textAlign="center"
-              color={serverHealth ? green[600] : 'error'}
+              color={pathname !== "/audio-test" ? 
+                (serverHealth ? green[600] : 'error')
+                : 'secondary'}
               sx={{mt: 1}}>  
-              {serverHealth ? '서버 연결' : '서버 오류' }
+              {pathname !== "/audio-test" ? 
+                (serverHealth ? '서버 연결' : '서버 오류')
+                : '서버 없음' }
           </DialogContentText> 
         </DialogContent>
         <DialogActions>
