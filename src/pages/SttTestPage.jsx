@@ -36,7 +36,7 @@ export const recorderParams = {
 export default function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
-    const { setTitle, loading, recordData, setRecordData } = context;
+    const { setTitle, loading, recordData, handleDataUpdate } = context;
 
     useEffect(() => {
         setTitle('STT 기본모델 테스트');
@@ -50,7 +50,7 @@ export default function SttTestPage() {
                 sx={{position: 'relative', minHeight: '100%'}}>
                 <Grid item>
                     <Paper sx={{p: 2}}>
-                        <AudioRecorder args={new Map(Object.entries(recorderParams))} />  
+                        <AudioRecorder args={new Map(Object.entries(recorderParams))} handleDataUpdate={handleDataUpdate} />  
                     </Paper>
                 </Grid>
                 <Grid item flex="1" sx={{ mb: 4}} >

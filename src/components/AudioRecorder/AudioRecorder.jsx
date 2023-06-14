@@ -9,7 +9,6 @@ class AudioRecorder extends React.Component {
     this.state = { 
       color: this.props.args.get("neutral_color"),
       socketData: '',
-
     }
     this.websocket = null; 
   }
@@ -55,10 +54,12 @@ class AudioRecorder extends React.Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevState !== this.props && prevState.socketData !== this.state.socketData) {
-      const { handleDataUpdate } = this.context;
-      handleDataUpdate(this.state.socketData);
-    }
+    
+    // if (prevState !== this.props && prevState.socketData !== this.state.socketData) {
+    //   const { handleDataUpdate } = this.context;
+    //   handleDataUpdate(this.state.socketData);
+    //   console.log(this.state.socketData);
+    // }
   }
 
   handleWebSocketOpen = (event) => {
@@ -70,13 +71,15 @@ class AudioRecorder extends React.Component {
 
   handleWebSocketMessage = (event) => {
     // 웹소켓 메시지 수신 시 처리할 로직
-    console.log('수신받은 메시지: ', event);
+    // console.log('수신받은 메시지: ', event);
     const msg = JSON.parse(event.data)
-    
-    this.setState((prevState) => {
-      const updatedSocketData = [...prevState.socketData, msg.data];
-      return { socketData: updatedSocketData };
-    });
+    console.log(msg.data);
+
+    this.props.handleDataUpdate(msg.data)
+    // this.setState((prevState) => {
+    //   const updatedSocketData = [...prevState.socketData, msg.data];
+    //   return { socketData: updatedSocketData };
+    // });
   }
 
   handleWebSocketClose = (event) => {
