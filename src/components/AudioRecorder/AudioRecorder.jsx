@@ -72,7 +72,11 @@ class AudioRecorder extends React.Component {
     // 웹소켓 메시지 수신 시 처리할 로직
     console.log('수신받은 메시지: ', event);
     const msg = JSON.parse(event.data)
-    this.setState({ socketData: msg.data });
+    
+    this.setState((prevState) => {
+      const updatedSocketData = [...prevState.socketData, msg.data];
+      return { socketData: updatedSocketData };
+    });
   }
 
   handleWebSocketClose = (event) => {
@@ -80,6 +84,7 @@ class AudioRecorder extends React.Component {
     console.log('웹소켓이 종료되었습니다');
     const { setServerHealth } = this.context;
     setServerHealth(false);
+
   }
 
   handleWebSocketError = (error) => {
