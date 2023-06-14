@@ -11,8 +11,7 @@
 @media (max-width: 600px) {
     :root {
         --mainWidth: 100%;
-        --headerHight: 48px;
-        --sideNavWidth: 70vw;
+        --headerHight: 44px;
     }
     body {
         font-size: 14px;

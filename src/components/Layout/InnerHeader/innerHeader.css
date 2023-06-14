@@ -14,7 +14,10 @@
     line-height: 1;
 }
 @media (max-width: 600px) {
+    .innerHeader {
+        height: calc(var(--headerHight) + 8px);
+    }
     .innerHeader .title {
-        font-size: 20px;
+        font-size: 18px;
     }
 }

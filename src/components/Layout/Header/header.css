@@ -8,14 +8,25 @@ header {
     z-index: 100;
     background-color: rgba(255,255,255,0.9);
 }
+.homeLink {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.logo {
+    height: 90%;
+    margin-left: -10px;
+}
 .headerRight {
     height: inherit;
     margin-left: auto;
-    border-left: var(--border);
+    /* border-left: var(--border); */
 }
 .settingMenu, .settingBtn {
     height: inherit;
     min-width: var(--headerHight) !important;
+}
+.settingMenu {
     border-left: var(--border);
 }
 @media (max-width: 600px) {

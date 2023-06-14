@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
       overflowY: 'scroll',
       '&::-webkit-scrollbar': {
         display: 'none'
-      } 
+      },
+      backgroundColor: '#f2f2f2'
     },
     content: {
         height: '100%',

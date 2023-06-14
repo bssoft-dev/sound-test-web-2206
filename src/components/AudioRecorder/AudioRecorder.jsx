@@ -1,6 +1,7 @@
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 import React from "react";
 import { Context } from '../../context/Context';
+import { Button } from '@mui/material';
 
 class AudioRecorder extends React.Component {
   constructor(props) { 
@@ -326,13 +327,14 @@ class AudioRecorder extends React.Component {
     const text = this.props.args.get("text");
 
     return (
-      <span>
-        {text} &nbsp;
-        <KeyboardVoiceIcon
+      <Button
         color={this.state.color}
         onClick={this.onClicked}
+      >
+        {text} &nbsp;
+        <KeyboardVoiceIcon
         />
-      </span>
+      </Button>
     )
   }
 

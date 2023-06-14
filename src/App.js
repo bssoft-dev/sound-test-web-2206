@@ -19,7 +19,7 @@ let theme = createTheme({
     error: {
       main: red[500],
     },
-    Secondary: {
+    secondary: {
       light: grey[300],
       main: grey[500],
       dark: grey[700]
@@ -37,6 +37,7 @@ let theme = createTheme({
         root: {
           '@media (max-width:600px)': {
             fontSize: 12,
+            padding: '4px 12px'
           }
         },
       },

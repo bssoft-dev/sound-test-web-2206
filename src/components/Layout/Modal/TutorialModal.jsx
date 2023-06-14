@@ -17,7 +17,7 @@ export default function TutorialModal() {
       <Tooltip title="도움말">
         <Button variant="contained" color="inherit"
             onClick={handleOpen}
-            sx={{borderColor: grey[400], borderRadius: 4, backgroundColor: '#fff', color: grey[600], padding: '5px', minWidth: 'fit-content'}}>
+            sx={{borderColor: grey[400], borderRadius: 4, backgroundColor: '#fff', color: grey[600], padding: '5px !important', minWidth: 'fit-content'}}>
             <QuestionMarkIcon fontSize="small" />
         </Button>
       </Tooltip>

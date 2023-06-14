@@ -3,7 +3,7 @@ import BssUtils from "../../utils/BssUtils";
 import SoundUtils from "../../utils/SoundUtils";
 import { useCtx } from "../../context/Context";
 
-import { Button } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { alpha, styled } from '@mui/material/styles';
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     height: 388,
     width: '100%',
     marginBottom: 24,
+    backgroundColor: '#fff',
   }
 }));
 
@@ -58,7 +59,10 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   },
   [`& .${gridClasses.columnHeaders}`] : {
     backgroundColor: theme.palette.grey[200],
-  }
+  },
+  // [`& .${gridClasses.iconSeparator}`] : {
+  //   color: theme.palette.grey[100],
+  // },
 }));
 
 export default function RecordTable({ isBss }) {
@@ -121,7 +125,7 @@ export default function RecordTable({ isBss }) {
   const columns = getColumns(fieldColumns);
 
   return (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
       <StripedDataGrid
         rows={rows}
         columns={columns}
@@ -131,6 +135,6 @@ export default function RecordTable({ isBss }) {
           memoPost(params, fetchData);
         }}
       />
-    </div>
+    </Paper>
   );
 }
