@@ -57,7 +57,7 @@ function App() {
             <Route path="/bss-test" element={<BssTestPage />} />
             <Route path="/audio-test" element={<AudioStreamingTestPage />} />
             <Route path="/stt-test" element={<SttTestPage />} />
-            {/* <Route path="/test" element={<TestPage />} /> */}
+            <Route path="/test" element={<TestPage />} />
           </Routes>
         </ContextProvider>
       </Router>

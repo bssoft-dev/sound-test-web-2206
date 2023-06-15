@@ -38,7 +38,9 @@ export function ContextProvider({children}) {
     const setFile = file => setFiles(file);
 
     const [ recordData, setRecordData ] = useState([]);
-    const handleDataUpdate = (data) => setRecordData([...recordData, data]);
+    const handleDataUpdate = (data) => {
+        setRecordData((prevData) => [...prevData, data]);
+    };
     
     const [rows, setRows] = useState([]);
     const [serverHealth, setServerHealth] = useState(false);

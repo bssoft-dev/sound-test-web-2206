@@ -8,7 +8,7 @@ const links = [
     {name: 'STT 기본모델 테스트', url: '/stt-test' },
     // {name: '로그인', url: '/login' },
     // {name: '오디오 스트리밍 테스트', url: '/audio-test' },
-    // {name: '테스트', url: '/test' },
+    {name: '테스트', url: '/test' },
 ]
 
 export default function SideMenu() {

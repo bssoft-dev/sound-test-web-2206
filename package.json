@@ -20,11 +20,11 @@
     "react-router-dom": "^6.11.2",
     "react-scripts": "^5.0.0",
     "uuid": "^8.3.2",
-    "wavesurfer.js": "^6.1.0",
+    "wavesurfer.js": "^6.6.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=22063 DANGEROUSLY_DISABLE_HOST_CHECK=true && react-scripts start",
+    "start": "export PORT=22064 DANGEROUSLY_DISABLE_HOST_CHECK=true && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

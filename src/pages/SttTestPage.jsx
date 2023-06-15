@@ -3,7 +3,6 @@ import { useCtx } from "../context/Context";
 import Layout from "../components/Layout/Layout";
 import { TimerContextProvider, TimerCtx } from "../context/TimerContext";
 import { RecordContextProvider, RecordCtx } from "../context/RecordContext";
-import RecordWaveSurfer from "../components/WaveSurferComp/RecordWaveSurfer";
 
 import { Card, CardContent, CardHeader, Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
 import SttRecord from "../components/SttRecord/SttRecord";
@@ -19,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const recorderParams = {
-    text: "Click to record",
+    text: "Click to record ",
     // energy_threshold: [0.01, 0.1],
     start_threshold: 0.01,
     end_threshold: 0.01,
