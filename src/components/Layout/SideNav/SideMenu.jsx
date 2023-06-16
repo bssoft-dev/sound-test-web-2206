@@ -6,9 +6,10 @@ const links = [
     {name: '사운드 처리 테스트', url: '/sound-test' },
     {name: '화자 분리 테스트', url: '/bss-test' },
     {name: 'STT 기본모델 테스트', url: '/stt-test' },
+    {name: '메뉴 이름 테스트', url: '/menu-test' },
     // {name: '로그인', url: '/login' },
     // {name: '오디오 스트리밍 테스트', url: '/audio-test' },
-    {name: '테스트', url: '/test' },
+    // {name: '테스트', url: '/test' },
 ]
 
 export default function SideMenu() {

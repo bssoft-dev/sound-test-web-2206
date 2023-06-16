@@ -35,7 +35,12 @@ export const recorderParams = {
 export default function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
-    const { setTitle, loading, recordData, handleDataUpdate } = context;
+    const { setTitle, loading, } = context;
+
+    const [ recordData, setRecordData ] = useState([]);
+    const handleDataUpdate = (data) => {
+        setRecordData((prevData) => [...prevData, data]);
+    };
 
     useEffect(() => {
         setTitle('STT 기본모델 테스트');

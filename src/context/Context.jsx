@@ -36,11 +36,6 @@ export function ContextProvider({children}) {
     const [files, setFiles] = useState([null]);
     const pushFile = file => setFiles([...files, file]);
     const setFile = file => setFiles(file);
-
-    const [ recordData, setRecordData ] = useState([]);
-    const handleDataUpdate = (data) => {
-        setRecordData((prevData) => [...prevData, data]);
-    };
     
     const [rows, setRows] = useState([]);
     const [serverHealth, setServerHealth] = useState(false);
@@ -83,7 +78,7 @@ export function ContextProvider({children}) {
             regions, setRegion, rows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
-            recordData, handleDataUpdate, token, setToken, mobileOpen, handleDrawerToggle,
+            token, setToken, mobileOpen, handleDrawerToggle,
             serverHealth, setServerHealth
         }}>
         {children}
