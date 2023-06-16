@@ -18,7 +18,7 @@ export default function AudioStreamingTestPage() {
     const [audioAnalyserRefWidth, setAudioAnalyserRefWidth] = useState();
 
     useEffect(() => {
-        setTitle('오디오 스트리밍 테스트');
+        setTitle('ADL 분석 테스트');
         setAudioAnalyserRefWidth(AudioAnalyserRef.current.offsetWidth - 40 * 2);
     }, []);
 

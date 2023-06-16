@@ -35,7 +35,7 @@ export default function SideMenu() {
                     <NavLink to='/audio-test'
                         className={({ isActive, isPending }) =>
                         isPending ? "pending" : isActive ? "active" : ""
-                    }>오디오 스트리밍 테스트</NavLink>
+                    }>ADL 분석 테스트</NavLink>
                 </li>
             </ul>
         </Grid>
