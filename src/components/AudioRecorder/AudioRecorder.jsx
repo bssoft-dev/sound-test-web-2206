@@ -4,7 +4,7 @@ import { Context } from "../../context/Context";
 import { Button } from "@mui/material";
 import { CollectionsOutlined } from "@mui/icons-material";
 
-export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, waveformRef, wavesurferRef }) {
+export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
     const context = useContext(Context);
     const { setServerHealth } = context;
     const [isComponentMounted, setIsComponentMounted] = useState(false);
@@ -116,8 +116,10 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const onClicked = async () => {
         if (!audioRecorder.recording) {
             await start();
+            setRecording(true);
         } else {
             await stop(true);
+            setRecording(false);
         }
         if(handleWaveForm) {
             handleWaveForm()
@@ -344,10 +346,6 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 url: audioUrl,
                 type: audioRecorder.type,
             });
-            if(wavesurferRef) {
-                wavesurferRef.current.microphone.stopDevice();
-
-            }
         }
         
     };
@@ -355,9 +353,10 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const onStop = async (data) => {
         const byteObj = await data.blob;
         if (websocketRef.current.readyState === WebSocket.OPEN) {
-            console.log('new message')
             websocketRef.current.send(byteObj);
         }
+        wavesurferRef.current.microphone.stop();
+        setRecording(false);
     };
 
     return (

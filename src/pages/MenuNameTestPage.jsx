@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import Layout from "../components/Layout/Layout";
+import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
 import WaveSurfer from "wavesurfer.js";
 import MicrophonePlugin from "wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, List, ListItem, Typography, cardHeaderClasses } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, List, ListItem, Typography, cardHeaderClasses } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { grey } from "@mui/material/colors";
-import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
 
 const menuList = ['아메리카노', '올타임콜드브루', '(1호점)신촌커피', '카페라떼', '바닐라 카페라떼', '카페모카', '카라멜 마끼아또', '스페니쉬 연유 카페라떼', '달고나 카페라떼', '콜드브루', '딸기 젤리 밀크티', '23수박주스', '아인슈페너 프라페', '스트로베리 초콜릿 프라페', '요거트 프라페', '블루밍 파인애플 라씨', '20곡 오틀리 라떼', '베이컨 체다 베이글', '멕시칸 파니니', '바베큐치킨 파니니', '떠먹는 티라미수', '떠먹는 아이스 박스', 'P. 뉴욕치즈', 'P. 클래식 가토 쇼콜라', 'P. 레드 벨벳', 'P. 퀸즈 캐롯', '초콜릿 크로캉 롱 슈', '황치즈 마카롱', '청포도 요거트 마카롱', '산딸기 마카롱', '블루베리 마카롱', '벨지안 초콜릿 마카롱']
 
@@ -29,8 +30,23 @@ const useStyles = makeStyles(theme => ({
   recordWave: {
     width: '85%',
     height: 100
-  }
+  },
 }));
+
+
+const recordIconShow = {
+  color: '#fff', 
+  transition: 'all .5s ease',
+  fontSize: '2.38rem !important',
+  '@media (max-width: 600px)' : {
+    fontSize: '1.4rem !important'
+  },
+}
+const recordIconHide = { 
+  color: '#fff', 
+  fontSize: '0 !important',
+  transition: 'all .5s ease',
+}
 
 export const recorderParams = {
   text: "",
@@ -75,6 +91,7 @@ export default function MenuNameTestPage() {
   const handleDataUpdate = (data) => {
     setRecordData((prevData) => [...prevData, data]);
   };
+  const [recording, setRecording] = useState(false);
 
   useEffect(() => {
       setTitle('메뉴 이름 테스트');
@@ -130,6 +147,7 @@ export default function MenuNameTestPage() {
       });
       wavesurferRef.current.on('error', (e) => {
         console.warn(e);
+        console.log('err')
       });
       wavesurferRef.current.microphone.start();
     } else if (wavesurferRef.current.microphone != null && wavesurferRef.current.microphone) {
@@ -156,12 +174,15 @@ export default function MenuNameTestPage() {
                 <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
               </Grid>
               <AudioRecorder args={new Map(Object.entries(recorderParams))} 
-                waveformRef={waveformRef}
-                handleDataUpdate={handleDataUpdate}
+                wavesurferRef={wavesurferRef}
                 handleWaveForm={handleClick}
+                handleDataUpdate={handleDataUpdate}
+                setRecording={setRecording}
                 recordIcon={
-                  <MicRoundedIcon
-                    sx={{color: '#fff', fontSize: {xs: '1.4rem', md: '2.38rem'}}} />
+                  <Box sx={{position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <MoreHorizIcon sx={[{position: "absolute"}, recording ? recordIconShow : recordIconHide]} />
+                    <MicRoundedIcon sx={[{position: "absolute"}, !recording ? recordIconShow : recordIconHide]} />
+                  </Box>
                 }
                 btnStyle={{borderRadius: '50%', width: {xs: '3rem', md: '5rem'}, minWidth: 'fit-content',  height: {xs: '3rem', md: '5rem'}, mt: 'auto'}} />  
             </CardContent>
