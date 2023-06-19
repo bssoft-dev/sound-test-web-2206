@@ -65,11 +65,11 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         })
         .then((response) => {
           if(response.status != 200) {
-            setAlert({
-              open: true, 
-              type: "warning",
-              message: "파일을 다시 확인해주세요."
-            });
+            // setAlert({
+            //   open: true, 
+            //   type: "warning",
+            //   message: "파일을 다시 확인해주세요."
+            // });
           } else {
             console.log(response)
             handleStreamList({
@@ -80,11 +80,11 @@ export default function AudioStream({audioAnalyserRefWidth}) {
           }
         })
         .catch((error) => {
-          setAlert({
-            open: true, 
-            type: "error",
-            message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
-          });
+          // setAlert({
+          //   open: true, 
+          //   type: "error",
+          //   message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
+          // });
           console.log(error);
         })
 
