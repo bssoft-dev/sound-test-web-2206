@@ -9,6 +9,7 @@ import SttRecord from "../components/SttRecord/SttRecord";
 import Loading from "../components/Loading/Loading";
 import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
 import { makeStyles } from "@mui/styles";
+import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 
 const useStyles = makeStyles(theme => ({
     dataWrap: {
@@ -29,6 +30,7 @@ export const recorderParams = {
     icon_size: "3x",
     sample_rate: 16000,
     key: "audio_recorder",
+    continuousRecording: true
 };
 
 
@@ -36,7 +38,6 @@ export default function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
     const { setTitle, loading, } = context;
-
     const [ recordData, setRecordData ] = useState([]);
     const handleDataUpdate = (data) => {
         setRecordData((prevData) => [...prevData, data]);
@@ -54,7 +55,9 @@ export default function SttTestPage() {
                 sx={{position: 'relative', minHeight: '100%'}}>
                 <Grid item>
                     <Paper sx={{p: 2}}>
-                        <AudioRecorder args={new Map(Object.entries(recorderParams))} handleDataUpdate={handleDataUpdate} />  
+                        <AudioRecorder args={new Map(Object.entries(recorderParams))} 
+                            handleDataUpdate={handleDataUpdate}
+                            recordIcon={<KeyboardVoiceIcon />} />  
                     </Paper>
                 </Grid>
                 <Grid item flex="1" sx={{ mb: 4}} >

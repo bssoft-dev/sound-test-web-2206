@@ -9,9 +9,7 @@ header {
     background-color: rgba(255,255,255,0.9);
 }
 .homeLink {
-    height: 100%;
-    display: flex;
-    align-items: center;
+    display: none;
 }
 .logo {
     height: 90%;
@@ -30,6 +28,11 @@ header {
     border-left: var(--border);
 }
 @media (max-width: 600px) {
+    .homeLink {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
     .headerRight {
         border-left: none;
     }

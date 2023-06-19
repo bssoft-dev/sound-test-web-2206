@@ -1,14 +1,16 @@
 
 import { useState, useContext, useRef, useEffect } from "react";
-import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import { Context } from "../../context/Context";
 import { Button } from "@mui/material";
+import { CollectionsOutlined } from "@mui/icons-material";
 
-export default function AudioRecorder({ args, handleDataUpdate }) {
+export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, waveformRef, wavesurferRef }) {
     const context = useContext(Context);
     const { setServerHealth } = context;
+    const [isComponentMounted, setIsComponentMounted] = useState(false);
 
     const text = args.get("text");
+    const continuousRecording = args.get("continuousRecording");
     const [color, setColor] = useState(args.get("neutral_color"));
     const [socketData, setSocketData] = useState("");
     const websocketRef = useRef(null);
@@ -38,17 +40,22 @@ export default function AudioRecorder({ args, handleDataUpdate }) {
 
     useEffect(() => {
         websocketRef.current = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
-
         // 웹소켓 이벤트 핸들러 등록
         websocketRef.current.onopen = handleWebSocketOpen;
         websocketRef.current.onmessage = handleWebSocketMessage;
         websocketRef.current.onclose = handleWebSocketClose;
         websocketRef.current.onerror = handleWebSocketError;
-
+        
+        
         return () => {
+            setIsComponentMounted(false);
             // 웹소켓 연결 닫기
+            websocketRef.current.onmessage = null;
             if (websocketRef.current.readyState === WebSocket.OPEN) {
                 websocketRef.current.close();
+            }
+            if(audioRecorder.recording) {
+                closeMic(false)
             }
         };
     }, []);
@@ -63,12 +70,15 @@ export default function AudioRecorder({ args, handleDataUpdate }) {
         // 웹소켓 메시지 수신 시 처리할 로직
         // console.log('수신받은 메시지: ', event);
         const msg = JSON.parse(event.data);
-        handleDataUpdate(msg.data);
+        if(setIsComponentMounted) {
+            handleDataUpdate(msg.data);
+        }
     }
 
     const handleWebSocketClose = (event) => {
         // 웹소켓 연결이 닫힐 때 처리할 로직
         console.log('웹소켓이 종료되었습니다');
+        setIsComponentMounted(false);
         setServerHealth(false);
     }
 
@@ -108,6 +118,9 @@ export default function AudioRecorder({ args, handleDataUpdate }) {
             await start();
         } else {
             await stop(true);
+        }
+        if(handleWaveForm) {
+            handleWaveForm()
         }
     };
 
@@ -316,15 +329,27 @@ export default function AudioRecorder({ args, handleDataUpdate }) {
         // our final binary blob
         const blob = new Blob([view], { type: audioRecorder.type });
         const audioUrl = URL.createObjectURL(blob);
-
-        if (!isFinish) {
+        if(continuousRecording) {
+            if (!isFinish) {
+                await onStop({
+                    blob: blob,
+                    url: audioUrl,
+                    type: audioRecorder.type,
+                });
+                await start();
+            }
+        } else {
             await onStop({
                 blob: blob,
                 url: audioUrl,
                 type: audioRecorder.type,
             });
-            await start();
+            if(wavesurferRef) {
+                wavesurferRef.current.microphone.stopDevice();
+
+            }
         }
+        
     };
 
     const onStop = async (data) => {
@@ -336,9 +361,12 @@ export default function AudioRecorder({ args, handleDataUpdate }) {
     };
 
     return (
-        <Button color={color} onClick={onClicked}>
+        <Button variant="contained" 
+            color={color} 
+            sx={btnStyle}
+            onClick={onClicked}>
             {text}
-            <KeyboardVoiceIcon />
+            {recordIcon}
         </Button>
     );
 };

@@ -24,6 +24,9 @@ let theme = createTheme({
       light: grey[300],
       main: grey[500],
       dark: grey[700]
+    },
+    warning: {
+      main: '#FF8A00'
     }
   },
   typography: {
