@@ -3,6 +3,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { StyledTableCell, StyledTableRow } from './StreamTable';
 import { Box, Collapse, IconButton, Radio, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import ItemRow from './ItemRow';
 
 
 export default function Row(props) {
@@ -54,20 +55,16 @@ export default function Row(props) {
             </Typography>
             <Table size="small" aria-label="purchases">
                 <TableHead>
-                <TableRow>
-                    <TableCell>Timestemp</TableCell>
-                    <TableCell>Url</TableCell>
-                </TableRow>
+                    <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell>Timestemp</TableCell>
+                        <TableCell>Url</TableCell>
+                    </TableRow>
                 </TableHead>
                 <TableBody>
-                {row.history && row.history.map((historyRow) => (
-                    <TableRow key={String(historyRow.timestamp)}>
-                        <TableCell component="th" scope="row">
-                            {String(historyRow.timestamp)}
-                        </TableCell>
-                        <TableCell>{historyRow.url}</TableCell>
-                    </TableRow>
-                ))}
+                    {row.history && row.history.map((historyRow) => (
+                        <ItemRow key={String(historyRow.timestamp)} historyRow={historyRow}/>
+                    ))}
                 </TableBody>
             </Table>
             </Box>

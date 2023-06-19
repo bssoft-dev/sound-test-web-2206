@@ -3,8 +3,11 @@ import AudioAnalyser from "react-audio-analyser";
 import { TimerCtx } from "../../context/TimerContext";
 import { StreamCtx } from "../../context/StreamContext";
 import axios from "axios";
+import { useCtx } from "../../context/Context";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
+    const context = useCtx();
+    const {setAlert} = context;
 
     const timerContext = TimerCtx();
     const {setIsRunning, setTimer} = timerContext;
@@ -18,6 +21,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
     //     setAudioType(e.target.value);
     // };
 
+    
     const startCallback = (recordedBlob) => {
         console.log("succ start", recordedBlob);
         handleStartStop();
@@ -68,6 +72,11 @@ export default function AudioStream({audioAnalyserRefWidth}) {
             });
           } else {
             console.log(response)
+            handleStreamList({
+              timestamp: Date.now(),
+              url: URL.createObjectURL(recordedBlob),
+              itemData: response.data,
+            });
           }
         })
         .catch((error) => {
@@ -78,10 +87,8 @@ export default function AudioStream({audioAnalyserRefWidth}) {
           });
           console.log(error);
         })
-        handleStreamList({
-            timestamp: Date.now(),
-            url: URL.createObjectURL(recordedBlob)
-        });
+
+        
         console.log("recording", URL.createObjectURL(recordedBlob));
     };
 
@@ -94,7 +101,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         // audioOptions: { sampleRate: 30000 }, // 설정된 출력 오디오 샘플률
         status,
         // audioSrc,
-        timeslice: 10000, // timeslice (https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters)
+        timeslice: 10500, // timeslice (https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters)
         startCallback,
         pauseCallback,
         stopCallback,
