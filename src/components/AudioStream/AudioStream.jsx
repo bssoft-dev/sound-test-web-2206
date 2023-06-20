@@ -4,6 +4,7 @@ import { TimerCtx } from "../../context/TimerContext";
 import { StreamCtx } from "../../context/StreamContext";
 import axios from "axios";
 import { useCtx } from "../../context/Context";
+import { grey } from "@mui/material/colors";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
     const context = useCtx();
@@ -108,7 +109,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         onRecordCallback,
         errorCallback,
         backgroundColor: 'transparent',
-        strokeColor: 'grey',
+        strokeColor: grey[400],
         width: audioAnalyserRefWidth,
         height: 100,
     };

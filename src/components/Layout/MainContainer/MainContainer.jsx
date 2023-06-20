@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(theme => ({
     mainContainer: {
+      '--height': 'calc(var(--headerHight) * 2)',
       width: 'calc(100vw - var(--sideNavWidth))',
       [theme.breakpoints.down('sm')]: {
         width: '100%',
@@ -17,7 +18,12 @@ const useStyles = makeStyles(theme => ({
       '&::-webkit-scrollbar': {
         display: 'none'
       },
-      backgroundColor: '#f2f2f2'
+      backgroundColor: '#fff',
+      background: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) var(--height), rgba(242,242,242,1) var(--height), rgba(242,242,242,1) 100%)',
+      '@media (max-width:600px)': {
+        '--height': 'calc(var(--headerHight) * 2 + 8px)',
+      }
+
     },
     content: {
         height: '100%',
@@ -34,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 export default function MainContainer({content}) {
     const classes = useStyles();
 
-    return (<div className={classes.mainContainer}>
+    return (<div className={classes.mainContainer }>
         <Header />
         <main>
             <InnerHeader />

@@ -21,7 +21,11 @@ const useStyles = makeStyles(theme => ({
       transition: "0.3s",
       animation: '$fadeIn 1s',
       left: '102%',
-      marginBottom: '-4%'
+      marginBottom: '-4%',
+      '@media (max-width:600px)': {
+        width: 30,
+        height: 30
+      }
   },
   '@keyframes fadeIn': {
     from: { opacity: 0},
@@ -33,6 +37,7 @@ export default function Timer() {
   const timerContext = TimerCtx();
   const { isRunning , setIsRunning, timer, setTimer } = timerContext;
   const classes = useStyles();
+  const fontSize = window.innerWidth> 600 ? 'h4' : 'h5'
 
   useEffect(() => {
       let intervaltimer;
@@ -60,7 +65,7 @@ export default function Timer() {
   return (<Grid container
     justifyContent='center' alignItems="center"
     sx={{position: 'relative', width: 'fit-content'}}>
-    <Typography variant="h4" 
+    <Typography variant={fontSize} 
         color="text.secondary" fontWeight={200} textAlign="center">
           <Box component="span" 
             className={isRunning && classes.recording}

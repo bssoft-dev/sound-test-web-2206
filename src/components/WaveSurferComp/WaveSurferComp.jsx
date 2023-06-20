@@ -43,6 +43,8 @@ export default function WaveSurferComp({ tempFile }) {
     }
   };
 
+  const height = window.innerWidth > 600 ? 140 : 100;
+
   const stopPlayback = () => wavesurfer.current.stop();
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function WaveSurferComp({ tempFile }) {
       waveColor: "grey",
       progressColor: red['A200'],
       backgroundColor: grey[50],
-      height: 140,
+      height: height,
       cursorWidth: 1,
       cursorColor: "lightgrey",
       // barWidth: 2,

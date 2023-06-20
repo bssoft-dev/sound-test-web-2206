@@ -11,9 +11,8 @@ export default function ButtonWrap() {
     const streamContext = StreamCtx();
     const { status, controlAudio } = streamContext;
     
-    return(<Grid container 
-        justifyContent="center" position="relative"
-        sx={{ backgroundColor: '#fff', mb: 2 }}>
+    return(<Grid position="relative"
+        sx={{ backgroundColor: '#fff'}}>
         {status !== "recording" && (
             <IconButton aria-label="녹음"
                 sx={{border: '1px solid', borderColor: grey[300], p: 0 }}

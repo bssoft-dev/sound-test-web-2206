@@ -21,7 +21,7 @@ export default function TutorialModal() {
         <Button variant="contained" color="inherit"
             onClick={handleOpen}
             sx={{borderColor: grey[400], borderRadius: 4, backgroundColor: '#fff', color: grey[600], padding: '5px !important', minWidth: 'fit-content'}}>
-            <QuestionMarkIcon fontSize="small" />
+            <QuestionMarkIcon sx={{fontSize: {xs: '1rem', md: '1.25rem'}}} />
         </Button>
       </Tooltip>
       <Dialog
