@@ -31,8 +31,8 @@ export function StreamContextProvider({children}) {
             recordedData.Date,
             recordedData.blobURL,
             recordedData.Date,
-            '1s',
-            streamList
+            '10초',
+            streamList,
           );
           console.log('streamList', streamList)
           setRows((prevRows) => [...prevRows, newRow]);

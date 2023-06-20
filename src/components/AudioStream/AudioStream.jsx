@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { TimerCtx } from "../../context/TimerContext";
 import { StreamCtx } from "../../context/StreamContext";
+import axios from "axios";
+import { useCtx } from "../../context/Context";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
+    const context = useCtx();
+    const {setAlert} = context;
 
     const timerContext = TimerCtx();
     const {setIsRunning, setTimer} = timerContext;
@@ -17,6 +21,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
     //     setAudioType(e.target.value);
     // };
 
+    
     const startCallback = (recordedBlob) => {
         console.log("succ start", recordedBlob);
         handleStartStop();
@@ -44,10 +49,46 @@ export default function AudioStream({audioAnalyserRefWidth}) {
     };
 
     const onRecordCallback = (recordedBlob) => {
-        handleStreamList({
-            timestamp: Date.now(),
-            url: URL.createObjectURL(recordedBlob)
-        });
+        const formData = new FormData();
+        formData.append(
+            "file",
+            recordedBlob
+        );
+        console.log("데이터를 보냅니다.")
+        axios({
+          url: `https://api-2035.bs-soft.co.kr/v4/upload-analysis-event/blob`,
+          method: 'POST',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then((response) => {
+          if(response.status != 200) {
+            // setAlert({
+            //   open: true, 
+            //   type: "warning",
+            //   message: "파일을 다시 확인해주세요."
+            // });
+          } else {
+            console.log(response)
+            handleStreamList({
+              timestamp: Date.now(),
+              url: URL.createObjectURL(recordedBlob),
+              itemData: response.data,
+            });
+          }
+        })
+        .catch((error) => {
+          // setAlert({
+          //   open: true, 
+          //   type: "error",
+          //   message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
+          // });
+          console.log(error);
+        })
+
+        
         console.log("recording", URL.createObjectURL(recordedBlob));
     };
 
@@ -60,7 +101,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         // audioOptions: { sampleRate: 30000 }, // 설정된 출력 오디오 샘플률
         status,
         // audioSrc,
-        timeslice: 2000, // timeslice (https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters)
+        timeslice: 10500, // timeslice (https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/start#Parameters)
         startCallback,
         pauseCallback,
         stopCallback,
