@@ -3,12 +3,13 @@ import { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../../context/Context";
 import { Button } from "@mui/material";
 import { CollectionsOutlined } from "@mui/icons-material";
+import axios from "axios";
 
 export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
     const context = useContext(Context);
-    const { setServerHealth } = context;
-    const [isComponentMounted, setIsComponentMounted] = useState(false);
+    const { setServerHealth, setAlert } = context;
 
+    const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");
     const continuousRecording = args.get("continuousRecording");
     const [color, setColor] = useState(args.get("neutral_color"));
@@ -39,22 +40,38 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const audioRecorder = audioRecorderRef.current;
 
     useEffect(() => {
-        websocketRef.current = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
-        // 웹소켓 이벤트 핸들러 등록
-        websocketRef.current.onopen = handleWebSocketOpen;
-        websocketRef.current.onmessage = handleWebSocketMessage;
-        websocketRef.current.onclose = handleWebSocketClose;
-        websocketRef.current.onerror = handleWebSocketError;
-        
-        
+        if (continuousRecording) {
+            websocketRef.current = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
+            // 웹소켓 이벤트 핸들러 등록
+            websocketRef.current.onopen = handleWebSocketOpen;
+            websocketRef.current.onmessage = handleWebSocketMessage;
+            websocketRef.current.onclose = handleWebSocketClose;
+            websocketRef.current.onerror = handleWebSocketError;
+            return () => {
+                setIsComponentMounted(false);
+                // 웹소켓 연결 닫기
+                websocketRef.current.onmessage = null;
+                if (websocketRef.current.readyState === WebSocket.OPEN) {
+                    websocketRef.current.close();
+                }
+            };
+        } else {
+            // 키오스크 페이지 health 체크
+            // axios.get('https://stt-cafe.bs-soft.co.kr/v1/speech/order')
+            // .then((response)=> {
+            //     console.log('response: ', response);
+            //     if(response.status === 200) {
+            //         setServerHealth(true);
+            //     }
+            // })
+            // .catch((error)=> {
+            //     console.log(error);
+            //     setServerHealth(false);
+            // })
+        }
+
         return () => {
-            setIsComponentMounted(false);
-            // 웹소켓 연결 닫기
-            websocketRef.current.onmessage = null;
-            if (websocketRef.current.readyState === WebSocket.OPEN) {
-                websocketRef.current.close();
-            }
-            if(audioRecorder.recording) {
+            if (audioRecorder.recording) {
                 closeMic(false)
             }
         };
@@ -70,7 +87,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         // 웹소켓 메시지 수신 시 처리할 로직
         // console.log('수신받은 메시지: ', event);
         const msg = JSON.parse(event.data);
-        if(setIsComponentMounted) {
+        if (setIsComponentMounted) {
             handleDataUpdate(msg.data);
         }
     }
@@ -116,12 +133,12 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const onClicked = async () => {
         if (!audioRecorder.recording) {
             await start();
-            setRecording(true);
+            if (!continuousRecording) setRecording(true);
         } else {
             await stop(true);
-            setRecording(false);
+            if (!continuousRecording) setRecording(false);
         }
-        if(handleWaveForm) {
+        if (handleWaveForm) {
             handleWaveForm()
         }
     };
@@ -331,7 +348,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         // our final binary blob
         const blob = new Blob([view], { type: audioRecorder.type });
         const audioUrl = URL.createObjectURL(blob);
-        if(continuousRecording) {
+        if (continuousRecording) {
             if (!isFinish) {
                 await onStop({
                     blob: blob,
@@ -346,22 +363,60 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 url: audioUrl,
                 type: audioRecorder.type,
             });
+
+            // 키오스크 axios post 보내기
+            const formData = new FormData();
+            formData.append(
+                "file", blob
+            );
+            console.log(blob)
+            axios({
+                url: `https://stt-cafe.bs-soft.co.kr/v1/speech/order`,
+                method: 'POST',
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then((response) => {
+                    if (response.status != 200) {
+                        setAlert({
+                            open: true,
+                            type: "warning",
+                            message: "파일을 다시 확인해주세요."
+                        });
+                    } else {
+                        console.log(response)
+                        handleDataUpdate(response.data);
+                    }
+                })
+                .catch((error) => {
+                    setAlert({
+                        open: true,
+                        type: "error",
+                        message: "업로드를 실패하였습니다. 파일을 다시 확인해주세요."
+                    });
+                    console.log(error);
+                })
         }
-        
+
     };
 
     const onStop = async (data) => {
         const byteObj = await data.blob;
-        if (websocketRef.current.readyState === WebSocket.OPEN) {
-            websocketRef.current.send(byteObj);
+        if (continuousRecording) {
+            if (websocketRef.current.readyState === WebSocket.OPEN) {
+                websocketRef.current.send(byteObj);
+            }
+        } else {
+            wavesurferRef.current.microphone.stop();
+            setRecording(false);
         }
-        wavesurferRef.current.microphone.stop();
-        setRecording(false);
     };
 
     return (
-        <Button variant="contained" 
-            color={color} 
+        <Button variant="contained"
+            color={color}
             sx={btnStyle}
             onClick={onClicked}>
             {text}
