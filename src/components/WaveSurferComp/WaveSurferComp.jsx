@@ -110,7 +110,7 @@ export default function WaveSurferComp({ tempFile }) {
   return (<>
     <Grid>
       <Typography>
-        {tempFile ? tempFile.reckey : 'Adudio reckey'}
+        {tempFile ? tempFile.reckey : 'Audio reckey'}
       </Typography>
     </Grid>
     <Grid className={classes.wavesurferWrap}

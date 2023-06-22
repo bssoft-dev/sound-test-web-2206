@@ -102,7 +102,7 @@ export default function MenuNameTestPage() {
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    setTitle('메뉴 이름 테스트');
+    setTitle('카페 주문 테스트');
   }, []);
   useEffect(() => {
     recordData && setTimeout(() => {

@@ -57,17 +57,17 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             };
         } else {
             // 키오스크 페이지 health 체크
-            // axios.get('https://stt-cafe.bs-soft.co.kr/v1/speech/order')
-            // .then((response)=> {
-            //     console.log('response: ', response);
-            //     if(response.status === 200) {
-            //         setServerHealth(true);
-            //     }
-            // })
-            // .catch((error)=> {
-            //     console.log(error);
-            //     setServerHealth(false);
-            // })
+            axios.get('https://stt-cafe.bs-soft.co.kr/v1/version/menu')
+            .then((response)=> {
+                console.log('response: ', response);
+                if(response.status === 200) {
+                    setServerHealth(true);
+                }
+            })
+            .catch((error)=> {
+                console.log(error);
+                setServerHealth(false);
+            })
         }
 
         return () => {
