@@ -85,7 +85,7 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
   }
 }));
 
-export default function MenuNameTestPage() {
+export default function CafeOrderTestPage() {
   const classes = useStyles();
   const context = useCtx();
   const { setTitle } = context;
