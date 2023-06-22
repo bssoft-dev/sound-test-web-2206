@@ -38,6 +38,7 @@ export function ContextProvider({children}) {
     const setFile = file => setFiles(file);
     
     const [rows, setRows] = useState([]);
+    const [version, setVersion] = useState(null)
     const [serverHealth, setServerHealth] = useState(false);
     const fetchData = (baseUrl) => {
         axios.get(baseUrl)
@@ -79,7 +80,7 @@ export function ContextProvider({children}) {
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
             token, setToken, mobileOpen, handleDrawerToggle,
-            serverHealth, setServerHealth
+            serverHealth, setServerHealth, version, setVersion
         }}>
         {children}
     </Context.Provider>)

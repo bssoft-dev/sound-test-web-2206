@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
     const context = useContext(Context);
-    const { setServerHealth, setAlert } = context;
+    const { setServerHealth, setAlert, setVersion } = context;
 
     const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");
@@ -62,11 +62,13 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 console.log('response: ', response);
                 if(response.status === 200) {
                     setServerHealth(true);
+                    setVersion(response.data.version)
                 }
             })
             .catch((error)=> {
                 console.log(error);
                 setServerHealth(false);
+                setVersion(null);
             })
         }
 

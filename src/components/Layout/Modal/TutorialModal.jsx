@@ -10,7 +10,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function TutorialModal() {
   const context = useCtx();
-  const { serverHealth, pathname } = context;
+  const { serverHealth, pathname, version } = context;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -45,6 +45,9 @@ export default function TutorialModal() {
                 (serverHealth ? '서버 연결' : '서버 오류')
                 : '서버 없음' }
           </DialogContentText> 
+          {version && <DialogContentText textAlign="center" >
+            version: {version}
+          </DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>확인</Button>
