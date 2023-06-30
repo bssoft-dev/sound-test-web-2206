@@ -6,7 +6,7 @@ import Alert from "../components/Alert/Alert";
 const useStyles = makeStyles(theme => ({
     gradientBG: {
         width: '100vw', 
-        height: '100vh', 
+        height: '100dvh', 
         background: 'rgb(104,190,213)',
         background: 'linear-gradient(149deg, rgba(104,190,213,1) 0%, rgba(78,78,142,1) 100%)'
     }
@@ -19,7 +19,7 @@ export default function LoginPage() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ minHeight: '100vh' }} >
+        sx={{ height: '100dvh', overflow: 'hidden'  }} >
             <Alert />
         <Grid className={classes.gradientBG}
             position='absolute' bottom={0} zIndex='-1' >

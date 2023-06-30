@@ -8,21 +8,23 @@ import "./styles.css";
 
 function IndexPage() {
   const context = useCtx();  
-  const { setTitle } = context;
+  const { setTitle, token } = context;
 
   useEffect(() => {
       setTitle('비에스 소프트');
   }, []);
 
-  return (
-    <Layout>
-      <Grid container justifyContent="center" alignItems="center" sx={{height: '100%', paddingBottom: 50}}>
-        <Typography variant="h3" color="text.secondary">
-        TEST PAGE
-        </Typography>
-      </Grid>
-    </Layout>
-  );
+  return (<>
+    {token ? 
+      <Layout>
+        <Grid container justifyContent="center" alignItems="center" sx={{height: '100%', paddingBottom: 50}}>
+          <Typography variant="h3" color="text.secondary">
+          TEST PAGE
+          </Typography>
+        </Grid>
+      </Layout> : <></>
+      }
+  </>);
 }
 
 

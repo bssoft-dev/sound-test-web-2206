@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
   recordIconShow: {
     fontSize: '2.38rem !important',
+    '@media (max-width: 1200px)': {
+      fontSize: '1.8rem !important',
+    },
     '@media (max-width: 600px)': {
       fontSize: '1.4rem !important',
     },
@@ -183,7 +186,7 @@ export default function CafeOrderTestPage() {
           <StyledCardHeader title="메뉴선택 테스트" />
           <Divider />
           <CardContent
-            sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', pt: { xs: 1, md: 2 }, pb: {xs: '16px !important', md: '24px !important'} }}>
+            sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', pt: { xs: 1, md: 2 }, pb: {xs: '16px !important', lg: '24px !important'} }}>
               <Box
                 sx={{ mb: 1, px: {md: 1}, alignSelf: {xs: 'flex-start', md: 'center'}}}>
                 <Typography variant="button"  color="text.secondary"
@@ -211,7 +214,7 @@ export default function CafeOrderTestPage() {
                   />
                 </Box>
               }
-              btnStyle={{ borderRadius: '50%', width: { xs: '3rem', md: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', md: '5rem' }, mt: 'auto' }} />
+              btnStyle={{ borderRadius: '50%', width: { xs: '3rem', lg: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', lg: '5rem' }, mt: 'auto' }} />
           </CardContent>
         </Card>
         <Card sx={{ flex: {xs: 0, md: 1}, display: 'flex', flexDirection: 'column' }}>
@@ -240,9 +243,9 @@ export default function CafeOrderTestPage() {
           </CardContent>
           <CardActions sx={{ mt: 'auto', justifyContent: 'space-between', pl: { xs: 2, md: '28px' }, pr: { md: '20px' } }}>
             <Typography color="#adadad" fontWeight={500}
-              sx={{ fontSize: { md: '18px' } }}>{textLng} / 100</Typography>
+              sx={{ fontSize: { lg: '18px' } }}>{textLng} / 100</Typography>
             <IconButton onClick={() => setRecordData(null)}
-              sx={{ fontSize: { xs: 24, md: 36 } }}>
+              sx={{ fontSize: { xs: 24, md: 30, lg: 36 } }}>
               <RefreshRoundedIcon fontSize="inherit" sx={{ color: '#FF8A00' }} />
             </IconButton>
           </CardActions>
@@ -258,7 +261,7 @@ export default function CafeOrderTestPage() {
                 return <ListItem key={index}
                   sx={{
                     display: 'list-item', listStyleType: 'disc', listStylePosition: 'inside',
-                    fontSize: { md: '1.2rem' }, py: '10px', px: { xs: 0, md: 2 }, }} 
+                    fontSize: { xs: '1rem', lg: '1.2rem', }, py: {xs: 1, lg: '10px'}, px: { xs: 0, sm: 1, lg: 2 }, }} 
                   >
                   {menu}
                 </ListItem>

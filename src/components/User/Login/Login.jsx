@@ -42,6 +42,9 @@ export default function Login() {
             if(res.data.is_hyperuser) {
                 localStorage.setItem('is_hyperuser', true);
             }
+            setAlert((isAlert) => {
+                return {...isAlert, open: false}
+            });
             navigate('/');
         })
         .catch(err => {
@@ -57,7 +60,7 @@ export default function Login() {
         <Card
             sx={{ maxWidth: {
                 xs: '80vw', sm: '400px'
-            }, boxShadow: 3, mt: '-60px' }} >
+            }, boxShadow: 3, mt: '-60px'}}>
             <CardHeader sx={{ pt: 3 }}
                 title={
                 <Typography variant="h4" color="text.secondary"

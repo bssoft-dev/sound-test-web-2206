@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 import IndexPage from "./pages/IndexPage";
 import SoundTestPage from "./pages/SoundTestPage";
