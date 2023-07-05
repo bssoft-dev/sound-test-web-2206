@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCtx } from "../context/Context";
+import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import CafeMenuList from "../components/CafeOrder/CafeMenuList";
 import RecordingResult from "../components/CafeOrder/RecordingResult";
@@ -46,14 +47,18 @@ export default function CafeOrderTestPage() {
   const context = useCtx();
   const { setTitle } = context;
 
+  const title = '카페 주문 테스트'
+  useTitle(title);
+  
+  useEffect(() => {
+    setTitle(title);
+  }, []);
+
+
   const [recordData, setRecordData] = useState(null);
   const handleDataUpdate = (data) => {
     setRecordData(data);
   };
-
-  useEffect(() => {
-    setTitle('카페 주문 테스트');
-  }, []);
 
   return (<Layout title="TestPage">
     <Grid container spacing={3}

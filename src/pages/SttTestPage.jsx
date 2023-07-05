@@ -1,5 +1,6 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
+import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import { TimerContextProvider, TimerCtx } from "../context/TimerContext";
 import { RecordContextProvider, RecordCtx } from "../context/RecordContext";
@@ -38,14 +39,18 @@ export default function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
     const { setTitle, loading, } = context;
+
+    const title = 'STT 기본모델 테스트'
+    useTitle(title);
+    
+    useEffect(() => {
+      setTitle(title);
+    }, []);
+
     const [ recordData, setRecordData ] = useState([]);
     const handleDataUpdate = (data) => {
         setRecordData((prevData) => [...prevData, data]);
     };
-
-    useEffect(() => {
-        setTitle('STT 기본모델 테스트');
-    }, []);
     
     return(<TimerContextProvider>
         <RecordContextProvider>

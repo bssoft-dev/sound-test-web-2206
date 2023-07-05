@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useCtx } from "../context/Context";
+import { useTitle } from "../hooks/useTitle";
 import axios from "axios";
 import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
 import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
-import { useCtx } from "../context/Context";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -19,9 +20,13 @@ export default function BssTestPage() {
   const context = useCtx();  
   const { setTitle, files  } = context;
 
+  const title = '화자 분리 테스트'
+  useTitle(title);
+
   useEffect(() => {
-    setTitle("화자 분리 테스트")
+    setTitle(title);
   }, []);
+
 
   
   return (

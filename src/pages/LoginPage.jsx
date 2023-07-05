@@ -1,3 +1,4 @@
+import { useTitle } from "../hooks/useTitle";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Login from "../components/User/Login/Login";
@@ -14,6 +15,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function LoginPage() {
     const classes = useStyles();
+
+    useTitle('로그인');
 
     return (<Grid container
         flexDirection="column"

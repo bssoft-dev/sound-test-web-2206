@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import Layout from "../components/Layout/Layout";
 import { useCtx } from "../context/Context";
+import { useTitle } from "../hooks/useTitle";
+import Layout from "../components/Layout/Layout";
 import { TimerContextProvider } from "../context/TimerContext";
 import { StreamContextProvider, StreamCtx } from "../context/StreamContext";
 import StreamWaveSurfer from "../components/WaveSurferComp/StreamWaveSurfer";
@@ -12,14 +13,18 @@ import { Grid, Paper } from "@mui/material";
 
 export default function AudioStreamingTestPage() {
     const context = useCtx();  
-    const { setTitle  } = context;
+    const { setTitle } = context;
+
+    const title = 'ADL 분석 테스트'
+    useTitle(title);
+
     const AudioAnalyserRef = useRef();
 
     const [audioAnalyserRefWidth, setAudioAnalyserRefWidth] = useState();
 
     useEffect(() => {
         const padding = window.innerWidth> 600 ? 40 : 24
-        setTitle('ADL 분석 테스트');
+        setTitle(title);
         setAudioAnalyserRefWidth(AudioAnalyserRef.current.offsetWidth - padding * 2);
     }, []);
 

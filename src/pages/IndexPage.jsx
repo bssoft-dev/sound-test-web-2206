@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useCtx } from "../context/Context";
+import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import "./styles.css";
 
@@ -9,6 +10,7 @@ import "./styles.css";
 function IndexPage() {
   const context = useCtx();  
   const { setTitle, token } = context;
+  useTitle()
 
   useEffect(() => {
       setTitle('비에스 소프트');
