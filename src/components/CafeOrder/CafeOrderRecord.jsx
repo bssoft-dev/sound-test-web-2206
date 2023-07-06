@@ -124,13 +124,13 @@ export default function CafeOrderRecord({ handleDataUpdate }) {
                   <Typography variant="button" color="text.secondary"
                     sx={{lineHeight: 1.2}}> 테스트 예시: </Typography>
                   <Typography fontWeight={500} fontSize={{xs: 14, lg: 16}}
-                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"신촌커피 레귤러랑 달고나 카페라떼 아이스로 라지 두 잔, 멕시칸 파니니 세개 테이크아웃 해주세요"</Typography>
+                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"신촌커피 레귤러랑 달고나 카페라떼 아이스로 라지 두 잔하고, 멕시칸 파니니 세개 테이크아웃 해주세요"</Typography>
                 </Box>
                 <Box>
                   <Typography variant="button" color="text.secondary"
                     sx={{lineHeight: 1.2}}> 제한 사항: </Typography>
                   <Typography fontWeight={500} fontSize={{xs: 14, lg: 16}}
-                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"두 문장 이상의 주문, 메뉴에 없는 이름 주문은 테스트 불가능합니다."</Typography>
+                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"두 문장 이상의 주문, 메뉴에 없는 주문은 테스트 불가능합니다."</Typography>
                 </Box>
               </Box>
             <Box sx={{flex: 1, width: '100%', mb: {xs: '12px', md: 0}}}>
