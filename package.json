@@ -24,7 +24,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=22063 DANGEROUSLY_DISABLE_HOST_CHECK=true && react-scripts start",
+    "start": "export PORT=22064 DANGEROUSLY_DISABLE_HOST_CHECK=true && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

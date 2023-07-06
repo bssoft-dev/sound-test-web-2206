@@ -19,7 +19,7 @@ export default function CafeMenuList () {
                     </Typography>
                     <Typography textAlign="right"
                         sx={{fontSize: {xs: '14px', md: '1rem'}}}>
-                        사이즈&#58; R&#40;레귤러&#41;, L&#40;라지&#41;, M&#40;맥스&#41;
+                        사이즈&#58; R&#40;레귤러&#41;, L&#40;라지&#41;
                     </Typography>
                 </Grid>
                 <Divider />
@@ -28,7 +28,7 @@ export default function CafeMenuList () {
                     return <ListItem key={index}
                     sx={{
                         display: 'list-item', listStyleType: 'disc', listStylePosition: 'inside',
-                        fontSize: { xs: '1rem', lg: '1.2rem', }, py: {xs: 1, lg: '10px'}, px: { xs: 0, sm: 1, xl: 2 },
+                        fontSize: { xs: '14px', lg: '1.2rem', }, py: {xs: 1, lg: '10px'}, px: { xs: 0, sm: 1, xl: 2 },
                         letterSpacing: {xs: '-1px', xl: 0}}} 
                     >
                     {menu}
@@ -45,7 +45,7 @@ export default function CafeMenuList () {
                     return <ListItem key={index}
                     sx={{
                         display: 'list-item', listStyleType: 'disc', listStylePosition: 'inside',
-                        fontSize: { xs: '1rem', lg: '1.2rem', }, py: {xs: 1, lg: '10px'}, px: { xs: 0, sm: 1, xl: 2 },
+                        fontSize: { xs: '14px', lg: '1.2rem', }, py: {xs: 1, lg: '10px'}, px: { xs: 0, sm: 1, xl: 2 },
                         letterSpacing: {xs: '-1px', xl: 0}}} 
                     >
                     {menu}

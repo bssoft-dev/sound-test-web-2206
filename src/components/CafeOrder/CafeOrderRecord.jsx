@@ -113,17 +113,25 @@ export default function CafeOrderRecord({ handleDataUpdate }) {
     };
 
     return(
-        <Card sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <StyledCardHeader title="메뉴선택 테스트" />
+        <Card sx={{ flex: {xs: 2, md: 5, lg: 4}, display: 'flex', flexDirection: 'column' }}>
+          <StyledCardHeader title="한 문장 주문 테스트" />
           <Divider />
           <CardContent
             sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', pt: { xs: 1, md: 2 }, pb: {xs: '16px !important', lg: '24px !important'} }}>
               <Box
-                sx={{ mb: 1, px: {md: 1}, alignSelf: {xs: 'flex-start', md: 'center'}}}>
-                <Typography variant="button"  color="text.secondary"
-                sx={{display: {md: 'inline-block'}}}> 테스트 예시: </Typography>
-                <Typography fontWeight={500} fontSize={{xs: 14, md: 16}}
-                  sx={{ml: {md: 1}, color: '#FF8A00', display: {md: 'inline-block'}}}>"황치즈 마카롱하고, 카라멜 마끼아또 주세요"</Typography>
+                sx={{ mb: {xs: 1, lg: 2}, px: {md: 1}, alignSelf: 'flex-start'}}>
+                <Box sx={{mb: {xs: '4px', lg: 1}}}>
+                  <Typography variant="button" color="text.secondary"
+                    sx={{lineHeight: 1.2}}> 테스트 예시: </Typography>
+                  <Typography fontWeight={500} fontSize={{xs: 14, lg: 16}}
+                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"신촌커피 레귤러랑 달고나 카페라떼 아이스로 라지 두 잔, 멕시칸 파니니 세개 테이크아웃 해주세요"</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="button" color="text.secondary"
+                    sx={{lineHeight: 1.2}}> 제한 사항: </Typography>
+                  <Typography fontWeight={500} fontSize={{xs: 14, lg: 16}}
+                    sx={{ml: {md: 1}, color: '#FF8A00', lineHeight: 1.2}}>"두 문장 이상의 주문, 메뉴에 없는 이름 주문은 테스트 불가능합니다."</Typography>
+                </Box>
               </Box>
             <Box sx={{flex: 1, width: '100%', mb: {xs: '12px', md: 0}}}>
               <Grid className={classes.waveWrap}>

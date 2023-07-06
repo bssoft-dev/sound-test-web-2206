@@ -66,7 +66,7 @@ export default function CafeOrderTestPage() {
   return (<Layout title="TestPage">
     <Grid container spacing={3}
       flexDirection={{ xs: 'column', md: 'row' }}
-      sx={{ height: { md: '100%' } }}>
+      sx={{ height: {md: 'calc(100% + 24px)' } }}>
       <Grid item xs={12} md={6}
         sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <CafeOrderRecord handleDataUpdate={handleDataUpdate} />

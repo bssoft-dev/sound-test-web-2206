@@ -8,7 +8,7 @@ import axios from "axios";
 export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
     const context = useContext(Context);
     const { setServerHealth, setAlert, setVersion } = context;
-
+    const [isDisabled, setIsDisabled] = useState(false);
     const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");
     const continuousRecording = args.get("continuousRecording");
@@ -116,6 +116,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         try {
             window.stream = audioRecorder.stream = await getStream();
             console.log("Got mic successfully");
+            setIsDisabled(true);
         } catch (err) {
             console.log("Error: Issue getting mic", err);
         }
@@ -360,12 +361,12 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 await start();
             }
         } else {
+            setIsDisabled(false);
             await onStop({
                 blob: blob,
                 url: audioUrl,
                 type: audioRecorder.type,
             });
-
             // 키오스크 axios post 보내기
             const formData = new FormData();
             formData.append(
@@ -418,6 +419,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
 
     return (
         <Button variant="contained"
+            disabled={!continuousRecording ? isDisabled : false}
             color={color}
             sx={btnStyle}
             onClick={onClicked}>
