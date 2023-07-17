@@ -59,6 +59,7 @@ export function ContextProvider({children}) {
         } else {
             return navigate('/login');
         }
+        setVersion(null)
     }, [pathname]);
 
     useEffect(() => {

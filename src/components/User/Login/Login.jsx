@@ -60,7 +60,13 @@ export default function Login() {
                     type: "error",
                     message: "아이디 혹은 비밀번호를 확인하세요."
                 });
-            } 
+            } else {
+                setAlert({
+                    open: true, 
+                    type: "error",
+                    message: "에러가 발생하였습니다"
+                });
+            }
         });
     };
     
