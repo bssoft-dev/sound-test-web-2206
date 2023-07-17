@@ -48,20 +48,19 @@ export default function Login() {
             navigate('/');
         })
         .catch(err => {
-            console.log(err.response);
-            if(err.response.status === 400) {
-                setAlert({
-                    open: true, 
-                    type: "error",
-                    message: "아이디 혹은 비밀번호를 확인하세요."
-                });
-            } else {
+            if(!err.response) {
                 setAlert({
                     open: true, 
                     type: "error",
                     message: "서버가 꺼져 있습니다."
                 });
-            }
+            } else if(err.response.status === 400) {
+                setAlert({
+                    open: true, 
+                    type: "error",
+                    message: "아이디 혹은 비밀번호를 확인하세요."
+                });
+            } 
         });
     };
     
