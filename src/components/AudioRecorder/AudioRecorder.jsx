@@ -383,11 +383,19 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             })
                 .then((response) => {
                     if (response.status != 200) {
-                        setAlert({
-                            open: true,
-                            type: "warning",
-                            message: "파일을 다시 확인해주세요."
-                        });
+                        if(continuousRecording) {
+                            setAlert({
+                                open: true,
+                                type: "warning",
+                                message: "파일을 다시 확인해주세요."
+                            });
+                        } else {
+                            setAlert({
+                                open: true,
+                                type: "warning",
+                                message: "음성 인식이 잘못되었습니다. 다시 시도해주세요."
+                            });
+                        }
                     } else {
                         console.log(response)
                         handleDataUpdate(response.data);

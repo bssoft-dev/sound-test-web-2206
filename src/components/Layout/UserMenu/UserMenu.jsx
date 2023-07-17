@@ -18,7 +18,7 @@ export default function UserMenu() {
   const open = Boolean(anchorEl);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     localStorage.removeItem('is_hyperuser')
     setToken(false);
     navigate('/login')

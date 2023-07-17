@@ -38,7 +38,7 @@ export default function Login() {
             }
         })
         .then((res) => {
-            sessionStorage.setItem('token', res.data.access_token);
+            localStorage.setItem('token', res.data.access_token);
             if(res.data.is_hyperuser) {
                 localStorage.setItem('is_hyperuser', true);
             }
@@ -48,11 +48,20 @@ export default function Login() {
             navigate('/');
         })
         .catch(err => {
-            setAlert({
-                open: true, 
-                type: "error",
-                message: "아이디 혹은 비밀번호를 확인하세요."
-            })
+            console.log(err.response);
+            if(err.response.status === 400) {
+                setAlert({
+                    open: true, 
+                    type: "error",
+                    message: "아이디 혹은 비밀번호를 확인하세요."
+                });
+            } else {
+                setAlert({
+                    open: true, 
+                    type: "error",
+                    message: "서버가 꺼져 있습니다."
+                });
+            }
         });
     };
     

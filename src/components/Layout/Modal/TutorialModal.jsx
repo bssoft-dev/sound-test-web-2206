@@ -37,13 +37,9 @@ export default function TutorialModal() {
             해당 페이지에 대해 안내합니다
           </DialogContentText>
             <DialogContentText textAlign="center"
-              color={pathname !== "/audio-test" ? 
-                (serverHealth ? green[600] : 'error')
-                : 'secondary'}
+              color={serverHealth ? green[600] : 'error'}
               sx={{mt: 1}}>  
-              {pathname !== "/audio-test" ? 
-                (serverHealth ? '서버 연결' : '서버 오류')
-                : '서버 없음' }
+              { serverHealth ? '서버 연결' : '서버 꺼짐' }
           </DialogContentText> 
           {version && <DialogContentText textAlign="center" >
             version: {version}
