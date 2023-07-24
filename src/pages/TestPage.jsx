@@ -1,103 +1,72 @@
 import { useEffect, useRef, useState } from "react";
-import { useCtx } from "../context/Context";
 import Layout from "../components/Layout/Layout";
-import WaveSurfer from "wavesurfer.js";
-import MicrophonePlugin from "wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js";
-import { Button, Grid, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles(theme => ({
-  waveWrap: {
-      width: 500,
-      height: 180, 
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 12,
-      backgroundColor:'#FBF0E0',
-      overflow: 'hidden'
-  },
-  recordWave: {
-    width: 400,
-    height: 100
-  }
-}));
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
-export default function TestPage() {
-  const context = useCtx();
-  const classes = useStyles();
-  const waveformRef = useRef(null);
-  const wavesurferRef = useRef(null);
+export default function TestPage() {const [isRecording, setIsRecording] = useState(false);
+  const [recordedBlobs, setRecordedBlobs] = useState([]);
+  const [currentFileSize, setCurrentFileSize] = useState(0);
+  const [currentFileNumber, setCurrentFileNumber] = useState(0);
+  let mediaRecorder;
 
-  useEffect(() => {
-    return () => {
-      if (wavesurferRef.current && wavesurferRef.current.microphone) {
-        wavesurferRef.current.microphone.stopDevice();
-        wavesurferRef.current.destroy();
-      }
-    };
-  }, []);
+  const startRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        mediaRecorder = new MediaRecorder(stream);
 
-  const handleClick = () => {
-    if (wavesurferRef.current === null) {
-      let context, processor;
+        mediaRecorder.ondataavailable = event => {
+          if (event.data.size > 0) {
+            setRecordedBlobs((prevBlobs) => [...prevBlobs, event.data]);
+            setCurrentFileSize((prevSize) => prevSize + event.data.size);
 
-      wavesurferRef.current = WaveSurfer.create({
-        container: waveformRef.current,
-        waveColor: '#FFB673',
-        backgroundColor:'#FBF0E0',
-        widht: 400,
-        height: 100,
-        interact: false,
-        cursorWidth: 0,
-        audioContext: context || null,
-        audioScriptProcessor: processor || null,
-        // Set a bar width
-        barWidth: 3,
-        // Optionally, specify the spacing between bars
-        barGap: 4,
-        // And the bar radius
-        barRadius: 2,
-        plugins: [
-          MicrophonePlugin.create({
-            bufferSize: 4096,
-            numberOfInputChannels: 1,
-            numberOfOutputChannels: 1,
-            constraints: {
-              video: false,
-              audio: true,
-            },
-          }),
-        ],
+            if (currentFileSize >= MAX_FILE_SIZE) {
+              console.log('aaaa')
+              saveRecording();
+              startNewFile();
+            }
+          }
+        };
+
+        mediaRecorder.start();
+        setIsRecording(true);
+      })
+      .catch(error => {
+        console.error('녹음을 시작할 수 없습니다:', error);
       });
-
-      wavesurferRef.current.microphone.on('deviceReady', () => {
-        console.info('Device ready!');
-      });
-      wavesurferRef.current.microphone.on('deviceError', (code) => {
-        console.warn('Device error: ' + code);
-      });
-      wavesurferRef.current.on('error', (e) => {
-        console.warn(e);
-      });
-      wavesurferRef.current.microphone.start();
-    } else if (wavesurferRef.current.microphone != null && wavesurferRef.current.microphone) {
-      if (wavesurferRef.current.microphone.active) {
-        wavesurferRef.current.microphone.stop();
-      } else {
-        wavesurferRef.current.microphone.start();
-      }
-    }
   };
 
+  const saveRecording = () => {
+    const blob = new Blob(recordedBlobs, { type: 'audio/webm' });
+    const url = URL.createObjectURL(blob);
+
+    // 여기에서 녹음된 Blob 데이터를 저장하거나 처리할 수 있습니다.
+    // 예를 들면 파일 업로드 등을 수행할 수 있습니다.
+  };
+
+  const startNewFile = () => {
+    setRecordedBlobs([]);
+    setCurrentFileSize(0);
+    setCurrentFileNumber((prevNumber) => prevNumber + 1);
+  };
+
+  useEffect(() => {
+    if (isRecording) {
+      // 일정 시간 후 녹음 중단
+      const stopRecordingTimeout = setTimeout(() => {
+        mediaRecorder.stop();
+        setIsRecording(false);
+      }, 10000); // 예시로 10초 녹음 후 중단
+
+      return () => {
+        clearTimeout(stopRecordingTimeout);
+      };
+    }
+  }, [isRecording]);
   return (<Layout title="TestPage">
-    <Grid container flexDirection="column"
-      justifyContent="center" alignItems="center" 
-      sx={{ height: '100%', paddingBottom: 50 }}>
-      <Grid className={classes.waveWrap}>
-        <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
-      </Grid>
-      <button onClick={handleClick}>Toggle Microphone</button>
-    </Grid>
+    <div>
+      <button onClick={isRecording ? null : startRecording}>
+        {isRecording ? '녹음 중...' : '녹음 시작'}
+      </button>
+    </div>
   </Layout>)
 }

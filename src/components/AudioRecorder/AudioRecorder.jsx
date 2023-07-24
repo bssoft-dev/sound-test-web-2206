@@ -179,6 +179,35 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         return result;
     };
 
+    const encodeWav = (interleaved, sampleRate) => {
+        const buffer = new ArrayBuffer(44 + interleaved.length * 2);
+        const view = new DataView(buffer);
+
+        writeUTFBytes(view, 0, "RIFF");
+        view.setUint32(4, 44 + interleaved.length * 2, true);
+        writeUTFBytes(view, 8, "WAVE");
+        writeUTFBytes(view, 12, "fmt ");
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 2, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 4, true);
+        view.setUint16(32, 4, true);
+        view.setUint16(34, 16, true);
+        writeUTFBytes(view, 36, "data");
+        view.setUint32(40, interleaved.length * 2, true);
+
+        let index = 44;
+        const volume = 1;
+        for (let i = 0; i < interleaved.length; i++) {
+            view.setInt16(index, interleaved[i] * (0x7fff * volume), true);
+            index += 2;
+        }
+
+        return new Blob([view], { type: "audio/wav" });
+    };
+
+
     const startRecording = () => {
         console.log("Starting recording");
 
@@ -283,6 +312,35 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             audioRecorder.rightchannel.push(new Float32Array(left));
             audioRecorder.recordingLength += bufferSize;
         };
+
+        let recordedChunks = []; // Array to store recorded audio chunks
+
+        audioRecorder.recorder.ondataavailable = function (event) {
+            recordedChunks.push(event.data);
+        };
+
+        // setTimeout(() => {
+
+        //     let interleaved;
+        //     // we flat the left and right channels down
+        //     audioRecorder.leftBuffer = mergeBuffers(
+        //         audioRecorder.leftchannel, audioRecorder.recordingLength
+        //     );
+        //     audioRecorder.rightBuffer = mergeBuffers(
+        //         audioRecorder.rightchannel, audioRecorder.recordingLength
+        //     );
+        //     // we interleave both channels together
+        //     interleaved = interleave(audioRecorder.leftBuffer, audioRecorder.rightBuffer);
+
+        //     // our final binary blob
+        //     const blob = encodeWav(interleaved, audioRecorder.sampleRate);
+
+        //     const blobURL = URL.createObjectURL(blob);
+        //     console.log('Blob URL:', blobURL);
+        //     // 이 때 서버에 blob에 대한 정보를 보내주고 return 받은 threshold 값을 기준으로
+        //     //  if (audioRecorder.stage === "start" && energy > args.get("start_threshold")) 부분의 조건문이 수정 될 수 있다.
+        // }, 500);
+        
         // visualize();
     };
 
@@ -301,6 +359,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         setColor(args.get("neutral_color"))
         closeMic();
         console.log(audioRecorder.recordingLength);
+        // our final binary blob
 
         let interleaved;
         // we flat the left and right channels down
@@ -313,43 +372,8 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         // we interleave both channels together
         interleaved = interleave(audioRecorder.leftBuffer, audioRecorder.rightBuffer);
 
-        ///////////// WAV Encode /////////////////
-        // from http://typedarray.org/from-microphone-to-wav-with-getusermedia-and-web-audio/
-        //
-
-        // we create our wav file
-        let buffer = new ArrayBuffer(44 + interleaved.length * 2);
-        let view = new DataView(buffer);
-
-        // RIFF chunk descriptor
-        writeUTFBytes(view, 0, "RIFF");
-        view.setUint32(4, 44 + interleaved.length * 2, true);
-        writeUTFBytes(view, 8, "WAVE");
-        // FMT sub-chunk
-        writeUTFBytes(view, 12, "fmt ");
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        // stereo (2 channels)
-        view.setUint16(22, 2, true);
-        view.setUint32(24, audioRecorder.sampleRate, true);
-        view.setUint32(28, audioRecorder.sampleRate * 4, true);
-        view.setUint16(32, 4, true);
-        view.setUint16(34, 16, true);
-        // data sub-chunk
-        writeUTFBytes(view, 36, "data");
-        view.setUint32(40, interleaved.length * 2, true);
-
-        // write the PCM samples
-        let lng = interleaved.length;
-        let index = 44;
-        let volume = 1;
-        for (let i = 0; i < lng; i++) {
-            view.setInt16(index, interleaved[i] * (0x7fff * volume), true);
-            index += 2;
-        }
-
         // our final binary blob
-        const blob = new Blob([view], { type: audioRecorder.type });
+        const blob = encodeWav(interleaved, audioRecorder.sampleRate);
         const audioUrl = URL.createObjectURL(blob);
         if (continuousRecording) {
             if (!isFinish) {
