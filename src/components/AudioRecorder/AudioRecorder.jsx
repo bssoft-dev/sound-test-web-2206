@@ -7,6 +7,10 @@ import axios from "axios";
 
 export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
     const context = useContext(Context);
+    const [startThreshold, setStartThreshold] = useState(args.get("start_threshold"));
+    const [endThreshold, setEndThreshold] = useState(args.get("end_threshold"));
+    // threshold 변경 감지
+    const [thresholdUpdateNeeded, setThresholdUpdateNeeded] = useState(false);
     const { setServerHealth, setAlert, setVersion } = context;
     const [isDisabled, setIsDisabled] = useState(false);
     const [isComponentMounted, setIsComponentMounted] = useState(false);
@@ -106,6 +110,84 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         console.log(error)
     }
 
+    const getThreshold = (audioRecorder, mergeBuffers, encodeWav, interleave) => {
+        // cafe page threshold 초기화
+        setTimeout(() => {
+            let interleaved;
+            // we flat the left and right channels down
+            audioRecorder.leftBuffer = mergeBuffers(
+                audioRecorder.leftchannel, audioRecorder.recordingLength
+            );
+            audioRecorder.rightBuffer = mergeBuffers(
+                audioRecorder.rightchannel, audioRecorder.recordingLength
+            );
+            // we interleave both channels together
+            interleaved = interleave(audioRecorder.leftBuffer, audioRecorder.rightBuffer);
+        
+            // our final binary blob
+            const blob = encodeWav(interleaved, audioRecorder.sampleRate);
+        
+            //   const blobURL = URL.createObjectURL(blob);
+            //   console.log('Blob URL:', blobURL);
+            const formData = new FormData();
+            formData.append(
+                "file", blob
+            );
+            axios({
+                url: `https://stt-cafe.bs-soft.co.kr/v1/analysis/threshold`,
+                method: 'POST',
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(async (response) => {
+                console.log(response.data.threshold);
+                if (response.status != 200) {
+                    setAlert({
+                        open: true,
+                        type: "warning",
+                        message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
+                    });
+                } else {
+                    console.log(response.data)
+                    setStartThreshold(response.data.threshold);
+                    setEndThreshold(response.data.threshold);
+                    setThresholdUpdateNeeded(true);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                setAlert({
+                    open: true,
+                    type: "warning",
+                    message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
+                });
+            })
+        }, 500);
+    }
+
+    useEffect(() => {
+        // cafe page recording event
+        const handleThresholdUpdate = async () => {
+            if (!audioRecorder.recording) {
+                await start();
+                if (!continuousRecording) setRecording(true);
+            } else {
+                await stop(true);
+                if (!continuousRecording) setRecording(false);
+            }
+            if (handleWaveForm) {
+                handleWaveForm();
+            }
+        }
+    
+        if (thresholdUpdateNeeded) {
+            handleThresholdUpdate();
+            setThresholdUpdateNeeded(false);
+        }
+    }, [thresholdUpdateNeeded])
+
     //get mic stream
     const getStream = () => {
         console.log("Getting mic");
@@ -134,16 +216,20 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     };
 
     const onClicked = async () => {
-        if (!audioRecorder.recording) {
-            await start();
-            if (!continuousRecording) setRecording(true);
+        console.log('threshold: ', startThreshold);
+        if(!continuousRecording) {
+            getThreshold(audioRecorder, mergeBuffers, encodeWav, interleave);
         } else {
-            await stop(true);
-            if (!continuousRecording) setRecording(false);
+            if (!audioRecorder.recording) {
+                await start();
+            } else {
+                await stop(true);
+            }
+            if (handleWaveForm) {
+                handleWaveForm()
+            }
         }
-        if (handleWaveForm) {
-            handleWaveForm()
-        }
+        
     };
 
     const writeUTFBytes = (view, offset, string) => {
@@ -291,10 +377,11 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 left.map((x) => x * x).reduce((a, b) => a + b) / left.length
             );
             // console.log(energy);
-            if (audioRecorder.stage === "start" && energy > args.get("start_threshold")) {
+            if (audioRecorder.stage === "start" && energy > startThreshold) {
+                console.log('startThreshold', startThreshold)
                 audioRecorder.stage = "speaking";
             } else if (audioRecorder.stage === "speaking") {
-                if (energy > args.get("end_threshold")) {
+                if (energy > endThreshold) {
                     audioRecorder.pause_count = 0;
                 } else {
                     audioRecorder.pause_count += 1;
@@ -318,29 +405,6 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         audioRecorder.recorder.ondataavailable = function (event) {
             recordedChunks.push(event.data);
         };
-
-        // setTimeout(() => {
-
-        //     let interleaved;
-        //     // we flat the left and right channels down
-        //     audioRecorder.leftBuffer = mergeBuffers(
-        //         audioRecorder.leftchannel, audioRecorder.recordingLength
-        //     );
-        //     audioRecorder.rightBuffer = mergeBuffers(
-        //         audioRecorder.rightchannel, audioRecorder.recordingLength
-        //     );
-        //     // we interleave both channels together
-        //     interleaved = interleave(audioRecorder.leftBuffer, audioRecorder.rightBuffer);
-
-        //     // our final binary blob
-        //     const blob = encodeWav(interleaved, audioRecorder.sampleRate);
-
-        //     const blobURL = URL.createObjectURL(blob);
-        //     console.log('Blob URL:', blobURL);
-        //     // 이 때 서버에 blob에 대한 정보를 보내주고 return 받은 threshold 값을 기준으로
-        //     //  if (audioRecorder.stage === "start" && energy > args.get("start_threshold")) 부분의 조건문이 수정 될 수 있다.
-        // }, 500);
-        
         // visualize();
     };
 
