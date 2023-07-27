@@ -110,9 +110,15 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         console.log(error)
     }
 
-    const getThreshold = (audioRecorder, mergeBuffers, encodeWav, interleave) => {
+    const getThreshold = async (audioRecorder, mergeBuffers, encodeWav, interleave) => {
+        await start();
         // cafe page threshold 초기화
         setTimeout(() => {
+            audioRecorder.recording = false;
+            setColor(args.get("neutral_color"))
+            closeMic();
+            console.log(audioRecorder.recordingLength);
+
             let interleaved;
             // we flat the left and right channels down
             audioRecorder.leftBuffer = mergeBuffers(
@@ -127,8 +133,8 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             // our final binary blob
             const blob = encodeWav(interleaved, audioRecorder.sampleRate);
         
-            //   const blobURL = URL.createObjectURL(blob);
-            //   console.log('Blob URL:', blobURL);
+            const blobURL = URL.createObjectURL(blob);
+            console.log('Blob URL:', blobURL);
             const formData = new FormData();
             formData.append(
                 "file", blob
@@ -215,10 +221,80 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         audioRecorder.recorder.disconnect(0);
     };
 
-    const onClicked = async () => {
+    // const [getThresholdRecording, setGetThresholdRecording] = useState(false);
+    // let mediaRecorder;
+    // const getThresholdRecording2 = (stream) => {
+    //     mediaRecorder = new MediaRecorder(stream);
+    //     const chunks = [];
+    
+    //     mediaRecorder.ondataavailable = (e) => {
+    //       chunks.push(e.data);
+    //     };
+    
+    //     mediaRecorder.start();
+    
+    //     setTimeout(() => {
+    //       mediaRecorder.onstop = () => {
+    //         const blob = new Blob(chunks, { type: 'audio/webm' });
+    //         const url = URL.createObjectURL(blob);
+    //         console.log(url);
+    //         stream.getTracks().forEach((track) => {
+    //           track.stop();
+    //         });
+    //         const formData = new FormData();
+    //         formData.append(
+    //             "file", blob
+    //         );
+    //         axios({
+    //             url: `https://stt-cafe.bs-soft.co.kr/v1/analysis/threshold`,
+    //             method: 'POST',
+    //             data: formData,
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data'
+    //             }
+    //         })
+    //         .then(async (response) => {
+    //             console.log(response.data.threshold);
+    //             if (response.status != 200) {
+    //                 setAlert({
+    //                     open: true,
+    //                     type: "warning",
+    //                     message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
+    //                 });
+    //             } else {
+    //                 console.log(response.data)
+    //                 setStartThreshold(response.data.threshold);
+    //                 setEndThreshold(response.data.threshold);
+    //                 setThresholdUpdateNeeded(true);
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //             setAlert({
+    //                 open: true,
+    //                 type: "warning",
+    //                 message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
+    //             });
+    //         })
+            
+    //     };
+    //     mediaRecorder.stop();
+    //     setGetThresholdRecording(false);
+    
+    //     }, 500);
+    // };
+    
+    const onClicked = async (e) => {
         console.log('threshold: ', startThreshold);
+        
         if(!continuousRecording) {
             getThreshold(audioRecorder, mergeBuffers, encodeWav, interleave);
+            // if(!getThresholdRecording) {
+            //     console.log()
+            //     setGetThresholdRecording(true);
+            //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            //     getThresholdRecording2(stream);
+            // }
         } else {
             if (!audioRecorder.recording) {
                 await start();
