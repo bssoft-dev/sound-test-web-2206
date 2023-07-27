@@ -3,6 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { green, grey } from "@mui/material/colors";
 import { useCtx } from '../../../context/Context';
+import axios from 'axios';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -10,9 +11,49 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function TutorialModal() {
   const context = useCtx();
-  const { serverHealth, pathname, version } = context;
+  const { serverHealth, setServerHealth, pathname, version, setVersion } = context;
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  
+  // health check
+  const getServerHealth = (baseUrl) => {
+    axios.get(baseUrl)
+      .then((response)=> {
+        if(response.status === 200) {
+            setServerHealth(true);
+            setVersion(response.data.version ? response.data.version : null);
+        }else {
+          setServerHealth(false);
+          setVersion(null);
+        }
+    })
+    .catch((error)=> {
+        console.log(error);
+        setServerHealth(false);
+        setVersion(null);
+    })
+  }
+  const handleOpen = async () => {
+    console.log(pathname)
+    let res = null;
+    switch(pathname) {
+      case '/menu-test':
+        getServerHealth('https://stt-cafe.bs-soft.co.kr/v1/version/menu')
+        break;
+      case '/audio-test':
+        getServerHealth('https://api-2035.bs-soft.co.kr/')
+        break;
+      case "/sound-test":
+        getServerHealth('https://sound.bs-soft.co.kr/status');
+        break;
+      case "/bss-test":
+        getServerHealth('https://bss.bs-soft.co.kr/status');
+        break;
+      default:
+        setServerHealth(false);
+        setVersion(false);
+    }
+    setOpen(true)
+  };
   const handleClose = () => setOpen(false);
 
   return (

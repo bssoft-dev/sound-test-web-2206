@@ -11,7 +11,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const [endThreshold, setEndThreshold] = useState(args.get("end_threshold"));
     // threshold 변경 감지
     const [thresholdUpdateNeeded, setThresholdUpdateNeeded] = useState(false);
-    const { setServerHealth, setAlert, setVersion } = context;
+    const { setServerHealth, setAlert } = context;
     const [isDisabled, setIsDisabled] = useState(false);
     const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");
@@ -59,21 +59,6 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                     websocketRef.current.close();
                 }
             };
-        } else {
-            // 키오스크 페이지 health 체크
-            axios.get('https://stt-cafe.bs-soft.co.kr/v1/version/menu')
-            .then((response)=> {
-                console.log('response: ', response);
-                if(response.status === 200) {
-                    setServerHealth(true);
-                    setVersion(response.data.version)
-                }
-            })
-            .catch((error)=> {
-                console.log(error);
-                setServerHealth(false);
-                setVersion(null);
-            })
         }
 
         return () => {

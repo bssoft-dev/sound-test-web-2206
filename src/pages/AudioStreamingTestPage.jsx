@@ -14,7 +14,7 @@ import axios from "axios";
 
 export default function AudioStreamingTestPage() {
     const context = useCtx();  
-    const { setTitle, setServerHealth } = context;
+    const { setTitle } = context;
 
     const title = 'ADL 분석 테스트'
     useTitle(title);
@@ -27,16 +27,6 @@ export default function AudioStreamingTestPage() {
         const padding = window.innerWidth> 600 ? 40 : 24
         setTitle(title);
         setAudioAnalyserRefWidth(AudioAnalyserRef.current.offsetWidth - padding * 2);
-        axios.get('https://api-2035.bs-soft.co.kr/')
-            .then((response) => {
-                if(response.status === 200) {
-                    setServerHealth(true);
-                }
-            })
-            .catch((error)=> {
-                console.log(error);
-                setServerHealth(false);
-            })
     }, []);
 
     return(<StreamContextProvider>
