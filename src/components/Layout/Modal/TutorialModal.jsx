@@ -33,7 +33,6 @@ export default function TutorialModal() {
     })
   }
   const handleOpen = async () => {
-    console.log(pathname)
     let res = null;
     switch(pathname) {
       case '/menu-test':
@@ -47,6 +46,8 @@ export default function TutorialModal() {
         break;
       case "/bss-test":
         getServerHealth('https://bss.bs-soft.co.kr/status');
+        break;
+      case "/stt-test":
         break;
       default:
         setServerHealth(false);
