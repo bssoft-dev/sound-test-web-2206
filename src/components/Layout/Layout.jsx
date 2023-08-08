@@ -7,10 +7,11 @@ import SideNav from "./SideNav/SideNav";
 import "./layout.css";
 import SideMenu from "./SideNav/SideMenu";
 import { useState } from "react";
+import Loading from "../Loading/Loading";
 
 export default function Layout({ children }) {
     const context = useCtx();
-    const { mobileOpen, handleDrawerToggle } = context;
+    const { mobileOpen, handleDrawerToggle, loading } = context;
 
     return (<div className="row layout">
         <Drawer anchor="left" open={mobileOpen} onClose={handleDrawerToggle}>
@@ -21,5 +22,6 @@ export default function Layout({ children }) {
         <Alert />
         <SideNav />
         <MainContainer content={children}  />
+        {loading && <Loading sx={{position: 'absolute', top: 0, left: 0, zIndex: 100}} />}
     </div>)
 }

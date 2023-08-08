@@ -4,18 +4,19 @@ import Microphone from "../../Microphone/Microphone";
 import FileUploadButton from "../../FileUploadButton/FileUploadButton";
 import './innerHeader.css'
 
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { RecordContextProvider } from "../../../context/RecordContext";
+import BasicSelect from "../../FileUploadButton/BssSelect";
 
 export default function InnerHeader() {
     const context = useCtx();
     const { pathname, title } = context;
     
-    return (<div className="innerHeader row">
+    return (<Box className="innerHeader row">
         <Typography variant="h5" className="title" color="text.primary">
             {title}
         </Typography>
-        <div className="btnWrap">
+        <Box className="btnWrap">
           {/* 도움말은 해당 페이지에 맞춰서 변경 될 필요 있음 */}
           { !(pathname === '/') && <TutorialModal /> }
         {pathname === '/sound-test' &&
@@ -23,7 +24,10 @@ export default function InnerHeader() {
             <Microphone />
           </RecordContextProvider>
         }
+          {pathname === '/bss-test' &&
+            <BasicSelect />
+          }
           <FileUploadButton />
-        </div>
-    </div>)
+        </Box>
+    </Box>)
 }

@@ -74,6 +74,21 @@ export function ContextProvider({children}) {
     }, [location.pathname]);
 
     const [isRunning, setIsRunning] = useState(false);
+    
+    const [bssNumPerson, setBssNumPerson] = useState(2)
+    const handleNumPerson = (event) => {
+        console.log(event.target.value);
+        setBssNumPerson(event.target.value);
+    }
+
+    const [sttResult, setSttResult] = useState(null);
+    const handleSttResult = (result) => {
+        setSttResult(result);
+    }
+
+    useEffect(() => {
+        console.log(sttResult)
+    }, [sttResult])
 
     return (<Context.Provider value={{
             pathname, isAlert, setAlert, title, setTitle,
@@ -81,7 +96,9 @@ export function ContextProvider({children}) {
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
             token, setToken, mobileOpen, handleDrawerToggle,
-            serverHealth, setServerHealth, version, setVersion
+            serverHealth, setServerHealth, version, setVersion,
+            bssNumPerson, handleNumPerson,
+            sttResult, handleSttResult
         }}>
         {children}
     </Context.Provider>)

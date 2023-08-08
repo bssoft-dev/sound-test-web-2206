@@ -13,11 +13,29 @@
 .innerHeader .title {
     line-height: 1;
 }
+.btnWrap {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.btnWrap > * {
+    height: max-content;
+}
+.btnWrap .MuiSelect-select {
+    padding: 8px 16px !important;
+}
 @media (max-width: 600px) {
     .innerHeader {
         height: calc(var(--headerHight) + 8px);
     }
     .innerHeader .title {
         font-size: 18px;
+    }
+    .btnWrap .MuiSelect-select {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+    .MuiPaper-root .MuiMenuItem-root {
+        font-size: 12px !important;
     }
 }

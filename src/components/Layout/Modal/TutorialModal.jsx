@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Tooltip } from '@mui/material';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { green, grey } from "@mui/material/colors";
@@ -13,6 +13,30 @@ export default function TutorialModal() {
   const context = useCtx();
   const { serverHealth, setServerHealth, pathname, version, setVersion } = context;
   const [open, setOpen] = useState(false);
+
+  const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
+  const [tech, setTech] = useState(null);
+  const [isServerPower, setIsServerPower] = useState(false);
+
+  useEffect(() => {
+    setIsServerPower(false);
+  }, [pathname])
+
+  const handleServerPower = async () => {
+    let cmd;
+    if(isServerPower) cmd = 'stop';
+    else cmd = 'start';
+    axios.get(`http://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`)
+      .then((response) => {
+        console.log(response);
+        if(response.data === 'ok') {
+          setIsServerPower(!isServerPower);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
   
   // health check
   const getServerHealth = (baseUrl) => {
@@ -22,6 +46,7 @@ export default function TutorialModal() {
             setServerHealth(true);
             setVersion(response.data.version ? response.data.version : null);
         }else {
+
           setServerHealth(false);
           setVersion(null);
         }
@@ -32,20 +57,23 @@ export default function TutorialModal() {
         setVersion(null);
     })
   }
+
   const handleOpen = async () => {
     let res = null;
     switch(pathname) {
       case '/menu-test':
-        getServerHealth('https://stt-cafe.bs-soft.co.kr/v1/version/menu')
+        getServerHealth('https://stt-cafe.bs-soft.co.kr/v1/version/menu');
         break;
       case '/audio-test':
-        getServerHealth('https://api-2035.bs-soft.co.kr/')
+        getServerHealth('https://api-2035.bs-soft.co.kr/');
+        setTech('adl')
         break;
       case "/sound-test":
         getServerHealth('https://sound.bs-soft.co.kr/status');
         break;
       case "/bss-test":
         getServerHealth('https://bss.bs-soft.co.kr/status');
+        setTech('bss')
         break;
       case "/stt-test":
         break;
@@ -78,10 +106,18 @@ export default function TutorialModal() {
           <DialogContentText id="description">
             해당 페이지에 대해 안내합니다
           </DialogContentText>
-            <DialogContentText textAlign="center"
-              color={serverHealth ? green[600] : 'error'}
-              sx={{mt: 1}}>  
-              { serverHealth ? '서버 연결' : '서버 꺼짐' }
+          <DialogContentText textAlign="center"
+            color={serverHealth ? green[600] : 'error'}
+            sx={{mt: 1}}>  
+            { serverHealth ? '서버 연결' : '서버 꺼짐' }
+            {serverPowerPath &&
+              <Button variant={isServerPower ? 'outlined' : 'contained'}
+                color="success" size="small"
+                onClick={handleServerPower}
+                sx={{minWidth: 'fit-content', marginLeft: 1 }}>
+                {isServerPower ? '끄기' : '켜기'}
+              </Button>
+            }
           </DialogContentText> 
           {version && <DialogContentText textAlign="center" >
             version: {version}
