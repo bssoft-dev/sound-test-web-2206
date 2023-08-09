@@ -16,37 +16,39 @@ export default function TutorialModal() {
 
   const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
   const [tech, setTech] = useState(null);
-  const [isServerPower, setIsServerPower] = useState(false);
-
-  useEffect(() => {
-    setIsServerPower(false);
-  }, [pathname])
+  const [serverLoading, setServerLoading] = useState(false);
+  const [serverPowerUpdate, setServerPowerUpdate] = useState(null);
 
   const handleServerPower = async () => {
+    setServerLoading(true);
     let cmd;
-    if(isServerPower) cmd = 'stop';
+    if(serverHealth) cmd = 'stop';
     else cmd = 'start';
+
+    console.log('cmd: ', cmd);
     axios.get(`https://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`)
       .then((response) => {
-        console.log(response);
+        console.log('server: ', response);
         if(response.data === 'ok') {
-          setIsServerPower(!isServerPower);
+          swithPah();
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       })
   }
+
+
   
   // health check
   const getServerHealth = (baseUrl) => {
     axios.get(baseUrl)
       .then((response)=> {
+        console.log('health', response)
         if(response.status === 200) {
             setServerHealth(true);
             setVersion(response.data.version ? response.data.version : null);
         }else {
-
           setServerHealth(false);
           setVersion(null);
         }
@@ -56,10 +58,10 @@ export default function TutorialModal() {
         setServerHealth(false);
         setVersion(null);
     })
+    .finally(() => setServerLoading(false))
   }
 
-  const handleOpen = async () => {
-    let res = null;
+  const swithPah = () => {
     switch(pathname) {
       case '/menu-test':
         getServerHealth('https://stt-cafe.bs-soft.co.kr/');
@@ -81,6 +83,11 @@ export default function TutorialModal() {
         setServerHealth(false);
         setVersion(false);
     }
+  }
+
+  const handleOpen = async () => {
+    let res = null;
+    swithPah();
     setOpen(true)
   };
   const handleClose = () => setOpen(false);
@@ -111,11 +118,13 @@ export default function TutorialModal() {
             sx={{mt: 1}}>  
             { serverHealth ? '서버 연결' : '서버 꺼짐' }
             {serverPowerPath &&
-              <Button variant={isServerPower ? 'outlined' : 'contained'}
+              <Button variant={serverHealth ? 'outlined' : 'contained'}
                 color="success" size="small"
                 onClick={handleServerPower}
                 sx={{minWidth: 'fit-content', marginLeft: 1 }}>
-                {isServerPower ? '끄기' : '켜기'}
+                {serverLoading ? '•••' : 
+                  (serverHealth ? '끄기' : '켜기')
+                }
               </Button>
             }
           </DialogContentText> 
