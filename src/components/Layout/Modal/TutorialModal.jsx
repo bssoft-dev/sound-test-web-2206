@@ -62,17 +62,17 @@ export default function TutorialModal() {
     let res = null;
     switch(pathname) {
       case '/menu-test':
-        getServerHealth('https://stt-cafe.bs-soft.co.kr/v1/version/menu');
+        getServerHealth('https://stt-cafe.bs-soft.co.kr/');
         break;
       case '/audio-test':
         getServerHealth('https://api-2035.bs-soft.co.kr/');
         setTech('adl')
         break;
       case "/sound-test":
-        getServerHealth('https://sound.bs-soft.co.kr/status');
+        getServerHealth('https://sound.bs-soft.co.kr/');
         break;
       case "/bss-test":
-        getServerHealth('https://bss.bs-soft.co.kr/status');
+        getServerHealth('https://bss.bs-soft.co.kr/');
         setTech('bss')
         break;
       case "/stt-test":
