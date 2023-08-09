@@ -26,7 +26,7 @@ export default function TutorialModal() {
     let cmd;
     if(isServerPower) cmd = 'stop';
     else cmd = 'start';
-    axios.get(`http://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`)
+    axios.get(`https://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`)
       .then((response) => {
         console.log(response);
         if(response.data === 'ok') {
