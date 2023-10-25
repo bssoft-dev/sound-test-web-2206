@@ -10,6 +10,7 @@ import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { blue } from "@mui/material/colors";
 
 import { v4 as uuidv4 } from "uuid";
+import { useLocation } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -68,16 +69,20 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 export default function RecordTable({ isBss }) {
   const classes = useStyles();
   const context = useCtx();
-  const {pathname, setFile, rows, fetchData } = context;
+  
+  const location = useLocation();
+  const { pathname } = location;
+  const {setFile, rows, setRows, fetchData } = context;
 
   useEffect(() => {
     console.log("Loading...");
+    console.log(rows)
     switch(pathname) {
       case "/sound-test":
-          fetchData('https://sound.bs-soft.co.kr/status');
+        fetchData('https://sound.bs-soft.co.kr/status');
         break;
       case "/bss-test":
-          fetchData('https://bss.bs-soft.co.kr/status');
+        fetchData('https://bss.bs-soft.co.kr/status');
         break; 
     }
   }, [pathname]);

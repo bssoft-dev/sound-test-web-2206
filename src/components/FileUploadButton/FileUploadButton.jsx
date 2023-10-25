@@ -3,10 +3,13 @@ import axios from "axios";
 import { useCtx } from "../../context/Context";
 
 import { Button } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 export default function FileUploadButton() {
     const context = useCtx();
-    const {pathname, setAlert, fetchData, setServerHealth, bssNumPerson, setLoading, handleSttResult} = context;
+    const location = useLocation();
+    const { pathname } = location;
+    const { setAlert, fetchData, setServerHealth, bssNumPerson, setLoading, handleSttResult, setRows } = context;
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);
@@ -16,11 +19,14 @@ export default function FileUploadButton() {
     useEffect(() => {
       switch(pathname) {
         case "/sound-test":
+          setRows([]);        
           setBaseUrl('https://sound.bs-soft.co.kr/analysis/uploadFile');
           fetchData('https://sound.bs-soft.co.kr/status');
           setIsMultiple(false);
           break;
         case "/bss-test":
+          setRows([]);        
+
           setBaseUrl(`https://bss.bs-soft.co.kr/analysis/bss/${bssNumPerson}`);
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);

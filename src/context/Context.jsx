@@ -1,3 +1,4 @@
+import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { redirect, useLocation, useNavigate } from "react-router-dom";
@@ -41,29 +42,33 @@ export function ContextProvider({children}) {
     const [version, setVersion] = useState(null)
     const [serverHealth, setServerHealth] = useState(false);
     const fetchData = (baseUrl) => {
+        setRows([]);        
         axios.get(baseUrl)
         .then((response)=> {
-            console.log('response status: ',response.data);
-            setRows(response.data);
-            if(response.status === 200) {
-                setServerHealth(true)
-            }
+            console.log('response status: ', response.data);
+            if(response.data) setRows(response.data);
+            else setRows([]);
+
+            if(response.status === 200) setServerHealth(true)
+            else setRows([]);
         })
         .catch((error)=> {
+            setRows([]);
             console.log(error);
         })
     }
+    useEffect(() => {
+        setRows([]);
+        setPathname(location.pathname);
+    }, [location.pathname]);
+
     useEffect(() => {
         if(localStorage.getItem('token')) {
             setToken(localStorage.getItem('token'));
         } else {
             return navigate('/login');
         }
-        setVersion(null)
-    }, [pathname]);
-
-    useEffect(() => {
-        setPathname(location.pathname);
+        setVersion(null);
         setFile([null]);
         setRegion({
             id: 'region-1',
@@ -71,7 +76,7 @@ export function ContextProvider({children}) {
             end: 1,
             color: "rgba(60, 179, 113, 0.3)"
           });
-    }, [location.pathname]);
+    }, [pathname]);
 
     const [isRunning, setIsRunning] = useState(false);
     
@@ -92,7 +97,7 @@ export function ContextProvider({children}) {
 
     return (<Context.Provider value={{
             pathname, isAlert, setAlert, title, setTitle,
-            regions, setRegion, rows, fetchData,
+            regions, setRegion, rows, setRows, fetchData,
             files, pushFile, setFile,
             isRunning, setIsRunning, loading, setLoading,
             token, setToken, mobileOpen, handleDrawerToggle,
