@@ -92,7 +92,7 @@ export function ContextProvider({children}) {
     }
 
     useEffect(() => {
-        console.log(sttResult)
+        console.log('sttResult: ', sttResult)
     }, [sttResult])
 
     return (<Context.Provider value={{

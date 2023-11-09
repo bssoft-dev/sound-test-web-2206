@@ -9,7 +9,7 @@ export default function FileUploadButton() {
     const context = useCtx();
     const location = useLocation();
     const { pathname } = location;
-    const { setAlert, fetchData, setServerHealth, bssNumPerson, setLoading, handleSttResult, setRows } = context;
+    const { setAlert, fetchData, setServerHealth, bssNumPerson, setLoading, handleSttResult, setRows} = context;
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);
@@ -26,7 +26,6 @@ export default function FileUploadButton() {
           break;
         case "/bss-test":
           setRows([]);        
-
           setBaseUrl(`https://bss.bs-soft.co.kr/analysis/bss/${bssNumPerson}`);
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
@@ -43,10 +42,16 @@ export default function FileUploadButton() {
 
     const fetchHandler = (res) => {
       if (uploadedPathNames.includes(pathname)) {
-        if (pathname === "/stt-test") {
-          handleSttResult(res);
-        } else {
-          fetchData();
+        switch(pathname) {
+          case "/stt-test":
+            handleSttResult(res);
+            break;
+          case "/sound-test": 
+            fetchData('https://sound.bs-soft.co.kr/status');
+            break;
+          case "/bss-test":
+            fetchData('https://bss.bs-soft.co.kr/status');
+            break;
         }
       }
     }
@@ -102,6 +107,7 @@ export default function FileUploadButton() {
           message: "업로드를 완료하였습니다."
         });
         fetchHandler(res.data);
+        // fetchData('https://sound.bs-soft.co.kr/status');
         console.log(res);
       })
       .catch(err => {
