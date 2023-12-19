@@ -64,7 +64,10 @@ export function ContextProvider({children}) {
     
     const [sountTableRows, setSoundTableRows] = useState([]);
     const fetchSoundDatas = async () => {
-        let {data, error} = await supabase.from('sound').select('*');
+        let {data, error} = await supabase
+            .from('sound')
+            .select('*')
+            .order('receivedTime', { ascending: false });
         if(data) {
             console.log('Get Sound: ', data );
             setSoundTableRows(data);
