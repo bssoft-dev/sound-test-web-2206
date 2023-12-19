@@ -19,13 +19,10 @@ export default function FileUploadButton() {
     useEffect(() => {
       switch(pathname) {
         case "/sound-test":
-          setRows([]);        
           setBaseUrl('https://sound.bs-soft.co.kr/analysis/uploadFile');
-          fetchData('https://sound.bs-soft.co.kr/status');
           setIsMultiple(false);
           break;
-        case "/bss-test":
-          setRows([]);        
+        case "/bss-test":      
           setBaseUrl(`https://bss.bs-soft.co.kr/analysis/bss/${bssNumPerson}`);
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
@@ -46,9 +43,8 @@ export default function FileUploadButton() {
           case "/stt-test":
             handleSttResult(res);
             break;
-          case "/sound-test": 
-            fetchData('https://sound.bs-soft.co.kr/status');
-            break;
+          // case "/sound-test": 
+          //   break;
           case "/bss-test":
             fetchData('https://bss.bs-soft.co.kr/status');
             break;
@@ -107,7 +103,6 @@ export default function FileUploadButton() {
           message: "업로드를 완료하였습니다."
         });
         fetchHandler(res.data);
-        // fetchData('https://sound.bs-soft.co.kr/status');
         console.log(res);
       })
       .catch(err => {

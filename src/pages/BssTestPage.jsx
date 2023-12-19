@@ -18,12 +18,13 @@ const useStyles = makeStyles(theme => ({
 export default function BssTestPage() {
   const classes = useStyles();
   const context = useCtx();  
-  const { setTitle, files  } = context;
+  const { setTitle, files, fetchData, setRows, rows } = context;
 
   const title = '화자 분리 테스트'
   useTitle(title);
 
   useEffect(() => {
+    setRows([]);  
     setTitle(title);
   }, []);
 
@@ -32,7 +33,7 @@ export default function BssTestPage() {
   return (
     <Layout>
       <>
-        <RecordTable />
+        <RecordTable fetchDatahandle={fetchData} rowsData={rows} />
         <Grid container direction="column">
           {files.map((file, index) => (
             <Grid key={index} item className={classes.item}>

@@ -2,6 +2,8 @@ import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { createClient } from '@supabase/supabase-js';
+import supabase from "../utils/supabase";
 
 export const Context = createContext({});
 
@@ -23,6 +25,8 @@ export function ContextProvider({children}) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
       };
+
+
 
     const [regions, setRegions] = useState([
         {
@@ -57,8 +61,19 @@ export function ContextProvider({children}) {
             console.log(error);
         })
     }
+    
+    const [sountTableRows, setSoundTableRows] = useState([]);
+    const fetchSoundDatas = async () => {
+        let {data, error} = await supabase.from('sound').select('*');
+        if(data) {
+            console.log('Get Sound: ', data );
+            setSoundTableRows(data);
+        } else {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
-        setRows([]);
         setPathname(location.pathname);
     }, [location.pathname]);
 
@@ -103,7 +118,8 @@ export function ContextProvider({children}) {
             token, setToken, mobileOpen, handleDrawerToggle,
             serverHealth, setServerHealth, version, setVersion,
             bssNumPerson, handleNumPerson,
-            sttResult, handleSttResult
+            sttResult, handleSttResult,
+            fetchSoundDatas, sountTableRows, setSoundTableRows
         }}>
         {children}
     </Context.Provider>)

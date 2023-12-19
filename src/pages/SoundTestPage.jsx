@@ -8,6 +8,7 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import supabase from "../utils/supabase";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -18,19 +19,30 @@ const useStyles = makeStyles(theme => ({
 export default function SoundTestPage() {
   const classes = useStyles();
   const context = useCtx();  
-  const { setTitle, files } = context;
-
+  const { setTitle, files, fetchSoundDatas, setSoundTableRows, sountTableRows } = context;
   const title = '사운드 처리 테스트'
   useTitle(title);
   
   useEffect(() => {
     setTitle(title);
+    setSoundTableRows([]);
+    fetchSoundDatas();
+    const channels = supabase.channel('channels_change')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'sound' },
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchSoundDatas();
+        }
+      )
+      .subscribe();
   }, []);
 
   return (<TimerContextProvider>
       <Layout>
         <>
-          <RecordTable />
+          <RecordTable fetchDatahandle={fetchSoundDatas} rowsData={sountTableRows} />
           <Grid container direction="column">
             {files.map((file, index) => (
               <Grid key={index} item className={classes.item}>

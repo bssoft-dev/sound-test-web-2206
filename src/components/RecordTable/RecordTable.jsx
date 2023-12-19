@@ -66,26 +66,13 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   // },
 }));
 
-export default function RecordTable({ isBss }) {
+export default function RecordTable({ fetchDatahandle, rowsData }) {
   const classes = useStyles();
   const context = useCtx();
   
   const location = useLocation();
   const { pathname } = location;
-  const {setFile, rows, setRows, fetchData } = context;
-
-  useEffect(() => {
-    console.log("Loading...");
-    console.log(rows)
-    switch(pathname) {
-      case "/sound-test":
-        fetchData('https://sound.bs-soft.co.kr/status');
-        break;
-      case "/bss-test":
-        fetchData('https://bss.bs-soft.co.kr/status');
-        break; 
-    }
-  }, [pathname]);
+  const {setFile, rows} = context;
 
   const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
  
@@ -132,12 +119,12 @@ export default function RecordTable({ isBss }) {
   return (
     <Paper className={classes.root}>
       <StripedDataGrid
-        rows={rows}
+        rows={rowsData}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
         onCellEditCommit={(params, event) => {
-          memoPost(params, fetchData);
+          memoPost(params, fetchDatahandle);
         }}
       />
     </Paper>
