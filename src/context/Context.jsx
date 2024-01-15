@@ -95,8 +95,6 @@ export function ContextProvider({children}) {
             color: "rgba(60, 179, 113, 0.3)"
           });
     }, [pathname]);
-
-    const [isRunning, setIsRunning] = useState(false);
     
     const [bssNumPerson, setBssNumPerson] = useState(2)
     const handleNumPerson = (event) => {
@@ -117,7 +115,7 @@ export function ContextProvider({children}) {
             pathname, isAlert, setAlert, title, setTitle,
             regions, setRegion, rows, setRows, fetchData,
             files, pushFile, setFile,
-            isRunning, setIsRunning, loading, setLoading,
+            loading, setLoading,
             token, setToken, mobileOpen, handleDrawerToggle,
             serverHealth, setServerHealth, version, setVersion,
             bssNumPerson, handleNumPerson,

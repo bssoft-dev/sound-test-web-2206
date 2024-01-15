@@ -1,9 +1,10 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { useEffect } from "react";
-import { TimerCtx } from "../../context/TimerContext";
+import { shallow } from 'zustand/shallow';
 import { grey, red } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { useTimerStore } from "../../stores/useTimerStore";
 
 const useStyles = makeStyles(theme => ({
   recording: {
@@ -34,8 +35,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Timer() {
-  const timerContext = TimerCtx();
-  const { isRunning , setIsRunning, timer, setTimer } = timerContext;
+  const { isRunning , setIsRunning, timer, increaseTimer, setTimer } = useTimerStore(
+    state => ({
+      isRunning: state.isRunning, 
+      setIsRunning: state.setIsRunning,
+      timer: state.timer, 
+      increaseTimer: state.increaseTimer,
+      setTimer: state.setTimer,
+    }), shallow
+  );
   const classes = useStyles();
   const fontSize = window.innerWidth> 600 ? 'h4' : 'h5'
 
@@ -44,7 +52,7 @@ export default function Timer() {
   
       if (isRunning) {
         intervaltimer = setInterval(() => {
-          setTimer(prev => prev + 10);
+          increaseTimer();
         }, 10);
       } else {
           setIsRunning(false);

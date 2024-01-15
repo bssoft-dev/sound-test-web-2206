@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useCtx } from "../context/Context";
 import Layout from "../components/Layout/Layout";
-import { TimerContextProvider, TimerCtx } from "../context/TimerContext";
 import { RecordContextProvider, RecordCtx } from "../context/RecordContext";
 import RecordWaveSurfer from "../components/WaveSurferComp/RecordWaveSurfer";
 
@@ -17,7 +16,7 @@ export default function SttTestPage() {
         setTitle('STT 기본모델 테스트');
     }, []);
     
-    return(<TimerContextProvider>
+    return(
         <RecordContextProvider>
             <Layout>
             <Grid container spacing={2}
@@ -48,5 +47,5 @@ export default function SttTestPage() {
                 </Grid>
             </Layout>
         </RecordContextProvider>
-      </TimerContextProvider>)
+    )
 }

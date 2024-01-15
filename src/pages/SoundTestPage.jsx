@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
-import { TimerContextProvider } from "../context/TimerContext";
 import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
 import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
@@ -39,18 +38,18 @@ export default function SoundTestPage() {
       .subscribe();
   }, []);
 
-  return (<TimerContextProvider>
-      <Layout>
-        <>
-          <RecordTable fetchDatahandle={fetchSoundDatas} rowsData={sountTableRows} />
-          <Grid container direction="column">
-            {files.map((file, index) => (
-              <Grid key={index} item className={classes.item}>
-                <AudioPlayer file={file} />
-              </Grid>
-            ))}
-          </Grid>
-        </>
-      </Layout>
-  </TimerContextProvider>)
+  return (
+    <Layout>
+      <>
+        <RecordTable fetchDatahandle={fetchSoundDatas} rowsData={sountTableRows} />
+        <Grid container direction="column">
+          {files.map((file, index) => (
+            <Grid key={index} item className={classes.item}>
+              <AudioPlayer file={file} />
+            </Grid>
+          ))}
+        </Grid>
+      </>
+    </Layout>
+  )
 }

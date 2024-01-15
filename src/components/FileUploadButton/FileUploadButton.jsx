@@ -54,7 +54,6 @@ export default function FileUploadButton() {
 
 
     const uploadHandler = (event) => {
-      // setLoading(true);
       const files = event.target.files;
       const formData = new FormData();
       // Array.from(files).forEach((file, i) => {
@@ -89,7 +88,6 @@ export default function FileUploadButton() {
         }
       })
       .then(res => {
-        setLoading(false);
         if(res.status != 200) {
           setAlert({
             open: true, 
@@ -106,7 +104,6 @@ export default function FileUploadButton() {
         console.log(res);
       })
       .catch(err => {
-        // setLoading(false);
         setAlert({
           open: true, 
           type: "error",

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
-import { TimerContextProvider } from "../context/TimerContext";
 import { StreamContextProvider, StreamCtx } from "../context/StreamContext";
 import StreamWaveSurfer from "../components/WaveSurferComp/StreamWaveSurfer";
 import Timer from "../components/Timer/Timer";
@@ -29,8 +28,8 @@ export default function AudioStreamingTestPage() {
         setAudioAnalyserRefWidth(AudioAnalyserRef.current.offsetWidth - padding * 2);
     }, []);
 
-    return(<StreamContextProvider>
-        <TimerContextProvider>
+    return(
+        <StreamContextProvider>
             <Layout>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -59,6 +58,6 @@ export default function AudioStreamingTestPage() {
                     </Grid>
                 </Grid>
             </Layout>
-        </TimerContextProvider>
-    </StreamContextProvider>)
+        </StreamContextProvider>
+    )
 }

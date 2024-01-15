@@ -1,20 +1,24 @@
-
-import { TimerCtx } from "../../context/TimerContext";
 import { RecordCtx } from "../../context/RecordContext";
 import ReactMicComp from "../ReactMicComp/ReactMicComp";
 import { Grid, IconButton } from "@mui/material";
+import { shallow } from "zustand/shallow";
 
 import StopIcon from "@mui/icons-material/Stop";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { grey } from "@mui/material/colors";
 import { useCtx } from "../../context/Context";
 import { useEffect, useState } from "react";
+import { useTimerStore } from "../../stores/useTimerStore";
 
 export default function SttRecord() {
     const context = useCtx();
     const { setLoading } = context;
-    const timerContext = TimerCtx();
-    const {isRunning, setIsRunning, setTimer} = timerContext;
+    const { setIsRunning, setTimer }  = useTimerStore(
+        state => ({ 
+          setIsRunning: state.setIsRunning,
+          setTimer: state.setTimer,
+        }), shallow
+    );
     const recordContext = RecordCtx();
     const { record, setRecord, tempFile, setTempFile } = recordContext;
 

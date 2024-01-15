@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
-import { TimerCtx } from "../../context/TimerContext";
+import { shallow } from 'zustand/shallow';
 import { StreamCtx } from "../../context/StreamContext";
 import axios from "axios";
 import { useCtx } from "../../context/Context";
 import { grey } from "@mui/material/colors";
+import { useTimerStore } from "../../stores/useTimerStore";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
     const context = useCtx();
     const {setAlert} = context;
 
-    const timerContext = TimerCtx();
-    const {setIsRunning, setTimer} = timerContext;
+    const { setIsRunning, setTimer } = useTimerStore(
+      state => ({
+        setIsRunning: state.setIsRunning,
+        setTimer: state.setTimer,
+      }), shallow
+    );
+
     const streamContext = StreamCtx();
     const { setAudioSrc, handleStreamList, setRecordedData, status, setTempFile } = streamContext;
     
