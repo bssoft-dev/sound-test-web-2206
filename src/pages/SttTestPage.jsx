@@ -2,7 +2,6 @@ import { createContext, useEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
-import { RecordContextProvider, RecordCtx } from "../context/RecordContext";
 
 import { Button, Card, CardContent, CardHeader, Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
 import SttRecord from "../components/SttRecord/SttRecord";
@@ -144,62 +143,60 @@ export default function SttTestPage() {
       };
     
     return(
-      <RecordContextProvider>
-          <Layout>
-            <Grid container spacing={2}
-                flexDirection="column"
-                sx={{position: 'relative', minHeight: '100%'}}>
-                {!sttResult ? 
-                  <>
-                    <Grid item>
-                      <Paper sx={{py: 2, px: 4, display: 'flex', alignItems: 'center', gap: 4}}>
-                        <AudioRecorder args={new Map(Object.entries(recorderParams))} 
-                            wavesurferRef={wavesurferRef}
-                            handleWaveForm={handleClick}
-                            handleDataUpdate={handleDataUpdate}
-                            recordIcon={<KeyboardVoiceIcon sx={{color: recording ? '#fff' : 'inherit'}} />}
-                            setRecording={setRecording}
-                            btnStyle={[{ borderRadius: '50%', width: { xs: '3rem', lg: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', lg: '5rem' },
-                                }, recording && {backgroundColor: "#f44336", boxShadow: 'none', animation: `${pulse} 1.5s infinite linear`}]}
-                            />  
-                        <Grid className={classes.waveWrap}>
-                            <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
-                        </Grid>
-                      </Paper>
+      <Layout>
+        <Grid container spacing={2}
+            flexDirection="column"
+            sx={{position: 'relative', minHeight: '100%'}}>
+            {!sttResult ? 
+              <>
+                <Grid item>
+                  <Paper sx={{py: 2, px: 4, display: 'flex', alignItems: 'center', gap: 4}}>
+                    <AudioRecorder args={new Map(Object.entries(recorderParams))} 
+                        wavesurferRef={wavesurferRef}
+                        handleWaveForm={handleClick}
+                        handleDataUpdate={handleDataUpdate}
+                        recordIcon={<KeyboardVoiceIcon sx={{color: recording ? '#fff' : 'inherit'}} />}
+                        setRecording={setRecording}
+                        btnStyle={[{ borderRadius: '50%', width: { xs: '3rem', lg: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', lg: '5rem' },
+                            }, recording && {backgroundColor: "#f44336", boxShadow: 'none', animation: `${pulse} 1.5s infinite linear`}]}
+                        />  
+                    <Grid className={classes.waveWrap}>
+                        <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
                     </Grid>
-                    <Grid item flex="1" sx={{ mb: 4}} >
-                        <Card sx={{ height: '100%',overflowY: 'auto'}}>
-                            <CardHeader title={
-                                <Typography variant="subtitle1" fontWeight={500}>인식결과</Typography>
-                            } />
-                            <Divider />
-                            <CardContent>
-                                {recordData && recordData.map((data, index) => {
-                                    return (<Typography sx={{pb: 1}} key={index}>{data}</Typography>)
-                                })}
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                  </> : 
-                  <Grid item flex="1" sx={{ mb: 4}} >
+                  </Paper>
+                </Grid>
+                <Grid item flex="1" sx={{ mb: 4}} >
                     <Card sx={{ height: '100%',overflowY: 'auto'}}>
                         <CardHeader title={
-                            <Typography variant="subtitle1" fontWeight={500}>{sttResult.file}</Typography>
+                            <Typography variant="subtitle1" fontWeight={500}>인식결과</Typography>
                         } />
                         <Divider />
                         <CardContent>
-                          {sttResult.result}
+                            {recordData && recordData.map((data, index) => {
+                                return (<Typography sx={{pb: 1}} key={index}>{data}</Typography>)
+                            })}
                         </CardContent>
                     </Card>
-                  </Grid>
-                }
-                {/* <Grid item flex={1}>
-                    <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
-                    width="100%" height="100%"></embed>
-                </Grid> */}
-            </Grid>
-          </Layout>
-      </RecordContextProvider>
+                </Grid>
+              </> : 
+              <Grid item flex="1" sx={{ mb: 4}} >
+                <Card sx={{ height: '100%',overflowY: 'auto'}}>
+                    <CardHeader title={
+                        <Typography variant="subtitle1" fontWeight={500}>{sttResult.file}</Typography>
+                    } />
+                    <Divider />
+                    <CardContent>
+                      {sttResult.result}
+                    </CardContent>
+                </Card>
+              </Grid>
+            }
+            {/* <Grid item flex={1}>
+                <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
+                width="100%" height="100%"></embed>
+            </Grid> */}
+        </Grid>
+      </Layout>
     )
 }
 

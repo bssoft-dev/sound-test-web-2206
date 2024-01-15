@@ -1,4 +1,3 @@
-import { RecordCtx } from "../../context/RecordContext";
 import ReactMicComp from "../ReactMicComp/ReactMicComp";
 import { Grid, IconButton } from "@mui/material";
 import { shallow } from "zustand/shallow";
@@ -9,6 +8,7 @@ import { grey } from "@mui/material/colors";
 import { useCtx } from "../../context/Context";
 import { useEffect, useState } from "react";
 import { useTimerStore } from "../../stores/useTimerStore";
+import { useRecordStore } from "../../stores/useRecordStore";
 
 export default function SttRecord() {
     const context = useCtx();
@@ -19,8 +19,14 @@ export default function SttRecord() {
           setTimer: state.setTimer,
         }), shallow
     );
-    const recordContext = RecordCtx();
-    const { record, setRecord, tempFile, setTempFile } = recordContext;
+    const { record, setRecord, tempFile, setTempFile } = useRecordStore(
+        state => ({
+            record: state.record, 
+            setRecord: state.setRecord, 
+            tempFile: state.tempFile, 
+            setTempFile: state.setTempFile,
+        }), shallow
+    );
 
     const uploadTemplFile = () => {
         setLoading(true);
@@ -44,7 +50,6 @@ export default function SttRecord() {
 
     useEffect(()=> {
         if(tempFile) {
-            
             uploadTemplFile();
         }
     }, [tempFile])

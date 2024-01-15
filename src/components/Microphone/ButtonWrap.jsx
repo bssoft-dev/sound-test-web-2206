@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { MicrophoneContext } from "./Microphone";
-import { RecordCtx } from "../../context/RecordContext";
 
 import { Button, Grid, IconButton } from "@mui/material";
 import StopIcon from "@mui/icons-material/Stop";
@@ -9,14 +8,21 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { grey } from "@mui/material/colors";
 import { useCtx } from "../../context/Context";
+import { useRecordStore } from "../../stores/useRecordStore";
+import { shallow } from "zustand/shallow";
 
 export default function ButtonWrap() {
   const context = useCtx(); 
   const { loading } = context;
   const microphoneContext = useContext(MicrophoneContext);
   const {isPlaying, startRecording, stopRecording, restartRecording, togglePlayback, stopPlayback, handleDone} = microphoneContext;
-  const recordContext = RecordCtx();
-  const { record, tempFile } = recordContext;
+  const { record, tempFile } = useRecordStore(
+    state => ({
+      record: state.record,
+      tempFile: state.tempFile,
+    }), shallow
+  );
+  
 
   return (<>
     {loading ? '' : <>

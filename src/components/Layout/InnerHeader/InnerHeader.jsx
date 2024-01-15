@@ -5,7 +5,6 @@ import FileUploadButton from "../../FileUploadButton/FileUploadButton";
 import './innerHeader.css'
 
 import { Box, Typography } from "@mui/material";
-import { RecordContextProvider } from "../../../context/RecordContext";
 import BasicSelect from "../../FileUploadButton/BssSelect";
 
 export default function InnerHeader() {
@@ -19,11 +18,9 @@ export default function InnerHeader() {
         <Box className="btnWrap">
           {/* 도움말은 해당 페이지에 맞춰서 변경 될 필요 있음 */}
           { !(pathname === '/') && <TutorialModal /> }
-        {pathname === '/sound-test' &&
-          <RecordContextProvider>
+          {pathname === '/sound-test' &&
             <Microphone />
-          </RecordContextProvider>
-        }
+          }
           {pathname === '/bss-test' &&
             <BasicSelect />
           }

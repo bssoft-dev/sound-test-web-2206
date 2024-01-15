@@ -1,8 +1,9 @@
-import { RecordCtx } from "../../context/RecordContext";
 import { ReactMic } from "react-mic";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Timer from "../Timer/Timer";
+import { useRecordStore } from "../../stores/useRecordStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
     reactmic: {
@@ -13,8 +14,14 @@ const useStyles = makeStyles(theme => ({
   
 export default function ReactMicComp() {
     const classes = useStyles();
-    const recordContext = RecordCtx();
-    const {record, onSave, onStop, onData} = recordContext;
+    const {record, onSave, onStop, onData} = useRecordStore(
+      state => ({
+        record: state.record,
+        onSave: state.onSave, 
+        onStop: state.onStop, 
+        onData: state.onData,
+      }), shallow
+    );
 
     return (<Grid container justifyContent="center"
       sx={{width: '90%', mx: 'auto', mt: 3}}>

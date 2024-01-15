@@ -1,9 +1,13 @@
-import { RecordCtx } from "../../context/RecordContext";
+import { shallow } from "zustand/shallow";
+import { useRecordStore } from "../../stores/useRecordStore";
 import WaveSurferComp from "./WaveSurferComp";
 
 export default function RecordWaveSurfer() {
-  const recordContext = RecordCtx();
-  const { tempFile } = recordContext;
+  const { tempFile } = useRecordStore(
+    state => ({
+      tempFile: state.tempFile,
+    }), shallow
+  );
 
   return (<WaveSurferComp tempFile={tempFile} />);
 }

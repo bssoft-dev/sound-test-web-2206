@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import ReactMicComp from "../ReactMicComp/ReactMicComp";
 import ButtonWrap from "./ButtonWrap";
-import { RecordCtx } from "../../context/RecordContext";
 import RecordWaveSurfer from "../WaveSurferComp/RecordWaveSurfer";
 
 import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide } from "@mui/material";
@@ -9,6 +8,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from "@mui/styles";
 import { MicrophoneContext } from "./Microphone";
 import Loading from "../Loading/Loading";
+import { useRecordStore } from "../../stores/useRecordStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
     flex: {
@@ -32,8 +33,11 @@ export default function RecordDialog() {
 
     const microphoneContext = useContext(MicrophoneContext);
     const {open, handleCancel, loading} = microphoneContext;
-    const recordContext = RecordCtx();
-    const { tempFile } = recordContext;
+    const { tempFile } = useRecordStore(
+      state => ({
+        tempFile: state.tempFile,
+      }), shallow
+    );
 
     return (<Dialog 
         fullWidth

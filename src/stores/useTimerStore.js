@@ -6,8 +6,8 @@ export const useTimerStore = createWithEqualityFn(
         (set) => ({
             // timer Runnig state
             isRunning: false,
-            setIsRunning: (bool) => set(
-                () => ({ isRunning: bool }), false, 'setIsRunning'
+            setIsRunning: (value) => set(
+                { isRunning: value }, false, 'setIsRunning'
             ),
 
             // timer
@@ -16,7 +16,7 @@ export const useTimerStore = createWithEqualityFn(
                 state => ({ timer: state.timer + 10 }), false, 'increaseTimer'
             ),
             setTimer: (value) => set(
-                () => ({ timer: value }), false, 'setTimer'
+                { timer: value }, false, 'setTimer'
             ),
         })
     ), Object.is

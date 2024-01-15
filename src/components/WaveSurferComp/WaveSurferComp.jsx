@@ -11,7 +11,6 @@ import { red, grey } from "@mui/material/colors";
 import StopIcon from "@mui/icons-material/Stop";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-import { RecordCtx } from "../../context/RecordContext";
 
 const useStyles = makeStyles(theme => ({
     wavesurferWrap: {

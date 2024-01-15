@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, createContext, useContext } from "react";
 import axios from 'axios'
-import { RecordCtx } from "../../context/RecordContext";
 import { useCtx } from "../../context/Context";
 import RecordDialog from "./RecordDialog";
 import { Button } from "@mui/material";
 import { useTimerStore } from "../../stores/useTimerStore";
 import { shallow } from "zustand/shallow";
+import { useRecordStore } from "../../stores/useRecordStore";
 
 export const MicrophoneContext = createContext();
 
@@ -18,8 +18,13 @@ export default function Microphone() {
       setIsRunning: state.setIsRunning,
     }), shallow
   );
-  const recordContext = RecordCtx();
-  const { setRecord, tempFile, setTempFile } = recordContext;
+  const { setRecord, tempFile, setTempFile } = useRecordStore(
+    state => ({
+      setRecord: state.setRecord, 
+      tempFile: state.tempFile, 
+      setTempFile: state.setTempFile,
+    }), shallow
+  );
 
   const wavesurfer = useRef(null);
   const [open, setOpen] = React.useState(false);
