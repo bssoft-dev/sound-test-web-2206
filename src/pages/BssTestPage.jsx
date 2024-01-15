@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import axios from "axios";
@@ -23,7 +23,7 @@ export default function BssTestPage() {
   const title = '화자 분리 테스트'
   useTitle(title);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setRows([]);  
     setTitle(title);
   }, []);

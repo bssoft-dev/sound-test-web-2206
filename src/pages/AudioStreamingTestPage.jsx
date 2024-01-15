@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
@@ -20,7 +20,7 @@ export default function AudioStreamingTestPage() {
 
     const [audioAnalyserRefWidth, setAudioAnalyserRefWidth] = useState();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const padding = window.innerWidth> 600 ? 40 : 24
         setTitle(title);
         setAudioAnalyserRefWidth(AudioAnalyserRef.current.offsetWidth - padding * 2);

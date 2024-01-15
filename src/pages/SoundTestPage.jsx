@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
@@ -22,9 +22,12 @@ export default function SoundTestPage() {
   const title = '사운드 처리 테스트'
   useTitle(title);
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTitle(title);
     setSoundTableRows([]);
+  }, [])
+
+  useEffect(() => {
     fetchSoundDatas();
     const channels = supabase.channel('channels_change')
       .on(

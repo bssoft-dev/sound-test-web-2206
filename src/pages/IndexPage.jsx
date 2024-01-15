@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
@@ -12,8 +12,8 @@ function IndexPage() {
   const { setTitle, token } = context;
   useTitle()
 
-  useEffect(() => {
-      setTitle('비에스 소프트');
+  useLayoutEffect(() => {
+    setTitle('비에스 소프트');
   }, []);
 
   return (<>

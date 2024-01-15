@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
@@ -75,7 +75,7 @@ export default function SttTestPage() {
     const wavesurferRef = useRef(null);
     const [recording, setRecording] = useState(false);
     
-    useEffect(() => {
+    useLayoutEffect(() => {
       setTitle(title);
       return () => {
         if (wavesurferRef.current && wavesurferRef.current.microphone) {

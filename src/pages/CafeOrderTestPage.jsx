@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
@@ -53,7 +53,7 @@ export default function CafeOrderTestPage() {
   const title = '카페 주문 테스트'
   useTitle(title);
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTitle(title);
   }, []);
 
