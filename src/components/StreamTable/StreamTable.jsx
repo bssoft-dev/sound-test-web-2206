@@ -11,7 +11,8 @@ import { styled } from '@mui/styles';
 
 import Row from './Row';
 import EnhancedTableHead from './EnhancedTableHead';
-import { StreamCtx } from '../../context/StreamContext';
+import { useStreamStore } from '../../stores/useStreamStore';
+import { shallow } from 'zustand/shallow';
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -115,8 +116,12 @@ function stableSort(array, comparator) {
 }
 
 export default function StreamTable() {
-  const streamContext = StreamCtx();
-  const { rows, setRecordedData, setTempFile } = streamContext;
+  const { rows, setTempFile } = useStreamStore(
+    state => ({
+      rows: state.rows, 
+      setTempFile: state.setTempFile
+    }), shallow
+  );
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');

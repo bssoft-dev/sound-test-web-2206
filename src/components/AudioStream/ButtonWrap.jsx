@@ -1,15 +1,18 @@
-import { Box, Button, Grid, IconButton } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 
 import StopIcon from "@mui/icons-material/Stop";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { makeStyles } from "@mui/styles";
 import { grey } from "@mui/material/colors";
-import { StreamCtx } from "../../context/StreamContext";
+import { useStreamStore } from "../../stores/useStreamStore";
+import { shallow } from "zustand/shallow";
 
 export default function ButtonWrap() {
-    const streamContext = StreamCtx();
-    const { status, controlAudio } = streamContext;
+    const { status, controlAudio } = useStreamStore(
+        state => ({
+            status: state.status, 
+            controlAudio: state.controlAudio
+        }), shallow
+    );
     
     return(<Grid position="relative"
         sx={{ backgroundColor: '#fff'}}>

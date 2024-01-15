@@ -1,10 +1,14 @@
 import { useEffect } from "react";
-import { StreamCtx } from "../../context/StreamContext";
 import WaveSurferComp from "./WaveSurferComp";
+import { useStreamStore } from "../../stores/useStreamStore";
+import { shallow } from "zustand/shallow";
 
 export default function StreamWaveSurfer() {
-  const streamContext = StreamCtx();
-  const { tempFile } = streamContext;
+  const { tempFile } = useStreamStore(
+    state => ({
+      tempFile: state.tempFile,
+    }), shallow
+  )
   useEffect(() => {
     console.log('stream' ,tempFile)
   }, [tempFile])

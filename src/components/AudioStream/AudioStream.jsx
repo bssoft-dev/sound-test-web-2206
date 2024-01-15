@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { shallow } from 'zustand/shallow';
-import { StreamCtx } from "../../context/StreamContext";
 import axios from "axios";
 import { useCtx } from "../../context/Context";
 import { grey } from "@mui/material/colors";
 import { useTimerStore } from "../../stores/useTimerStore";
+import { useStreamStore } from "../../stores/useStreamStore";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
     const context = useCtx();
@@ -18,8 +18,16 @@ export default function AudioStream({audioAnalyserRefWidth}) {
       }), shallow
     );
 
-    const streamContext = StreamCtx();
-    const { setAudioSrc, handleStreamList, setRecordedData, status, setTempFile } = streamContext;
+    const { setAudioSrc, handleStreamList, setRecordedData, status, setTempFile } = useStreamStore(
+      state => ({
+        setAudioSrc: state.setAudioSrc, 
+        handleStreamList: state.handleStreamList, 
+        setRecordedData: state.setRecordedData, 
+        status: state.status, 
+        setTempFile: state.setTempFile
+
+      }), shallow
+    )
     
     // const [audioType, setAudioType] = useState("audio/wav");
     
