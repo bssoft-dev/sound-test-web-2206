@@ -80,6 +80,9 @@ export function ContextProvider({children}) {
     }, [location.pathname]);
 
     useEffect(() => {
+        if(localStorage.getItem('token')) {
+            setToken(localStorage.getItem('token'));
+        }
         setVersion(null);
         setFile([null]);
         setRegion({

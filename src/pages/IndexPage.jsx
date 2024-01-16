@@ -14,6 +14,7 @@ function IndexPage() {
   useTitle()
 
   useLayoutEffect(() => {
+    console.log(token)
     setTitle('비에스 소프트');
   }, []);
 

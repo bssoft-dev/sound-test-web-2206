@@ -15,14 +15,13 @@ export default function ButtonWrap() {
   const context = useCtx(); 
   const { loading } = context;
   const microphoneContext = useContext(MicrophoneContext);
-  const {isPlaying, startRecording, stopRecording, restartRecording, togglePlayback, stopPlayback, handleDone} = microphoneContext;
+  const { startRecording, stopRecording, restartRecording, handleDone } = microphoneContext;
   const { record, tempFile } = useRecordStore(
     state => ({
       record: state.record,
       tempFile: state.tempFile,
     }), shallow
   );
-  
 
   return (<>
     {loading ? '' : <>
@@ -54,7 +53,7 @@ export default function ButtonWrap() {
             취소
           </Button>
 
-          <Grid item>
+          {/* <Grid item>
             {!isPlaying ? (
               <IconButton onClick={togglePlayback}
                 aria-label="재생">
@@ -71,7 +70,7 @@ export default function ButtonWrap() {
               aria-label="정지">
               <StopIcon />
             </IconButton>
-          </Grid>
+          </Grid> */}
 
           {/* 확인 */}
           <Button onClick={handleDone}

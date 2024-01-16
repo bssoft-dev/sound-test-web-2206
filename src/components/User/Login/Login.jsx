@@ -45,7 +45,7 @@ export default function Login() {
             setAlert((isAlert) => {
                 return {...isAlert, open: false}
             });
-            navigate('/');
+            return navigate('/');
         })
         .catch(err => {
             if(!err.response) {

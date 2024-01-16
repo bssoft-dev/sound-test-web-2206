@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, createContext, useContext } from "react";
+import React, { useState, useRef, useEffect, createContext, useContext, useLayoutEffect } from "react";
 import axios from 'axios'
 import { useCtx } from "../../context/Context";
 import RecordDialog from "./RecordDialog";
@@ -11,35 +11,21 @@ export const MicrophoneContext = createContext();
 
 export default function Microphone() {
   const context = useCtx();
-  const {setAlert, pushFile, setLoading} = context;
-  const { isRunning , setIsRunning } = useTimerStore(
+  const { setAlert, pushFile, setLoading } = context;
+  const { setTimer, setIsRunning } = useTimerStore(
     state => ({
-      isRunning: state.isRunning, 
+      setTimer: state.setTimer, 
       setIsRunning: state.setIsRunning,
     }), shallow
   );
-  const { setRecord, tempFile, setTempFile } = useRecordStore(
+  const { setRecord, tempFile, setTempFile, setOpen,  } = useRecordStore(
     state => ({
       setRecord: state.setRecord, 
       tempFile: state.tempFile, 
       setTempFile: state.setTempFile,
+      setOpen: state.setOpen, 
     }), shallow
   );
-
-  const wavesurfer = useRef(null);
-  const [open, setOpen] = React.useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const togglePlayback = () => {
-    if (!isPlaying) {
-      wavesurfer.current.play();
-    } else {
-      wavesurfer.current.pause();
-    }
-  };
-
-  const stopPlayback = () => wavesurfer.current.stop();
 
   const uploadTemplFile = (tempFile) => {
     console.log(tempFile);
@@ -90,10 +76,6 @@ export default function Microphone() {
     })
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleDone = () => {
     if (tempFile) {
       uploadTemplFile(tempFile);
@@ -119,6 +101,7 @@ export default function Microphone() {
   const stopRecording = () => {
     setRecord(false);
     setIsRunning(false);
+    setTimer(0);
   };
 
   const restartRecording = () => {
@@ -128,15 +111,12 @@ export default function Microphone() {
 
 
   return (
-      <MicrophoneContext.Provider value={{
-      isPlaying, open, 
-      wavesurfer, setPlayerReady, setIsPlaying,
-      togglePlayback, stopPlayback, handleDone, handleCancel,
+    <MicrophoneContext.Provider value={{
+      handleDone, handleCancel,
       startRecording, stopRecording, restartRecording,
-      isRunning, setIsRunning
     }}>
       <Button variant="outlined" color="error"
-        onClick={handleClickOpen}
+        onClick={() => setOpen(true)}
         sx={{marginLeft: {xs: 1, sm: 2}, boxShadow: 1}}>
         녹음하기
       </Button>

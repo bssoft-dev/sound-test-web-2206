@@ -10,6 +10,7 @@ import { MicrophoneContext } from "./Microphone";
 import Loading from "../Loading/Loading";
 import { useRecordStore } from "../../stores/useRecordStore";
 import { shallow } from "zustand/shallow";
+import { useCtx } from "../../context/Context";
 
 const useStyles = makeStyles(theme => ({
     flex: {
@@ -30,12 +31,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function RecordDialog() {
     const classes = useStyles();
+    const context = useCtx();
+    const { loading } = context;
 
     const microphoneContext = useContext(MicrophoneContext);
-    const {open, handleCancel, loading} = microphoneContext;
-    const { tempFile } = useRecordStore(
+    const { handleCancel } = microphoneContext;
+    const { tempFile, open } = useRecordStore(
       state => ({
         tempFile: state.tempFile,
+        open: state.open,
       }), shallow
     );
 

@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { shallow } from 'zustand/shallow';
 import { grey, red } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
@@ -18,10 +18,8 @@ const useStyles = makeStyles(theme => ({
     '100%': { opacity: 1}
   },
   resetBtn: {
-      position: 'absolute',
       transition: "0.3s",
       animation: '$fadeIn 1s',
-      left: '102%',
       marginBottom: '-4%',
       '@media (max-width:600px)': {
         width: 30,
@@ -46,6 +44,10 @@ export default function Timer() {
   );
   const classes = useStyles();
   const fontSize = window.innerWidth> 600 ? 'h4' : 'h5'
+
+  useLayoutEffect(() => {
+    setTimer(0)
+  }, []);
 
   useEffect(() => {
       let intervaltimer;

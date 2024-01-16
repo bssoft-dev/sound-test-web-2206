@@ -19,6 +19,15 @@ export const useRecordStore = createWithEqualityFn(
                 { downloadLinkURL: value }, false, 'setDownloadLinkURL'
             ),
 
+            isPlaying: false, 
+            setIsPlaying: (value) => set(
+                { isPlaying: value }, false, 'setIsPlaying'
+            ),
+
+            open: false, 
+            setOpen: (value) => set(
+                { open: value }, false, 'setOpen'
+            ),
 
             onData: (recordedBlob) => {
                 console.log('chunk of real-time data is: ', recordedBlob);
