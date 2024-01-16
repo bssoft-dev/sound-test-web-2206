@@ -6,10 +6,10 @@ import SideNav from "./SideNav/SideNav";
 
 import "./layout.css";
 import SideMenu from "./SideNav/SideMenu";
-import Loading from "../Loading/Loading";
 import { Suspense, lazy } from "react";
 
 const LazyAlert = lazy(() => import("../Alert/Alert"));
+const LazyLoading = lazy(() => import("../Loading/Loading"));
 
 export default function Layout({ children }) {
     const context = useCtx();
@@ -23,9 +23,9 @@ export default function Layout({ children }) {
         </Drawer>
         <Suspense fallback={null}>
             {isAlert.open && <LazyAlert />}
+            {loading && <LazyLoading sx={{position: 'absolute', top: 0, left: 0, zIndex: 100}} />}
         </Suspense>
         <SideNav />
         <MainContainer content={children}  />
-        {loading && <Loading sx={{position: 'absolute', top: 0, left: 0, zIndex: 100}} />}
     </div>)
 }

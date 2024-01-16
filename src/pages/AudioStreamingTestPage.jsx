@@ -8,8 +8,9 @@ import AudioStream from "../components/AudioStream/AudioStream";
 import ButtonWrap from "../components/AudioStream/ButtonWrap";
 import StreamTable from "../components/StreamTable/StreamTable";
 import { Grid, Paper } from "@mui/material";
+import { withAuth } from "../hooks/withAuth";
 
-export default function AudioStreamingTestPage() {
+function AudioStreamingTestPage() {
     const context = useCtx();  
     const { setTitle } = context;
 
@@ -57,3 +58,5 @@ export default function AudioStreamingTestPage() {
         </Layout>
     )
 }
+
+export default withAuth(AudioStreamingTestPage);

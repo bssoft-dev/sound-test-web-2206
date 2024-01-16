@@ -8,6 +8,7 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { withAuth } from "../hooks/withAuth";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function BssTestPage() {
+function BssTestPage() {
   const classes = useStyles();
   const context = useCtx();  
   const { setTitle, files, fetchData, setRows, rows } = context;
@@ -45,3 +46,5 @@ export default function BssTestPage() {
     </Layout>
   )
 }
+
+export default withAuth(BssTestPage);

@@ -5,6 +5,7 @@ import Layout from "../components/Layout/Layout";
 import { Grid, Typography } from "@mui/material";
 
 import "./styles.css";
+import { withAuth } from "../hooks/withAuth";
 
 
 function IndexPage() {
@@ -30,4 +31,4 @@ function IndexPage() {
 }
 
 
-export default IndexPage;
+export default withAuth(IndexPage);

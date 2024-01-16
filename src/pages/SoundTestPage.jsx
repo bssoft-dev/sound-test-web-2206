@@ -8,6 +8,7 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import supabase from "../utils/supabase";
+import { withAuth } from "../hooks/withAuth";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SoundTestPage() {
+function SoundTestPage() {
   const classes = useStyles();
   const context = useCtx();  
   const { setTitle, files, fetchSoundDatas, setSoundTableRows, sountTableRows } = context;
@@ -56,3 +57,5 @@ export default function SoundTestPage() {
     </Layout>
   )
 }
+
+export default withAuth(SoundTestPage);

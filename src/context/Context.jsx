@@ -9,7 +9,6 @@ export const Context = createContext({});
 
 export function ContextProvider({children}) {
     const location = useLocation();
-    const navigate = useNavigate();
     const [token, setToken] = useState(null);
     const [pathname, setPathname] = useState(location.pathname);
     const [loading, setLoading] = useState(false);
@@ -81,11 +80,6 @@ export function ContextProvider({children}) {
     }, [location.pathname]);
 
     useEffect(() => {
-        if(localStorage.getItem('token')) {
-            setToken(localStorage.getItem('token'));
-        } else {
-            return navigate('/login');
-        }
         setVersion(null);
         setFile([null]);
         setRegion({

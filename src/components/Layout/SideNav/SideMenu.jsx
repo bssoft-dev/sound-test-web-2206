@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
+import { useLayoutEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
+import { withHyperuser } from "../../../hooks/withHyperuser";
 
 const links = [
     // {name: '사운드 처리 테스트', url: '/sound-test' },
@@ -13,14 +14,7 @@ const links = [
     // {name: '테스트', url: '/test' },
 ]
 
-export default function SideMenu() {
-    const [isHyperuser, setIsHyperuser] = useState(false);
-
-    useEffect(() => {
-        if(localStorage.getItem('is_hyperuser')) {
-            setIsHyperuser(true);
-        }
-    }, [])
+function SideMenu({ isHyperuser }) {
     
     return (
         <Grid className="SideMenu">
@@ -43,3 +37,5 @@ export default function SideMenu() {
         </Grid>
     )
 }
+
+export default withHyperuser(SideMenu);

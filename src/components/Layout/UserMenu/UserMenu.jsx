@@ -13,7 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 export default function UserMenu() {
   const navigate = useNavigate('/login');
   const context = useCtx();
-  const { setToken, mobileOpen } = context;
+  const { setToken } = context;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 

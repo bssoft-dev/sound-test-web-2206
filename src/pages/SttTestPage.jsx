@@ -13,6 +13,7 @@ import { makeStyles } from "@mui/styles";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import { red } from "@mui/material/colors";
 import { keyframes } from '@mui/system';
+import { withAuth } from "../hooks/withAuth";
 
 const useStyles = makeStyles(theme => ({
     dataWrap: {
@@ -64,7 +65,7 @@ export const recorderParams = {
 };
 
 
-export default function SttTestPage() {
+function SttTestPage() {
     const classes = useStyles();
     const context = useCtx();  
     const { setTitle, sttResult } = context;
@@ -200,4 +201,4 @@ export default function SttTestPage() {
     )
 }
 
-export const SttContext = createContext();
+export default withAuth(SttTestPage);

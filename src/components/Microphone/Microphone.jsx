@@ -31,8 +31,6 @@ export default function Microphone() {
   const [playerReady, setPlayerReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(()=> {}, )
-
   const togglePlayback = () => {
     if (!isPlaying) {
       wavesurfer.current.play();

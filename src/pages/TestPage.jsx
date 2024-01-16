@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout/Layout";
+import { withAuth } from "../hooks/withAuth";
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
-export default function TestPage() {const [isRecording, setIsRecording] = useState(false);
+function TestPage() {
+  const [isRecording, setIsRecording] = useState(false);
   const [recordedBlobs, setRecordedBlobs] = useState([]);
   const [currentFileSize, setCurrentFileSize] = useState(0);
   const [currentFileNumber, setCurrentFileNumber] = useState(0);
@@ -70,3 +72,5 @@ export default function TestPage() {const [isRecording, setIsRecording] = useSta
     </div>
   </Layout>)
 }
+
+export default withAuth(TestPage);

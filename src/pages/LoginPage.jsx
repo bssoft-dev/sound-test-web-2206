@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Login from "../components/User/Login/Login";
 import Alert from "../components/Alert/Alert";
+import { withAuth } from "../hooks/withAuth";
 
 const useStyles = makeStyles(theme => ({
     gradientBG: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
-export default function LoginPage() {
+function LoginPage() {
     const classes = useStyles();
 
     useTitle('로그인');
@@ -39,3 +40,5 @@ export default function LoginPage() {
         </Grid>
     </Grid>)
 }
+
+export default withAuth(LoginPage);
