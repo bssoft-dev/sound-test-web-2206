@@ -10,10 +10,11 @@ import { useStore } from "../../../stores/useStore";
 import { shallow } from "zustand/shallow";
 
 export default function Login() {    
-    const { token, setToken, setAlert } = useStore(
+    const { token, setToken, setIsHyperuser, setAlert } = useStore(
         state => ({
             token: state.token,
             setToken: state.setToken,
+            setIsHyperuser: state.setIsHyperuser,
             setAlert: state.setAlert
         }), shallow
     );
@@ -49,7 +50,7 @@ export default function Login() {
             if(getToken !== token) setToken(getToken);
 
             if(res.data.is_hyperuser) {
-                localStorage.setItem('is_hyperuser', true);
+                setIsHyperuser(res.data.is_hyperuser);
             }
             setAlert((isAlert) => {
                 return {...isAlert, open: false}

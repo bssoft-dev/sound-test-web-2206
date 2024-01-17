@@ -10,18 +10,13 @@ import { shallow } from 'zustand/shallow';
 
 export default function UserMenu() {
   const navigate = useNavigate('/login');
-  const { setToken, } = useStore(
-    state => ({
-      setToken: state.setToken,
-    }), shallow
-  );
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('is_hyperuser')
-    setToken(null);
+    // setToken(null);
+    useStore.persist.clearStorage();
     navigate('/login')
   }
 
