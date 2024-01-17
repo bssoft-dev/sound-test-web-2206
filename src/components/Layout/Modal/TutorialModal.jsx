@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Tooltip } from '@mui/material';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { green, grey } from "@mui/material/colors";
-import { useCtx } from '../../../context/Context';
 import axios from 'axios';
+import { useStore } from '../../../stores/useStore';
+import { shallow } from 'zustand/shallow';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function TutorialModal() {
-  const context = useCtx();
-  const { serverHealth, setServerHealth, pathname, version, setVersion } = context;
+  const { pathname, serverHealth, setServerHealth, version, setVersion } = useStore(
+    state => ({
+      pathname: state.pathname, 
+      serverHealth: state.serverHealth, 
+      setServerHealth: state.setServerHealth, 
+      version: state.version, 
+      setVersion: state.setVersion
+    }), shallow
+  );
+
   const [open, setOpen] = useState(false);
 
   const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
@@ -38,8 +47,6 @@ export default function TutorialModal() {
       })
   }
 
-
-  
   // health check
   const getServerHealth = (baseUrl) => {
     axios.get(baseUrl)

@@ -1,19 +1,41 @@
 import { Box, Drawer } from "@mui/material";
-import { useCtx } from "../../context/Context";
-import Alert from "../Alert/Alert";
 import MainContainer from "./MainContainer/MainContainer";
 import SideNav from "./SideNav/SideNav";
 
 import "./layout.css";
 import SideMenu from "./SideNav/SideMenu";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
+import { shallow } from "zustand/shallow";
+import { useStore } from "../../stores/useStore";
 
 const LazyAlert = lazy(() => import("../Alert/Alert"));
 const LazyLoading = lazy(() => import("../Loading/Loading"));
 
 export default function Layout({ children }) {
-    const context = useCtx();
-    const { mobileOpen, handleDrawerToggle, loading, isAlert } = context;
+    const { pathname, mobileOpen, handleDrawerToggle, loading, isAlert, setVersion, setFile, setRegion } = useStore(
+        state => ({
+            pathname: state.pathname,
+            mobileOpen: state.mobileOpen, 
+            handleDrawerToggle: state.handleDrawerToggle, 
+            loading: state.loading, 
+            isAlert: state.isAlert,
+            setVersion: state.setVersion, 
+            setFile: state.setFile, 
+            setRegion: state.setRegion
+        }), shallow
+    );
+    
+
+    useEffect(() => {
+        setVersion(null);
+        setFile([null]);
+        setRegion({
+            id: 'region-1',
+            start: 0,
+            end: 1,
+            color: "rgba(60, 179, 113, 0.3)"
+          });
+    }, [pathname]);
 
     return (<div className="row layout">
         <Drawer anchor="left" open={mobileOpen} onClose={handleDrawerToggle}>

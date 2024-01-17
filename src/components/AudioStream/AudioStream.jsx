@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { shallow } from 'zustand/shallow';
 import axios from "axios";
-import { useCtx } from "../../context/Context";
 import { grey } from "@mui/material/colors";
 import { useTimerStore } from "../../stores/useTimerStore";
 import { useStreamStore } from "../../stores/useStreamStore";
+import { useStore } from "../../stores/useStore";
+import { useEffect } from "react";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
-    const context = useCtx();
-    const {setAlert} = context;
+    const {setAlert} = useStore(
+      state => ({
+        setAlert: state.setAlert
+      }), shallow
+    );
 
     const { setIsRunning, setTimer } = useTimerStore(
       state => ({
@@ -18,17 +21,49 @@ export default function AudioStream({audioAnalyserRefWidth}) {
       }), shallow
     );
 
-    const { setAudioSrc, handleStreamList, setRecordedData, status, setTempFile } = useStreamStore(
+    const { setAudioSrc, streamList, setStreamList, handleStreamList, recordedData, setRecordedData, status, setTempFile, setRows } = useStreamStore(
       state => ({
         setAudioSrc: state.setAudioSrc, 
+        streamList: state.streamList,
+        setStreamList: state.setStreamList,
         handleStreamList: state.handleStreamList, 
+        recordedData: state.recordedData,
         setRecordedData: state.setRecordedData, 
         status: state.status, 
-        setTempFile: state.setTempFile
+        setTempFile: state.setTempFile,
+        setRows: state.setRows,
 
       }), shallow
     )
-    
+
+    useEffect(() => {
+      console.log(recordedData)
+      const createData = (reckey, oriUrlBase, receivedTime, duration, history ) => {
+        return {
+          reckey,
+          oriUrlBase,
+          receivedTime,
+          duration,
+          history
+        };
+      }
+      
+      if (recordedData && streamList) {
+        const newRow = createData(
+          recordedData.Date,
+          recordedData.blobURL,
+          recordedData.Date,
+          '10초',
+          streamList,
+        );
+        console.log('streamList', streamList)
+        setRows(newRow);
+        setRecordedData(null);
+        setStreamList([]);
+        setAudioSrc('');
+      }
+    }, [recordedData]);
+
     // const [audioType, setAudioType] = useState("audio/wav");
     
 

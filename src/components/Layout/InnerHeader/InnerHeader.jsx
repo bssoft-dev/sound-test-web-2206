@@ -1,15 +1,19 @@
-import { useCtx } from "../../../context/Context";
+import { Box, Typography } from "@mui/material";
 import TutorialModal from "../Modal/TutorialModal";
 import Microphone from "../../Microphone/Microphone";
 import FileUploadButton from "../../FileUploadButton/FileUploadButton";
 import './innerHeader.css'
-
-import { Box, Typography } from "@mui/material";
 import BasicSelect from "../../FileUploadButton/BssSelect";
+import { useStore } from "../../../stores/useStore";
 
 export default function InnerHeader() {
-    const context = useCtx();
-    const { pathname, title } = context;
+    const { pathname, title } = useStore(
+      state => ({
+        pathname: state.pathname,
+        title: state.title,
+      })
+    );
+
     
     return (<Box className="innerHeader row">
         <Typography variant="h5" className="title" color="text.primary">

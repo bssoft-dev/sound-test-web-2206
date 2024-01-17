@@ -1,7 +1,5 @@
 import React, { useLayoutEffect, } from "react";
-import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
-import axios from "axios";
 import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
 import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
@@ -9,6 +7,8 @@ import AudioPlayer from "../components/AudioPlayer/AudioPlayer";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -18,8 +18,15 @@ const useStyles = makeStyles(theme => ({
 
 function BssTestPage() {
   const classes = useStyles();
-  const context = useCtx();  
-  const { setTitle, files, fetchData, setRows, rows } = context;
+  const { setTitle, files, fetchData, setRows, rows } = useStore(
+    state => ({
+      setTitle: state.setTitle, 
+      files: state.files, 
+      fetchData: state.fetchData, 
+      setRows: state.setRows, 
+      rows: state.rows
+    }), shallow
+  );
 
   const title = '화자 분리 테스트'
   useTitle(title);

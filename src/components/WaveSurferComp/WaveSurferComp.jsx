@@ -94,7 +94,7 @@ export default function WaveSurferComp({ tempFile }) {
 
     useEffect(() => {
       console.log("tempFile", tempFile);
-      if (tempFile != null && wavesurfer.current != null) {
+      if (tempFile &&tempFile.blobURL && wavesurfer.current) {
         wavesurfer.current.load(tempFile.blobURL);
       }
     }, [tempFile, wavesurfer.current]);

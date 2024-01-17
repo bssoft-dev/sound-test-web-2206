@@ -1,15 +1,20 @@
-import { useEffect, useRef } from "react";
-import { useCtx } from "../context/Context";
+import { useEffect } from "react";
 import Layout from "../components/Layout/Layout";
 import RecordWaveSurfer from "../components/WaveSurferComp/RecordWaveSurfer";
 
-import { Grid, IconButton, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import SttRecord from "../components/SttRecord/SttRecord";
 import Loading from "../components/Loading/Loading";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 export default function SttTestPage() {
-    const context = useCtx();  
-    const { setTitle, loading } = context;
+    const { setTitle, loading } = useStore(
+      state => ({
+        setTitle: state.setTitle,
+        loading: state.loading
+      }), shallow
+    );
 
     useEffect(() => {
         setTitle('STT 기본모델 테스트');

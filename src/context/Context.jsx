@@ -1,16 +1,13 @@
-import { CollectionsBookmarkOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { redirect, useLocation, useNavigate } from "react-router-dom";
-import { createClient } from '@supabase/supabase-js';
+import { useLocation } from "react-router-dom";
 import supabase from "../utils/supabase";
 
 export const Context = createContext({});
 
 export function ContextProvider({children}) {
-    const location = useLocation();
+    const [pathname, setPathname] = useState('');
     const [token, setToken] = useState(null);
-    const [pathname, setPathname] = useState(location.pathname);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('비에스 소프트');
     const [isAlert, setIsAlert] = useState({
@@ -23,9 +20,7 @@ export function ContextProvider({children}) {
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
-      };
-
-
+    };
 
     const [regions, setRegions] = useState([
         {
@@ -76,10 +71,6 @@ export function ContextProvider({children}) {
     }
 
     useEffect(() => {
-        setPathname(location.pathname);
-    }, [location.pathname]);
-
-    useEffect(() => {
         if(localStorage.getItem('token')) {
             setToken(localStorage.getItem('token'));
         }
@@ -104,12 +95,10 @@ export function ContextProvider({children}) {
         setSttResult(result);
     }
 
-    useEffect(() => {
-        console.log('sttResult: ', sttResult)
-    }, [sttResult])
 
     return (<Context.Provider value={{
-            pathname, isAlert, setAlert, title, setTitle,
+            pathname, setPathname,
+            isAlert, setAlert, title, setTitle,
             regions, setRegion, rows, setRows, fetchData,
             files, pushFile, setFile,
             loading, setLoading,

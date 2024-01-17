@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Divider, Grid, List, ListItem, Typography } from "@mui/material"
+import { Card, CardContent, Divider, Grid, List, ListItem, Typography } from "@mui/material"
 import { StyledCardHeader, menuList } from "../../pages/CafeOrderTestPage"
 
 export default function CafeMenuList () {

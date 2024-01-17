@@ -1,17 +1,22 @@
-import React, { useState, useRef, useEffect, createContext, useContext, useLayoutEffect } from "react";
+import React, { createContext,  } from "react";
 import axios from 'axios'
-import { useCtx } from "../../context/Context";
 import RecordDialog from "./RecordDialog";
 import { Button } from "@mui/material";
 import { useTimerStore } from "../../stores/useTimerStore";
 import { shallow } from "zustand/shallow";
 import { useRecordStore } from "../../stores/useRecordStore";
+import { useStore } from "../../stores/useStore";
 
 export const MicrophoneContext = createContext();
 
 export default function Microphone() {
-  const context = useCtx();
-  const { setAlert, pushFile, setLoading } = context;
+  const { setAlert, pushFile, setLoading } = useStore(
+    state => ({
+      setAlert: state.setAlert, 
+      pushFile: state.pushFile, 
+      setLoading: state.setLoading
+    }), shallow
+  );
   const { setTimer, setIsRunning } = useTimerStore(
     state => ({
       setTimer: state.setTimer, 

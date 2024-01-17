@@ -1,7 +1,6 @@
-import {React, useState, useEffect} from "react";
+import React from "react";
 import BssUtils from "../../utils/BssUtils";
 import SoundUtils from "../../utils/SoundUtils";
-import { useCtx } from "../../context/Context";
 
 import { Button, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -9,8 +8,8 @@ import { alpha, styled } from '@mui/material/styles';
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { blue } from "@mui/material/colors";
 
-import { v4 as uuidv4 } from "uuid";
-import { useLocation } from "react-router-dom";
+import { useStore } from "../../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 
 const useStyles = makeStyles(theme => ({
@@ -68,11 +67,12 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 
 export default function RecordTable({ fetchDatahandle, rowsData }) {
   const classes = useStyles();
-  const context = useCtx();
-  
-  const location = useLocation();
-  const { pathname } = location;
-  const {setFile, rows} = context;
+  const { pathname, setFile } = useStore(
+    state => ({
+      pathname: state.pathname, 
+      setFile: state.setFile
+    }), shallow
+  );
 
   const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
  

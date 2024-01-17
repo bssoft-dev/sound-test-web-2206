@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useCtx } from "../../context/Context";
 
 import { Button } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useStore } from "../../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 export default function FileUploadButton() {
-    const context = useCtx();
-    const location = useLocation();
-    const { pathname } = location;
-    const { setAlert, fetchData, setServerHealth, bssNumPerson, setLoading, handleSttResult, setRows} = context;
+    const { pathname, setAlert, fetchData, setServerHealth, bssNumPerson, handleSttResult } = useStore(
+      state => ({
+        pathname: state.pathname, 
+        setAlert: state.setAlert, 
+        fetchData: state.fetchData, 
+        setServerHealth: state.setServerHealth, 
+        bssNumPerson: state.bssNumPerson, 
+        handleSttResult: state.handleSttResult
+      }), shallow
+    );
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);

@@ -1,5 +1,4 @@
 import { useLayoutEffect, useState } from "react";
-import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import CafeMenuList from "../components/CafeOrder/CafeMenuList";
@@ -8,6 +7,8 @@ import CafeOrderRecord from "../components/CafeOrder/CafeOrderRecord";
 import { CardHeader, Grid, cardHeaderClasses } from "@mui/material";
 import { styled } from "@mui/styles";
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 export const menuList = {
   drinks: [ '아메리카노', '올타임콜드브루', '(1호점)신촌커피', '카페라떼', '바닐라 카페라떼', '카페모카', '카라멜 마끼아또', '스페니쉬 연유 카페라떼', '달고나 카페라떼', '콜드브루', '딸기 젤리 밀크티', '23수박주스', '아인슈페너 프라페', '스트로베리 초콜릿 프라페', '요거트 프라페', '블루밍 파인애플 라씨', '20곡 오틀리 라떼'],
@@ -49,8 +50,11 @@ export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 
 
 function CafeOrderTestPage() {
-  const context = useCtx();
-  const { setTitle } = context;
+  const { setTitle } = useStore(
+    state => ({
+      setTitle: state.setTitle
+    }), shallow
+  );
 
   const title = '카페 주문 테스트'
   useTitle(title);

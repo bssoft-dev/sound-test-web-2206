@@ -6,11 +6,17 @@ import { Box, Button, Card, CardActions, CardContent, CardHeader, FormControl, I
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from "axios";
-import { useCtx } from "../../../context/Context";
+import { useStore } from "../../../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 export default function Login() {    
-    const context = useCtx();
-    const { setAlert } = context;
+    const { token, setToken, setAlert } = useStore(
+        state => ({
+            token: state.token,
+            setToken: state.setToken,
+            setAlert: state.setAlert
+        }), shallow
+    );
     const [showPassword, setShowPassword] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -39,6 +45,9 @@ export default function Login() {
         })
         .then((res) => {
             localStorage.setItem('token', res.data.access_token);
+            const getToken = localStorage.getItem('token');
+            if(getToken !== token) setToken(getToken);
+
             if(res.data.is_hyperuser) {
                 localStorage.setItem('is_hyperuser', true);
             }

@@ -5,14 +5,17 @@ import { shallow } from "zustand/shallow";
 import StopIcon from "@mui/icons-material/Stop";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { grey } from "@mui/material/colors";
-import { useCtx } from "../../context/Context";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTimerStore } from "../../stores/useTimerStore";
 import { useRecordStore } from "../../stores/useRecordStore";
+import { useStore } from "../../stores/useStore";
 
 export default function SttRecord() {
-    const context = useCtx();
-    const { setLoading } = context;
+    const { setLoading } = useStore(
+        state => ({
+            setLoading: state.setLoading
+        }), shallow
+    );
     const { setIsRunning, setTimer }  = useTimerStore(
         state => ({ 
           setIsRunning: state.setIsRunning,

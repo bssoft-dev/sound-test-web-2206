@@ -1,17 +1,17 @@
-import { useCtx } from "../../../context/Context";
-import UserMenu from "../UserMenu/UserMenu";
-
-import { Button, IconButton } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import './header.css'
-
-import SettingsIcon from '@mui/icons-material/Settings';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from "react-router-dom";
+import { IconButton } from "@mui/material";
+import UserMenu from "../UserMenu/UserMenu";
+import './header.css';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useStore } from "../../../stores/useStore";
 
 export default function Header() {
-    const context = useCtx();
-    const { token, handleDrawerToggle } = context;
+    const {  token, handleDrawerToggle } = useStore(
+        state => ({
+        token: state.token,
+        handleDrawerToggle: state.handleDrawerToggle,
+        })
+    );
     
     return (<header className="row">
     <IconButton
@@ -28,7 +28,7 @@ export default function Header() {
     </Link>
 
     <div className="headerRight row">
-        {token && <UserMenu></UserMenu>}
+        {token && <UserMenu />}
         {/* <div className="settingMenu">
             <Button className="settingBtn" color="inherit">
                 <SettingsIcon sx={{color: grey[400]}} />

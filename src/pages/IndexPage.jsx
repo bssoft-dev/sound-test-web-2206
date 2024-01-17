@@ -1,22 +1,25 @@
-import React, { useLayoutEffect } from "react";
-import { useCtx } from "../context/Context";
+import React, { useEffect, useLayoutEffect,  } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import { Grid, Typography } from "@mui/material";
 
 import "./styles.css";
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
 
 
 function IndexPage() {
-  const context = useCtx();  
-  const { setTitle, token } = context;
+  const { setTitle, token, pathname } = useStore(
+    state => ({
+      setTitle: state.setTitle,
+      token: state.token,
+      pathname: state.pathname,
+    })
+  );
   useTitle()
-
-  useLayoutEffect(() => {
-    console.log(token)
+  useEffect(() => {
     setTitle('비에스 소프트');
-  }, []);
+  }, [pathname]);
 
   return (<>
     {token ? 

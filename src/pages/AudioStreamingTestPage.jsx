@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useCtx } from "../context/Context";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import StreamWaveSurfer from "../components/WaveSurferComp/StreamWaveSurfer";
@@ -9,10 +8,15 @@ import ButtonWrap from "../components/AudioStream/ButtonWrap";
 import StreamTable from "../components/StreamTable/StreamTable";
 import { Grid, Paper } from "@mui/material";
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 function AudioStreamingTestPage() {
-    const context = useCtx();  
-    const { setTitle } = context;
+    const { setTitle } = useStore(
+        state => ({
+            setTitle: state.setTitle
+        }), shallow
+    );
 
     const title = 'ADL 분석 테스트'
     useTitle(title);

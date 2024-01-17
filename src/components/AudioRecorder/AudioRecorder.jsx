@@ -1,17 +1,21 @@
 
-import { useState, useContext, useRef, useEffect } from "react";
-import { Context } from "../../context/Context";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@mui/material";
-import { CollectionsOutlined } from "@mui/icons-material";
 import axios from "axios";
+import { useStore } from "../../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
-    const context = useContext(Context);
     const [startThreshold, setStartThreshold] = useState(args.get("start_threshold"));
     const [endThreshold, setEndThreshold] = useState(args.get("end_threshold"));
     // threshold 변경 감지
     const [thresholdUpdateNeeded, setThresholdUpdateNeeded] = useState(false);
-    const { setServerHealth, setAlert } = context;
+    const { setServerHealth, setAlert } = useStore(
+        state => ({
+            setServerHealth: state.setServerHealth, 
+            setAlert: state.setAlert
+        }), shallow
+    );
     const [isDisabled, setIsDisabled] = useState(false);
     const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");

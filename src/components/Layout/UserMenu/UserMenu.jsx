@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { useCtx } from '../../../context/Context';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { grey } from '@mui/material/colors';
 import { Avatar, Typography } from '@mui/material';
 
 import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { useStore } from '../../../stores/useStore';
+import { shallow } from 'zustand/shallow';
 
 export default function UserMenu() {
   const navigate = useNavigate('/login');
-  const context = useCtx();
-  const { setToken } = context;
+  const { setToken, } = useStore(
+    state => ({
+      setToken: state.setToken,
+    }), shallow
+  );
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('is_hyperuser')
-    setToken(false);
+    setToken(null);
     navigate('/login')
   }
 

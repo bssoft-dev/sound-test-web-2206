@@ -11,6 +11,7 @@ import Loading from "../Loading/Loading";
 import { useRecordStore } from "../../stores/useRecordStore";
 import { shallow } from "zustand/shallow";
 import { useCtx } from "../../context/Context";
+import { useStore } from "../../stores/useStore";
 
 const useStyles = makeStyles(theme => ({
     flex: {
@@ -31,8 +32,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function RecordDialog() {
     const classes = useStyles();
-    const context = useCtx();
-    const { loading } = context;
+    const { loading } = useStore(
+      state => ({
+        loading: state.loading
+      }), shallow
+    );
 
     const microphoneContext = useContext(MicrophoneContext);
     const { handleCancel } = microphoneContext;

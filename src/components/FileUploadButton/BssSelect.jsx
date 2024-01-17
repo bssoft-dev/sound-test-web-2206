@@ -1,9 +1,14 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useCtx } from "../../context/Context";
+import { shallow } from "zustand/shallow";
+import { useStore } from "../../stores/useStore";
 
 export default function BasicSelect() {
-    const context = useCtx();
-    const { bssNumPerson, handleNumPerson } = context;
+    const { bssNumPerson, handleNumPerson } = useStore(
+        state => ({
+            bssNumPerson: state.bssNumPerson, 
+            handleNumPerson: state.handleNumPerson
+        }), shallow
+    );
 
     return (
         <Box sx={{ minWidth: {xs: 80, sm: 100}, marginLeft: { xs: 1, sm: 2 } }}>

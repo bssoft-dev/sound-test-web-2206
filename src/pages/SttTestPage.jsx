@@ -1,19 +1,17 @@
-import { createContext, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useCtx } from "../context/Context";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 
-import { Button, Card, CardContent, CardHeader, Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
-import SttRecord from "../components/SttRecord/SttRecord";
-import Loading from "../components/Loading/Loading";
+import { Card, CardContent, CardHeader, Divider, Grid, Paper, Typography } from "@mui/material";
 import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
 import WaveSurfer from "wavesurfer.js";
 import MicrophonePlugin from "wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js";
 import { makeStyles } from "@mui/styles";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
-import { red } from "@mui/material/colors";
 import { keyframes } from '@mui/system';
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
     dataWrap: {
@@ -67,8 +65,13 @@ export const recorderParams = {
 
 function SttTestPage() {
     const classes = useStyles();
-    const context = useCtx();  
-    const { setTitle, sttResult } = context;
+    const { setTitle, sttResult } = useStore(
+      state => ({
+        setTitle: state.setTitle,
+        sttResult: state.sttResult
+      }), shallow
+    );
+
     const title = 'STT 기본모델 테스트'
     useTitle(title);
 
@@ -85,6 +88,10 @@ function SttTestPage() {
         }
       };
     }, []);
+
+    useEffect(() => {
+        console.log('sttResult: ', sttResult)
+    }, [sttResult])
 
     const [ recordData, setRecordData ] = useState([]);
     const handleDataUpdate = (data) => {

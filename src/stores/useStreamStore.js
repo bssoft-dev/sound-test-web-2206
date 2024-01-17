@@ -45,31 +45,33 @@ export const useStreamStore = createWithEqualityFn(
     ), Object.is
 )
 
-useStreamStore.subscribe(
-    (state) => state.recordedData,
-    ({ recordedData, streamList, setRows, setStreamList, setAudioSrc, setRecordedData }) => {
-        const createData = (reckey, oriUrlBase, receivedTime, duration, history ) => {
-            return {
-              reckey,
-              oriUrlBase,
-              receivedTime,
-              duration,
-              history
-            };
-        }
-        if (recordedData && streamList) {
-            const newRow = createData(
-            recordedData.Date,
-            recordedData.blobURL,
-            recordedData.Date,
-            '10초',
-            streamList,
-            );
-            console.log('streamList', streamList);
-            setRows(newRow);
-            setRecordedData(null);
-            setStreamList([]);
-            setAudioSrc('');
-        }
-    }
-);
+// useStreamStore.subscribe(
+//     ({ recordedData, streamList, setRows, setStreamList, setAudioSrc, setRecordedData }) => {
+//         console.log('recordedData', recordedData)
+//         const createData = (reckey, oriUrlBase, receivedTime, duration, history ) => {
+//             return {
+//               reckey,
+//               oriUrlBase,
+//               receivedTime,
+//               duration,
+//               history
+//             };
+//         }
+//         if (recordedData && streamList) {
+//             const newRow = createData(
+//             recordedData.Date,
+//             recordedData.blobURL,
+//             recordedData.Date,
+//             '10초',
+//             streamList,
+//             );
+//             console.log('streamList', streamList);
+//             setRows(newRow);
+//             setRecordedData(null);
+//             setStreamList([]);
+//             setAudioSrc('');
+//         }
+//     },
+    
+//     state => state.recordedData,
+// );

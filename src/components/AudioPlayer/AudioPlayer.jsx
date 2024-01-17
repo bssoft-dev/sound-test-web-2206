@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { useEffect, useRef, useState } from "react";
-import { useCtx } from "../../context/Context";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugin/wavesurfer.regions.min";
 import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.min";
@@ -23,6 +22,8 @@ import PauseIcon from "@mui/icons-material/Pause";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import { red } from "@mui/material/colors";
+import { useStore } from "../../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -62,9 +63,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function AudioPlayer({ file }) {
-  const context = useCtx();  
-  const { regions, setRegion, pathname, setFiles } = context;
+export default function AudioPlayer({ file }) { 
+  const { regions, setRegion } = useStore(
+    state => ({
+      regions: state.regions, 
+      setRegion: state.setRegion
+    }), shallow
+  );
   const classes = useStyles();
 
   const wavesurfer = useRef(null);

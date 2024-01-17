@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useCtx } from '../../context/Context';
 
 import MuiAlert from '@mui/material/Alert';
-import Snackbar, { snackbarClasses } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/material/styles';
+import { useStore } from '../../stores/useStore';
+import { shallow } from 'zustand/shallow';
 
 const CustomAlert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={4} ref={ref} {...props} />;
@@ -16,8 +17,12 @@ const CustomSnackbar = styled(Snackbar)(({ theme }) => ({
 }));
 
 export default function Alert() {
-    const context = useCtx();
-    const {isAlert, setAlert} = context;
+    const {isAlert, setAlert} = useStore(
+        state => ({
+            isAlert: state.isAlert, 
+            setAlert: state.setAlert
+        }), shallow
+    );
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') return;

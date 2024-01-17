@@ -9,6 +9,8 @@ import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import supabase from "../utils/supabase";
 import { withAuth } from "../hooks/withAuth";
+import { useStore } from "../stores/useStore";
+import { shallow } from "zustand/shallow";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -18,8 +20,15 @@ const useStyles = makeStyles(theme => ({
 
 function SoundTestPage() {
   const classes = useStyles();
-  const context = useCtx();  
-  const { setTitle, files, fetchSoundDatas, setSoundTableRows, sountTableRows } = context;
+  const { setTitle, files, fetchSoundDatas, setSoundTableRows, sountTableRows } = useStore(
+    state => ({
+      setTitle: state.setTitle, 
+      files: state.files, 
+      fetchSoundDatas: state.fetchSoundDatas, 
+      setSoundTableRows: state.setSoundTableRows, 
+      sountTableRows: state.sountTableRows
+    }), shallow
+  );
   const title = '사운드 처리 테스트'
   useTitle(title);
   

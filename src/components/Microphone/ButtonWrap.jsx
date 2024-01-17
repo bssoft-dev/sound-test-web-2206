@@ -10,10 +10,14 @@ import { grey } from "@mui/material/colors";
 import { useCtx } from "../../context/Context";
 import { useRecordStore } from "../../stores/useRecordStore";
 import { shallow } from "zustand/shallow";
+import { useStore } from "../../stores/useStore";
 
 export default function ButtonWrap() {
-  const context = useCtx(); 
-  const { loading } = context;
+  const { loading } = useStore(
+    state => ({
+      loading: state.loading
+    }), shallow
+  );
   const microphoneContext = useContext(MicrophoneContext);
   const { startRecording, stopRecording, restartRecording, handleDone } = microphoneContext;
   const { record, tempFile } = useRecordStore(
