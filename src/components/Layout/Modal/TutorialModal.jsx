@@ -86,9 +86,9 @@ export default function TutorialModal() {
         break;
       case "/stt-test":
         break;
-      default:
-        setServerHealth(false);
-        setVersion(false);
+      // default:
+      //   setServerHealth(false);
+      //   setVersion(false);
     }
   }
 

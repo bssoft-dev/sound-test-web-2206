@@ -33,13 +33,12 @@ export default function FileUploadButton() {
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
           break; 
-        case "/audio-test":
-          setServerHealth(false);
+        // case "/audio-test":
+        //   setServerHealth(false);
         case "/stt-test":
           setIsMultiple(false);
           setBaseUrl('https://sound.bs-soft.co.kr/analysis/stt/wavfile')
-        default:
-          setServerHealth(false);
+        // default:
         }
     }, [pathname, bssNumPerson]);
 

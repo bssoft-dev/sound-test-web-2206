@@ -31,8 +31,7 @@ export default function Layout({ children }) {
             (state) => state.pathname,
             (pathname, previousPathname) => {
                 if(pathname !== previousPathname) {
-                    console.log(pathname, previousPathname)
-                    setVersion(null);
+                    console.log(pathname, previousPathname);
                     setFile([null]);
                     setRegion({
                         id: 'region-1',
