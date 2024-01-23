@@ -83,7 +83,7 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
         variant="contained"
         color="primary"
         size="small"
-        style={{ marginLeft: "10px" }}
+        style={{ marginLeft: "auto" }}
         disabled={String(params.value) === 'Ready' ? true : false}
         onClick={() => showWav(params, setFile)}
       >

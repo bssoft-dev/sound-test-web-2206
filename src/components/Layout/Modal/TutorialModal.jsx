@@ -74,7 +74,7 @@ export default function TutorialModal() {
         getServerHealth('https://stt-cafe.bs-soft.co.kr/');
         break;
       case '/audio-test':
-        getServerHealth('https://api-2035.bs-soft.co.kr/');
+        getServerHealth('https://adl-api.bs-soft.co.kr/');
         setTech('adl')
         break;
       case "/sound-test":

@@ -10,7 +10,7 @@ import './styles.css';
 import TestPage from "./pages/TestPage";
 import LoginPage from "./pages/LoginPage";
 import { ContextProvider } from "./context/Context";
-import { grey, red } from "@mui/material/colors";
+import { green, grey, red } from "@mui/material/colors";
 import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 import SttTestPage from "./pages/SttTestPage";
 import CafeOrderTestPage from "./pages/CafeOrderTestPage";
@@ -27,6 +27,11 @@ let theme = createTheme({
     },
     warning: {
       main: '#FF8A00'
+    },
+    success: {
+      light: green[300],
+      main: green[500],
+      dark: green[800]
     }
   },
   typography: {

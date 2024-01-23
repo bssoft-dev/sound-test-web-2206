@@ -107,9 +107,9 @@ export const useStore = createWithEqualityFn(
                     },
         
                     // supabase sound data
-                    sountTableRows: [],
+                    soundTableRows: [],
                     setSoundTableRows: (value) => set(
-                        { sountTableRows: value }, false, 'setSoundTableRows'
+                        { soundTableRows: value }, false, 'setSoundTableRows'
                     ),
                     fetchSoundDatas: async () => {
                         let {data, error} = await supabase

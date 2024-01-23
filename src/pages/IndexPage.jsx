@@ -1,11 +1,12 @@
-import React, { useEffect, useLayoutEffect,  } from "react";
+import React, { useEffect, useLayoutEffect, } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
-import { Grid, Typography } from "@mui/material";
+import { Button, Card, Grid, Stack, Typography } from "@mui/material";
 
 import "./styles.css";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
+import ServerHealthCard from "../components/ServerHealthCard/ServerHealthCard";
 
 
 function IndexPage() {
@@ -22,15 +23,28 @@ function IndexPage() {
   }, [pathname]);
 
   return (<>
-    {token ? 
+    {token ?
       <Layout>
-        <Grid container justifyContent="center" alignItems="center" sx={{height: '100%', paddingBottom: 50}}>
-          <Typography variant="h3" color="text.secondary">
-          TEST PAGE
-          </Typography>
+        <Grid container
+          flexDirection={{ md: 'column', lg: 'row' }}
+          sx={{ height: { md: 'calc(100% + 24px)' } }}>
+          <Grid item xs={12} md={6}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Grid item flex="1" sx={{ mb: 4 }} >
+              <Grid container flexDirection="column">
+                <Typography variant="h6">서버 현황</Typography>
+                <Grid container flexWrap="wrap" spacing={2}
+                  sx={{ pt: 3 }}>
+                    <ServerHealthCard />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={6} sx={{ mb: { xs: 4, md: 0 } }}>
+          </Grid>
         </Grid>
       </Layout> : <></>
-      }
+    }
   </>);
 }
 

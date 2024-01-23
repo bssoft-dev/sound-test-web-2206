@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect } from "react"
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
 import { shallow } from "zustand/shallow";
 import { useStore } from "../stores/useStore";
 

@@ -106,7 +106,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         );
         console.log("데이터를 보냅니다.")
         axios({
-          url: `https://api-2035.bs-soft.co.kr/v4/upload-analysis-event/blob`,
+          url: `https://adl-api.bs-soft.co.kr/v4/upload-analysis-event/blob`,
           method: 'POST',
           data: formData,
           headers: {

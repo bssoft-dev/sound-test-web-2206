@@ -20,13 +20,13 @@ const useStyles = makeStyles(theme => ({
 
 function SoundTestPage() {
   const classes = useStyles();
-  const { setTitle, files, fetchSoundDatas, setSoundTableRows, sountTableRows } = useStore(
+  const { setTitle, files, fetchSoundDatas, setSoundTableRows, soundTableRows } = useStore(
     state => ({
       setTitle: state.setTitle, 
       files: state.files, 
       fetchSoundDatas: state.fetchSoundDatas, 
       setSoundTableRows: state.setSoundTableRows, 
-      sountTableRows: state.sountTableRows
+      soundTableRows: state.soundTableRows
     }), shallow
   );
   const title = '사운드 처리 테스트'
@@ -54,7 +54,7 @@ function SoundTestPage() {
   return (
     <Layout>
       <>
-        <RecordTable fetchDatahandle={fetchSoundDatas} rowsData={sountTableRows} />
+        <RecordTable fetchDatahandle={fetchSoundDatas} rowsData={soundTableRows} />
         <Grid container direction="column">
           {files.map((file, index) => (
             <Grid key={index} item className={classes.item}>
