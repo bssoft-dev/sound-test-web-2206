@@ -18,13 +18,14 @@ function ServerHealthCard({ link }) {
   const [serverLoading, setServerLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [tech, setTech] = useState(null);
-  const serverPowerPath = link.url === "/bss-test" || link.url === "/audio-test";
+  const serverPowerPath = link.url === "/bss-test" || link.url === "/audio-test" || link.url === '/menu-test';
   
   // health check
   const getServerHealth = (baseUrl) => {
       axios.get(baseUrl)
       .then((response)=> {
           console.log('health', response)
+          if(link.url === '/stt-test') console.log('stt', response)
           if(response.status === 200) {
               setServerHealth(true);
               setServerLoading(false);
@@ -42,19 +43,29 @@ function ServerHealthCard({ link }) {
       switch(link.url) {
         case '/menu-test':
           getServerHealth('https://stt-cafe.bs-soft.co.kr/');
+          setTech('cafe');
           break;
         case '/audio-test':
           getServerHealth('https://adl-api.bs-soft.co.kr/');
-          setTech('adl')
+          setTech('adl');
           break;
         case "/sound-test":
           getServerHealth('https://sound.bs-soft.co.kr/');
           break;
         case "/bss-test":
           getServerHealth('https://bss.bs-soft.co.kr/');
-          setTech('bss')
+          setTech('bss');
           break;
         case "/stt-test":
+          const websocket = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
+          websocket.onopen = (event) => {
+            if (websocket.readyState === WebSocket.OPEN) {
+              setServerHealth(true);
+              websocket.close();
+            } else {
+              setServerHealth(false);
+            }
+          };
           break;
         // default:
         //   setServerHealth(false);

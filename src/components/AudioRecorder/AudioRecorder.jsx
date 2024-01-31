@@ -75,14 +75,15 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const handleWebSocketOpen = (event) => {
         // 웹소켓 연결이 열릴 때 처리할 로직
         console.log('웹소켓에 연결되었습니다.');
+        setIsComponentMounted(true)
         setServerHealth(true);
     }
 
     const handleWebSocketMessage = (event) => {
         // 웹소켓 메시지 수신 시 처리할 로직
-        // console.log('수신받은 메시지: ', event);
+        console.log('수신받은 메시지: ', event);
         const msg = JSON.parse(event.data);
-        if (setIsComponentMounted) {
+        if (isComponentMounted) {
             handleDataUpdate(msg.data);
         }
     }
