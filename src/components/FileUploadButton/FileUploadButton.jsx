@@ -37,7 +37,7 @@ export default function FileUploadButton() {
         //   setServerHealth(false);
         case "/stt-test":
           setIsMultiple(false);
-          setBaseUrl('https://sound.bs-soft.co.kr/analysis/stt/wavfile')
+          setBaseUrl('https://stt.bs-soft.co.kr/analysis/stt/wavfile')
         // default:
         }
     }, [pathname, bssNumPerson]);
