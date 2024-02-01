@@ -57,7 +57,7 @@ function ServerHealthCard({ link }) {
           setTech('bss');
           break;
         case "/stt-test":
-          const websocket = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
+          const websocket = new WebSocket("wss://stt.bs-soft.co.kr/ws/byte");
           websocket.onopen = (event) => {
             if (websocket.readyState === WebSocket.OPEN) {
               setServerHealth(true);

@@ -17,7 +17,6 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         }), shallow
     );
     const [isDisabled, setIsDisabled] = useState(false);
-    const [isComponentMounted, setIsComponentMounted] = useState(false);
     const text = args.get("text");
     const continuousRecording = args.get("continuousRecording");
     const [color, setColor] = useState(args.get("neutral_color"));
@@ -49,14 +48,13 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
 
     useEffect(() => {
         if (continuousRecording) {
-            websocketRef.current = new WebSocket("wss://sound.bs-soft.co.kr/ws/byte");
+            websocketRef.current = new WebSocket("wss://stt.bs-soft.co.kr/ws/byte");
             // 웹소켓 이벤트 핸들러 등록
             websocketRef.current.onopen = handleWebSocketOpen;
             websocketRef.current.onmessage = handleWebSocketMessage;
             websocketRef.current.onclose = handleWebSocketClose;
             websocketRef.current.onerror = handleWebSocketError;
             return () => {
-                setIsComponentMounted(false);
                 // 웹소켓 연결 닫기
                 websocketRef.current.onmessage = null;
                 if (websocketRef.current.readyState === WebSocket.OPEN) {
@@ -71,11 +69,9 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             }
         };
     }, []);
-
     const handleWebSocketOpen = (event) => {
         // 웹소켓 연결이 열릴 때 처리할 로직
         console.log('웹소켓에 연결되었습니다.');
-        setIsComponentMounted(true)
         setServerHealth(true);
     }
 
@@ -83,15 +79,12 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         // 웹소켓 메시지 수신 시 처리할 로직
         console.log('수신받은 메시지: ', event);
         const msg = JSON.parse(event.data);
-        if (isComponentMounted) {
-            handleDataUpdate(msg.data);
-        }
+        handleDataUpdate(msg);
     }
 
     const handleWebSocketClose = (event) => {
         // 웹소켓 연결이 닫힐 때 처리할 로직
         console.log('웹소켓이 종료되었습니다');
-        setIsComponentMounted(false);
         setServerHealth(false);
     }
 

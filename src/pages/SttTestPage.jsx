@@ -97,6 +97,9 @@ function SttTestPage() {
     const handleDataUpdate = (data) => {
         setRecordData((prevData) => [...prevData, data]);
     };
+    useEffect(() => {
+      console.log('recordData: ', recordData);
+    }, [recordData])
     const handleClick = () => {
         if (wavesurferRef.current === null) {
           let context, processor;
