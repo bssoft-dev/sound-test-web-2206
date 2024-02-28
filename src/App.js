@@ -14,6 +14,7 @@ import { green, grey, red } from "@mui/material/colors";
 import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 import SttTestPage from "./pages/SttTestPage";
 import CafeOrderTestPage from "./pages/CafeOrderTestPage";
+import TtsTestPage from "./pages/TtsTestPage";
 
 let theme = createTheme({
   palette: {
@@ -66,6 +67,7 @@ function App() {
             <Route path="/bss-test" element={<BssTestPage />} />
             <Route path="/audio-test" element={<AudioStreamingTestPage />} />
             <Route path="/stt-test" element={<SttTestPage />} />
+            <Route path="/tts-test" element={<TtsTestPage />} />
             <Route path="/menu-test" element={<CafeOrderTestPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>

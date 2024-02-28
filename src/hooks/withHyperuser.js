@@ -5,6 +5,7 @@ export const links = [
     {name: '사운드 처리 테스트', url: '/sound-test', isHyperuser: false },
     {name: '화자 분리 테스트', url: '/bss-test', isHyperuser: true },
     {name: 'STT 기본모델 테스트', url: '/stt-test', isHyperuser: true },
+    {name: 'TTS 기본모델 테스트', url: '/tts-test', isHyperuser: true },
     {name: '카페 주문 테스트', url: '/menu-test', isHyperuser: true },
     {name: 'ADL 분석 테스트', url: '/audio-test', isHyperuser: true },
     // {name: '로그인', url: '/login' },
