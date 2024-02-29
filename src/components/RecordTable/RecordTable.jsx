@@ -10,6 +10,7 @@ import { blue } from "@mui/material/colors";
 
 import { useStore } from "../../stores/useStore";
 import { shallow } from "zustand/shallow";
+import DeleteRow from "./deleteRow";
 
 
 const useStyles = makeStyles(theme => ({
@@ -75,6 +76,7 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
   );
 
   const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
+
  
   function soundFields(params) {
     return ( <>
@@ -103,6 +105,16 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
   }
 
   function setColumn(type) {
+    if(type === 'delete') {
+      return {
+        field: 'delete', 
+        headerName: '삭제',
+        width: 80,
+        renderCell: (params) => (
+          <DeleteRow params={params} />
+        )
+      }
+    }
     return {
       field: type + "Status",
       headerName: headersByType[type],
@@ -113,7 +125,6 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
     };
   };
   const fieldColumns = Object.keys(headersByType).map((type) => setColumn(type));
-
   const columns = getColumns(fieldColumns);
 
   return (

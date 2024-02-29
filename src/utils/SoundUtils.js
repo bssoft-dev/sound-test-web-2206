@@ -61,15 +61,16 @@ export default class SoundUtils {
   }
 
   static headersByType = {
+    delete: '삭제',
     ori: '원음',
     reduc: '노이즈 제거',
     reduc2: '노이즈 제거2',
-    sep: '1파일 화자분리'
+    sep: '1파일 화자분리', 
   };
 
 
   static getColumns = (fieldColumns) => {
-    return [
+    const columns = [
       { field: "id", hide: true },
       { field: "recKey", headerName: "recKey", width: 150 },
       ...fieldColumns,
@@ -83,5 +84,11 @@ export default class SoundUtils {
       { field: "sepprocTime", headerName: "1파일 화자분리 처리시간", width: 150},
       { field: "memo", headerName: "메모", editable: true, width: 500 },
     ];
+    const moveValue = (array, fromIndex, toIndex) => {
+      const item = array.splice(fromIndex, 1)[0];
+      array.splice(toIndex, 0, item);
+      return array;
+    }
+    return moveValue(columns, 1, 2);
   };
 }

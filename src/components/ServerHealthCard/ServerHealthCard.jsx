@@ -18,7 +18,7 @@ function ServerHealthCard({ link }) {
   const [serverLoading, setServerLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [tech, setTech] = useState(null);
-  const serverPowerPath = link.url === "/bss-test" || link.url === "/audio-test" || link.url === '/menu-test';
+  const serverPowerPath = ["/bss-test", "/audio-test", '/menu-test', "/stt-test"];
   
   // health check
   const getServerHealth = (baseUrl) => {
@@ -57,6 +57,7 @@ function ServerHealthCard({ link }) {
           setTech('bss');
           break;
         case "/stt-test":
+          setTech('stt');
           const websocket = new WebSocket("wss://stt.bs-soft.co.kr/ws/byte");
           websocket.onopen = (event) => {
             if (websocket.readyState === WebSocket.OPEN) {
@@ -119,7 +120,7 @@ function ServerHealthCard({ link }) {
   }, [])
 
   return (
-    <Grid item xs={6} md={4} lg={3}> 
+    <Grid item xs={6} md={3} lg={2}> 
         <Card
             sx={{ p: 2 }}>
             <Typography variant="body" color="text.secondary" fontWeight={600}>{ link.name }</Typography>
@@ -129,7 +130,7 @@ function ServerHealthCard({ link }) {
                     color={ serverHealth ? green[500] : 'secondary'} fontWeight={500} >
                     {serverHealth ? '켜짐' : '꺼짐'}
                 </Typography>
-                {serverPowerPath && 
+                {serverPowerPath.includes(link.url) && 
                     <Button 
                         onClick={handleServerPower}
                         variant="contained" color={serverHealth ? 'success' : 'secondary'}

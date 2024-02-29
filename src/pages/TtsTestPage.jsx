@@ -3,9 +3,10 @@ import Layout from "../components/Layout/Layout";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import { useTitle } from "../hooks/useTitle";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Divider, Grid, TextField, cardHeaderClasses } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
     audio: {
@@ -35,9 +36,10 @@ export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 function TtsTestPage() {
     const classes = useStyles();
 
-    const { setTitle } = useStore(
+    const { setTitle, setAlert } = useStore(
         state => ({
             setTitle: state.setTitle,
+            setAlert: state.setAlert, 
         }), shallow
     )
     const title = 'TTS 기본 모델 테스트'
@@ -46,6 +48,26 @@ function TtsTestPage() {
     useLayoutEffect(() => {
         setTitle(title);
     }, []);
+
+    const [ttsText, setTtsText] = useState('');
+    const handleChange = async () => {
+        if(ttsText.trim().length === 0) {
+            setAlert({
+              open: true, 
+              type: "warning",
+              message: "텍스트를 입력해주세요"
+            });
+        }
+        try {
+            const response = await axios.post(
+                `https://tts.bs-soft.co.kr/tts/test?input_text=${ttsText}`, 
+            );
+            console.log(response)
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
 
     return (
         <Layout>
@@ -65,10 +87,11 @@ function TtsTestPage() {
                                     placeholder="텍스트를 입력해 주새요"
                                     multiline
                                     rows={3}
-                                    onChange={e => console.log(e.target.value)} />
+                                    onChange={e => setTtsText(e.target.value)} />
                             </CardContent>
                             <CardActions sx={{justifyContent: 'flex-end', p: 2, pt: 0, }}>
-                                <Button variant="contained">확인</Button>
+                                <Button variant="contained"
+                                    onClick={handleChange}>확인</Button>
                             </CardActions>
                         </Card>
                     </Grid>
