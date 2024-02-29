@@ -125,6 +125,25 @@ export const useStore = createWithEqualityFn(
                             console.log(error);
                         }
                     },
+
+                    bssSoundTableRows: [],
+                    setBssSoundTableRows: (value) => set(
+                        { soundTableRows: value }, false, 'setSoundTableRows'
+                    ),
+                    fetchBssSoundDatas: async () => { 
+                        let {data, error} = await supabase
+                            .from('bssSound')
+                            .select('*')
+                            .order('receivedTime', { ascending: false });
+                        if(data) {
+                            console.log('Get Sound: ', data );
+                            set(
+                                { bssSoundTableRows: data }, false, 'bssSoundTableRows'
+                            );
+                        } else {
+                            console.log(error);
+                        }
+                    },
         
                     bssNumPerson: 2,
                     handleNumPerson: (event) => {

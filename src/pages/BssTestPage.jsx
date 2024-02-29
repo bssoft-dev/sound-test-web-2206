@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, } from "react";
+import React, { useEffect, useLayoutEffect, } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 import RecordTable from "../components/RecordTable/RecordTable";
@@ -9,6 +9,7 @@ import { makeStyles } from "@mui/styles";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import { shallow } from "zustand/shallow";
+import supabase from "../utils/supabase";
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -18,13 +19,13 @@ const useStyles = makeStyles(theme => ({
 
 function BssTestPage() {
   const classes = useStyles();
-  const { setTitle, files, fetchData, setRows, rows } = useStore(
+  const { setTitle, files, bssSoundTableRows, setBssSoundTableRows, fetchBssSoundDatas } = useStore(
     state => ({
       setTitle: state.setTitle, 
       files: state.files, 
-      fetchData: state.fetchData, 
-      setRows: state.setRows, 
-      rows: state.rows
+      bssSoundTableRows: state.bssSoundTableRows, 
+      setBssSoundTableRows: state.setBssSoundTableRows, 
+      fetchBssSoundDatas: state.fetchBssSoundDatas
     }), shallow
   );
 
@@ -32,16 +33,28 @@ function BssTestPage() {
   useTitle(title);
 
   useLayoutEffect(() => {
-    setRows([]);  
     setTitle(title);
+    setBssSoundTableRows([]);  
   }, []);
 
-
+  useEffect(() => {
+    fetchBssSoundDatas();
+    const channels = supabase.channel('channels_change')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'bssSound' },
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchBssSoundDatas();
+        }
+      )
+      .subscribe();
+  }, [])
   
   return (
     <Layout>
       <>
-        <RecordTable fetchDatahandle={fetchData} rowsData={rows} />
+        <RecordTable fetchDatahandle={fetchBssSoundDatas} rowsData={bssSoundTableRows} />
         <Grid container direction="column">
           {files.map((file, index) => (
             <Grid key={index} item className={classes.item}>
