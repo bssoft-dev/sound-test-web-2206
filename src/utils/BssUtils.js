@@ -47,6 +47,7 @@ export default class BssUtils {
   }
 
   static headersByType = {
+    delete: '삭제',
     ori: '원음',
     bss: '화자분리(BSS-1)',
     bss2: '화자분리(BSS-2)',
@@ -54,12 +55,11 @@ export default class BssUtils {
   };
 
   static getColumns = (fieldColumns) => {
-    return [
+    const columns = [
       { field: "id", hide: true },
       { field: "recKey", headerName: "recKey", width: 150 },
       ...fieldColumns,
       { field: "oriUrlBase", headerName: "음원 URL", hide: true },
-      
       { field: "receivedTime", headerName: "업로드 시각", width: 150 },
       { field: "duration", headerName: "음원 길이" },
       { field: "bssprocTime", headerName: "BSS1 처리시간", width: 110 },
@@ -67,6 +67,12 @@ export default class BssUtils {
       { field: "bss3procTime", headerName: "BSS3 처리시간", width: 110 },
       { field: "memo", headerName: "메모", editable: true, width: 500 }
     ];
+    const moveValue = (array, fromIndex, toIndex) => {
+      const item = array.splice(fromIndex, 1)[0];
+      array.splice(toIndex, 0, item);
+      return array;
+    }
+    return moveValue(columns, 1, 2);
   };
   
 }

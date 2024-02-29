@@ -128,7 +128,7 @@ export const useStore = createWithEqualityFn(
 
                     bssSoundTableRows: [],
                     setBssSoundTableRows: (value) => set(
-                        { soundTableRows: value }, false, 'setSoundTableRows'
+                        { bssSoundTableRows: value }, false, 'setSoundTableRows'
                     ),
                     fetchBssSoundDatas: async () => { 
                         let {data, error} = await supabase
@@ -144,6 +144,26 @@ export const useStore = createWithEqualityFn(
                             console.log(error);
                         }
                     },
+
+                    ttsSoundTableRows: [],
+                    setTtsSoundTableRows: (value) => set(
+                        { ttsSoundTableRows: value }, false, 'setTtsSoundTableRows'
+                    ),
+                    fetchTtsSoundDatas: async () => { 
+                        let {data, error} = await supabase
+                            .from('ttsSound')
+                            .select('*')
+                            .order('uploadTime', { ascending: false });
+                        if(data) {
+                            console.log('Get Sound: ', data );
+                            set(
+                                { ttsSoundTableRows: data }, false, 'ttsSoundTableRows'
+                            );
+                        } else {
+                            console.log(error);
+                        }
+                    },
+        
         
                     bssNumPerson: 2,
                     handleNumPerson: (event) => {

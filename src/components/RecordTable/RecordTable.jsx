@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BssUtils from "../../utils/BssUtils";
 import SoundUtils from "../../utils/SoundUtils";
+import TtsUtils from "../../utils/TtsUtils";
 
 import { Button, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -29,12 +30,12 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   [`& .${gridClasses.row}:nth-of-type(even)`]: {
     backgroundColor: theme.palette.grey[100],
     '&:hover, &.Mui-hovered': {
-        backgroundColor: alpha(
-          theme.palette.grey[400],
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity,
-        ),
+      backgroundColor: alpha(
+        theme.palette.grey[400],
+        ODD_OPACITY +
+        theme.palette.action.selectedOpacity +
+        theme.palette.action.hoverOpacity,
+      ),
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
@@ -45,8 +46,8 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
         backgroundColor: alpha(
           theme.palette.primary.main,
           ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity,
+          theme.palette.action.selectedOpacity +
+          theme.palette.action.hoverOpacity,
         ),
         // Reset on touch devices, it doesn't add specificity
         '@media (hover: none)': {
@@ -58,7 +59,7 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
       },
     },
   },
-  [`& .${gridClasses.columnHeaders}`] : {
+  [`& .${gridClasses.columnHeaders}`]: {
     backgroundColor: theme.palette.grey[200],
   },
   // [`& .${gridClasses.iconSeparator}`] : {
@@ -70,16 +71,26 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
   const classes = useStyles();
   const { pathname, setFile } = useStore(
     state => ({
-      pathname: state.pathname, 
+      pathname: state.pathname,
       setFile: state.setFile
     }), shallow
   );
 
-  const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
+  const { showWav, downWav, memoPost, headersByType, getColumns } = useMemo(() => {
+    switch(pathname) {
+      case '/bss-test':
+        return BssUtils || {};
+      case '/tts-test':
+        return TtsUtils || {};
+      default:
+        return SoundUtils || {};
+    }
+  }, [pathname]);
+  // const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
 
- 
   function soundFields(params) {
-    return ( <>
+    console.log(params);
+    return (<>
       {String(params.value)}
       <Button
         variant="contained"
@@ -105,16 +116,26 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
   }
 
   function setColumn(type) {
-    if(type === 'delete') {
+    if (type === 'delete') {
       return {
-        field: 'delete', 
-        headerName: '삭제',
+        field: 'delete',
+        headerName: headersByType[type],
         width: 80,
         renderCell: (params) => (
           <DeleteRow params={params} />
         )
       }
+    } else if (type === 'name') {
+      return {
+        field: type,
+        headerName: headersByType[type],
+        width: 320,
+        renderCell: (params) => (
+          soundFields(params)
+        )
+      }
     }
+
     return {
       field: type + "Status",
       headerName: headersByType[type],
@@ -129,15 +150,15 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
 
   return (
     <Paper className={classes.root}>
-      <StripedDataGrid
-        rows={rowsData}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        onCellEditCommit={(params, event) => {
-          memoPost(params, fetchDatahandle);
-        }}
-      />
-    </Paper>
+    <StripedDataGrid
+      rows={rowsData}
+      columns={columns}
+      pageSize={5}
+      rowsPerPageOptions={[5]}
+      onCellEditCommit={(params, event) => {
+        memoPost(params, fetchDatahandle);
+      }}
+    />
+  </Paper>
   );
 }

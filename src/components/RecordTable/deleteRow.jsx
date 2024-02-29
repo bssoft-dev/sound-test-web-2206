@@ -4,6 +4,7 @@ import supabase from "../../utils/supabase";
 import { useState } from 'react';
 
 export default function DeleteRow({ params }) {
+    console.log(params)
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
