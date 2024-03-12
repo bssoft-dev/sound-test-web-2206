@@ -89,7 +89,6 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
   // const { showWav, downWav, memoPost, headersByType, getColumns } = pathname === "/sound-test" ? SoundUtils : BssUtils;
 
   function soundFields(params) {
-    console.log(params);
     return (<>
       {String(params.value)}
       <Button
@@ -129,7 +128,7 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
       return {
         field: type,
         headerName: headersByType[type],
-        width: 320,
+        width: 380,
         renderCell: (params) => (
           soundFields(params)
         )

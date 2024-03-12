@@ -38,6 +38,7 @@ export const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 
 function TtsTestPage() {
     const classes = useStyles();
+    const [ttsResult, setTtsResult] = useState('');
 
     const { setTitle, files, setAlert, ttsSoundTableRows, setTtsSoundTableRows, fetchTtsSoundDatas } = useStore(
         state => ({
@@ -63,8 +64,14 @@ function TtsTestPage() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'ttsSound' },
         (payload) => {
-          console.log('Change received!', payload);
-          fetchTtsSoundDatas();
+            console.log('Change received!', payload);
+            setAlert({
+                open: true,
+                type: "success",
+                message: "TTS 변환이 완료되었습니다"
+            });
+            setTtsResult(payload.new.uriBase);
+            fetchTtsSoundDatas();
         }
       )
       .subscribe();
@@ -83,6 +90,11 @@ function TtsTestPage() {
             const response = await axios.post(
                 `https://tts.bs-soft.co.kr/tts/test?input_text=${ttsText}`,
             );
+            setAlert({
+                open: true,
+                type: "success",
+                message: "텍스트를 전송하였습니다"
+            });
             console.log(response)
         } catch (error) {
             console.log(error);
@@ -118,12 +130,10 @@ function TtsTestPage() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <Card>
-                            <StyledCardHeader title="결과" />
+                            <StyledCardHeader title="TTS 결과" />
                             <Divider />
                             <CardContent>
-                                <audio controls className={classes.audio}>
-                                    <source src="/examples/media/sample_audio_mp3.mp3" type="audio/mpeg" />
-                                    이 문장은 여러분의 브라우저가 audio 태그를 지원하지 않을 때 화면에 표시됩니다!
+                                <audio controls src={ttsResult} className={classes.audio}>
                                 </audio>
                             </CardContent>
                         </Card>

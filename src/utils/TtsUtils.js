@@ -2,24 +2,18 @@ import axios from "axios";
 
 export default class TtsUtils {
     static showWav(data, setFile) {
-        const baseUrl = 'https://bss.bs-soft.co.kr/download-single/';
-        const wavType = data.field.split('Sta')[0];
-        const url = data.row[wavType + 'UrlBase'];
-        let tempData = url.map(function(item) {
-          const fileName = item.toString().split('/')[5];
-          const downUrl = baseUrl + fileName;
-          const tempFile = { blobURL: downUrl, title: fileName.split('_')[1].split('.')[0], name: fileName };
-          return tempFile;
-        });
-        setFile(tempData);
+        const url = data.row.uriBase;
+        const tempData = {
+          blobURL: url, 
+          title: data.row.name.split('.')[0], 
+          name: data.row.name
+        };
+        setFile([tempData]);
       }
     
       static downWav(data) {
-        const baseUrl = 'https://bss.bs-soft.co.kr/download/';
-        const wavType = data.field.split('Sta')[0];
-        const url = data.row[wavType + 'UrlBase'];
-        const wavTag = url.toString().split('/')[5].split('_')[0];
-        const downloadUrl = baseUrl + wavTag;
+        const wavTag = data.row.name.split('.')[0];
+        const downloadUrl = data.row.uriBase;
         axios({
           url: downloadUrl,
           method: 'GET',

@@ -2,9 +2,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton }
 import DeleteIcon from '@mui/icons-material/Delete';
 import supabase from "../../utils/supabase";
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function DeleteRow({ params }) {
-    console.log(params)
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -16,7 +16,18 @@ export default function DeleteRow({ params }) {
     };
 
     const handleDeleteDatas = async () => {
-        console.log(params.row.recKey);
+        try {
+            const response = await axios({
+                url: `https://tts.bs-soft.co.kr/delete-single/${params.row.name}`, 
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            console.log(response)
+        } catch (error) {
+            console.log(error);
+        }
         setOpen(false);
         //api로 삭제 
     }
