@@ -7,6 +7,8 @@ import "./styles.css";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import ServerHealthCard from "../components/ServerHealthCard/ServerHealthCard";
+import GpuHealthCard from "../components/GpuHealthCard/GpuHealthCard";
+import axios from "axios";
 
 
 function IndexPage() {
@@ -22,6 +24,7 @@ function IndexPage() {
     setTitle('비에스 소프트');
   }, [pathname]);
 
+
   return (<>
     {token ?
       <Layout>
@@ -30,7 +33,17 @@ function IndexPage() {
           sx={{ height: { md: 'calc(100% + 24px)' } }}>
           <Grid item xs={12}
             sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <Grid item flex="1" sx={{ mb: 6 }} >
+            <Grid item sx={{ mb: 6 }} >
+              <Grid container flexDirection="column">
+                <Typography variant="h6" color="#000000de">GPU 현황</Typography>
+                <Divider sx={{mt: 1}} />
+                <Grid container flexWrap="wrap" spacing={2}
+                  sx={{ pt: 3 }}>
+                    <GpuHealthCard />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item sx={{ mb: 6 }} >
               <Grid container flexDirection="column">
                 <Typography variant="h6" color="#000000de">서버 현황</Typography>
                 <Divider sx={{mt: 1}} />
