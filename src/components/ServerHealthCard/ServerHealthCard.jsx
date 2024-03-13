@@ -18,7 +18,7 @@ function ServerHealthCard({ link }) {
   const [serverLoading, setServerLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [tech, setTech] = useState(null);
-  const serverPowerPath = ["/bss-test", "/audio-test", '/menu-test', "/stt-test"];
+  const serverPowerPath = ["/bss-test", "/audio-test", '/menu-test', "/stt-test", "/tts-test"];
   
   // health check
   const getServerHealth = (baseUrl) => {
@@ -67,6 +67,9 @@ function ServerHealthCard({ link }) {
               setServerHealth(false);
             }
           };
+          case "/tts-test":
+            getServerHealth('https://tts.bs-soft.co.kr/');
+            setTech('tts');
           break;
         // default:
         //   setServerHealth(false);
