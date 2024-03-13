@@ -12,7 +12,6 @@ export default function GpuHealthCard() {
         } catch (error) {
             console.log(error);
         }
-
     }
 
     useEffect(() => {
@@ -22,7 +21,7 @@ export default function GpuHealthCard() {
     return (
         <>
             {gpuHealth.length > 0 && gpuHealth.map(data => (
-                <Grid item xs={6} md={3} lg={2}>
+                <Grid item xs={6} md={4} key={data[0]}>
                     <Card
                         sx={{ p: 2 }}>
                         <Typography variant="body" component="p"
