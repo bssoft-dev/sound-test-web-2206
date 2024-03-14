@@ -24,6 +24,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import { red } from "@mui/material/colors";
 import { useStore } from "../../stores/useStore";
 import { shallow } from "zustand/shallow";
+import { Typography } from "@mui/material";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -43,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     //paddingBottom: 0
+    flexDirection: "column",
   },
   buttons: {
     padding: 1
@@ -64,6 +66,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AudioPlayer({ file }) { 
+  console.log(file)
   const { regions, setRegion } = useStore(
     state => ({
       regions: state.regions, 
@@ -212,10 +215,20 @@ export default function AudioPlayer({ file }) {
           <Grid item>
             <List className={classes.list}>
               <ListItem alignItems="flex-start" className={classes.listItem}>
-                <ListItemText
+                <ListItemText sx={{mb: 0}}
                   primary={file === null ? "Example" : file.title}
                   secondary={file === null ? "This is an example wave file" : file.name}
                 />
+                {file === null && !file?.ttsText ? 
+                  <></>
+                  :
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    body2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+                    blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
+                    neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
+                    quasi quidem quibusdam.
+                  </Typography>
+                }
               </ListItem>
             </List>
           </Grid>

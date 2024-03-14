@@ -2,11 +2,13 @@ import axios from "axios";
 
 export default class TtsUtils {
     static showWav(data, setFile) {
+      console.log(data);
         const url = data.row.uriBase;
         const tempData = {
           blobURL: url, 
           title: data.row.name.split('.')[0], 
-          name: data.row.name
+          name: data.row.name,
+          // ttsText: ,
         };
         setFile([tempData]);
       }

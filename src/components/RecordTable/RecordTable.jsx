@@ -113,6 +113,29 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
       </Button>
     </>);
   }
+  function ttsSoundFields(params) {
+    return (<>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        disabled={String(params.value) === 'Ready' ? true : false}
+        onClick={() => showWav(params, setFile)}
+      >
+        재생
+      </Button>
+      <Button
+        variant="contained"
+        color="info"
+        size="small"
+        style={{ marginLeft: "10px" }}
+        disabled={String(params.value) === 'Ready' ? true : false}
+        onClick={() => downWav(params)}
+      >
+        다운
+      </Button>
+    </>);
+  }
 
   function setColumn(type) {
     if (type === 'delete') {
@@ -128,9 +151,10 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
       return {
         field: type,
         headerName: headersByType[type],
-        width: 380,
+        width: 180,
+        align: 'center',
         renderCell: (params) => (
-          soundFields(params)
+          ttsSoundFields(params)
         )
       }
     }
