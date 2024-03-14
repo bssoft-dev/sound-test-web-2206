@@ -2,13 +2,12 @@ import axios from "axios";
 
 export default class TtsUtils {
     static showWav(data, setFile) {
-      console.log(data);
         const url = data.row.uriBase;
         const tempData = {
           blobURL: url, 
           title: data.row.name.split('.')[0], 
           name: data.row.name,
-          // ttsText: ,
+          ttsText: data.row.inputText,
         };
         setFile([tempData]);
       }
@@ -53,8 +52,9 @@ export default class TtsUtils {
           ...fieldColumns,
           { field: 'processingTime', headerName: '처리 시간', width: 150 },
           { field: 'duration', headerName: '음원 길이', width: 150 },
+          { field: 'inputText', headerName: 'TTS 텍스트', flex: 1 },
           { field: 'uploadTime', headerName: '업데이트 시각', width: 150 },
-          { field: "memo", headerName: "메모", editable: true, width: 500 },
+          { field: "memo", headerName: "메모", editable: true, width: 100 },
         ];
         const moveValue = (array, fromIndex, toIndex) => {
           const item = array.splice(fromIndex, 1)[0];

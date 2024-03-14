@@ -66,7 +66,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function AudioPlayer({ file }) { 
-  console.log(file)
   const { regions, setRegion } = useStore(
     state => ({
       regions: state.regions, 
@@ -222,11 +221,8 @@ export default function AudioPlayer({ file }) {
                 {file === null && !file?.ttsText ? 
                   <></>
                   :
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    body2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                    blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-                    neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-                    quasi quidem quibusdam.
+                  <Typography variant="body2" color="text.secondary" gutterBottom >
+                    {file?.ttsText}
                   </Typography>
                 }
               </ListItem>
