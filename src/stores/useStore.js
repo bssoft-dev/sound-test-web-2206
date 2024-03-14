@@ -115,7 +115,7 @@ export const useStore = createWithEqualityFn(
                         let {data, error} = await supabase
                             .from('sound')
                             .select('*')
-                            .order('receivedTime', { ascending: false });
+                            .order('recKey', { ascending: false });
                         if(data) {
                             console.log('Get Sound: ', data );
                             set(
@@ -134,7 +134,7 @@ export const useStore = createWithEqualityFn(
                         let {data, error} = await supabase
                             .from('bssSound')
                             .select('*')
-                            .order('receivedTime', { ascending: false });
+                            .order('recKey', { ascending: false });
                         if(data) {
                             console.log('Get Sound: ', data );
                             set(
@@ -153,7 +153,7 @@ export const useStore = createWithEqualityFn(
                         let {data, error} = await supabase
                             .from('ttsSound')
                             .select('*')
-                            .order('uploadTime', { ascending: false });
+                            .order('recKey', { ascending: false });
                         if(data) {
                             console.log('Get Sound: ', data );
                             set(

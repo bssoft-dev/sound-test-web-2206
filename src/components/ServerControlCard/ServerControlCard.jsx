@@ -59,7 +59,7 @@ export default function ServerControlCard() {
                     </Typography>
                     <Typography variant="body2" component="span"
                         color="text.secondary" fontWeight={600}>
-                        (새벽 시간 유지하기)
+                        (오늘만 새벽에 안끄기)
                     </Typography>
                 </Stack>
 
