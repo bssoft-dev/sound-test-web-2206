@@ -4,7 +4,7 @@ import supabase from "../../utils/supabase";
 import { useState } from 'react';
 import axios from 'axios';
 
-export default function DeleteRow({ params }) {
+export default function DeleteRow({ params, pathname }) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -17,14 +17,26 @@ export default function DeleteRow({ params }) {
 
     const handleDeleteDatas = async () => {
         try {
-            const response = await axios({
-                url: `https://tts.bs-soft.co.kr/delete-single/${params.row.name}`, 
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
+            let response;
+            switch(pathname) {
+                case '/bss-test':
+                    response = await axios.delete(
+                        `https://bss.bs-soft.co.kr/files/delete?recKey=${params.row.recKey}`
+                    );
+                    break;
+                case '/sound-test':
+                    response = await axios.delete(
+                        `https://sound.bs-soft.co.kr/files/delete?recKey=${params.row.recKey}`
+                    );
+                    break;
+                case '/tts-test':
+                    response = await axios.delete(
+                        `https://tts.bs-soft.co.kr/delete-single/${params.row.name}`
+                    );
+                    break;
                 }
-            });
-            console.log(response)
+                console.log(response);
+            
         } catch (error) {
             console.log(error);
         }

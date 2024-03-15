@@ -65,12 +65,14 @@ function TtsTestPage() {
         { event: '*', schema: 'public', table: 'ttsSound' },
         (payload) => {
             console.log('Change received!', payload);
-            setAlert({
-                open: true,
-                type: "success",
-                message: "TTS 변환이 완료되었습니다"
-            });
-            setTtsResult(payload.new.uriBase);
+            if(payload.eventType === "INSERT") {
+                setAlert({
+                    open: true,
+                    type: "success",
+                    message: "TTS 변환이 완료되었습니다"
+                });
+                setTtsResult(payload.new.uriBase);
+            }
             fetchTtsSoundDatas();
         }
       )

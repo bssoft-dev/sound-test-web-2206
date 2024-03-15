@@ -144,7 +144,7 @@ export default function RecordTable({ fetchDatahandle, rowsData }) {
         headerName: headersByType[type],
         width: 80,
         renderCell: (params) => (
-          <DeleteRow params={params} />
+          <DeleteRow params={params} pathname={pathname} />
         )
       }
     } else if (type === 'name') {
