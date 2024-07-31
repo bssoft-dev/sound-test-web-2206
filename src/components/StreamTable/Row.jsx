@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { StyledTableCell, StyledTableRow } from './StreamTable';
@@ -8,7 +8,7 @@ import ItemRow from './ItemRow';
 
 export default function Row(props) {
     const [open, setOpen] = useState(false);
-    const { row, index, handleClick, isSelected, selectedValue, handleChange } = props;
+    const { row, handleClick, isSelected, selectedValue, handleChange } = props;
     const isItemSelected = isSelected(row.reckey);
     const labelId = row.reckey;
     

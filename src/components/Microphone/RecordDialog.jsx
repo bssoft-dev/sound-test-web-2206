@@ -10,7 +10,6 @@ import { MicrophoneContext } from "./Microphone";
 import Loading from "../Loading/Loading";
 import { useRecordStore } from "../../stores/useRecordStore";
 import { shallow } from "zustand/shallow";
-import { useCtx } from "../../context/Context";
 import { useStore } from "../../stores/useStore";
 
 const useStyles = makeStyles(theme => ({

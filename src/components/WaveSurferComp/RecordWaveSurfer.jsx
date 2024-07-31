@@ -1,3 +1,4 @@
+import React from "react";
 import { shallow } from "zustand/shallow";
 import { useRecordStore } from "../../stores/useRecordStore";
 import WaveSurferComp from "./WaveSurferComp";

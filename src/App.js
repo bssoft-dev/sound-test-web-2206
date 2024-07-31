@@ -15,6 +15,7 @@ import AudioStreamingTestPage from "./pages/AudioStreamingTestPage";
 import SttTestPage from "./pages/SttTestPage";
 import CafeOrderTestPage from "./pages/CafeOrderTestPage";
 import TtsTestPage from "./pages/TtsTestPage";
+import DangerSoundPage from "./pages/DangerSoundPage";
 
 let theme = createTheme({
   palette: {
@@ -69,6 +70,7 @@ function App() {
             <Route path="/stt-test" element={<SttTestPage />} />
             <Route path="/tts-test" element={<TtsTestPage />} />
             <Route path="/menu-test" element={<CafeOrderTestPage />} />
+            <Route path="/danger-sound" element={<DangerSoundPage />} />
             <Route path="/test" element={<TestPage />} />
           </Routes>
         </ContextProvider>

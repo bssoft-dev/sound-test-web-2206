@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { StyledTableCell, headCells } from './StreamTable';

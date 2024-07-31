@@ -1,18 +1,13 @@
+import React, { useEffect } from "react";
 import AudioAnalyser from "react-audio-analyser";
 import { shallow } from 'zustand/shallow';
 import axios from "axios";
 import { grey } from "@mui/material/colors";
 import { useTimerStore } from "../../stores/useTimerStore";
 import { useStreamStore } from "../../stores/useStreamStore";
-import { useStore } from "../../stores/useStore";
-import { useEffect } from "react";
+// import { useStore } from "../../stores/useStore";
 
 export default function AudioStream({audioAnalyserRefWidth}) {
-    const {setAlert} = useStore(
-      state => ({
-        setAlert: state.setAlert
-      }), shallow
-    );
 
     const { setIsRunning, setTimer } = useTimerStore(
       state => ({
@@ -62,6 +57,7 @@ export default function AudioStream({audioAnalyserRefWidth}) {
         setStreamList([]);
         setAudioSrc('');
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recordedData]);
 
     // const [audioType, setAudioType] = useState("audio/wav");

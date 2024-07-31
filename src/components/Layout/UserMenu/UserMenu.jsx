@@ -6,7 +6,7 @@ import { Avatar, Typography } from '@mui/material';
 
 import PersonIcon from '@mui/icons-material/Person';
 import { useStore } from '../../../stores/useStore';
-import { shallow } from 'zustand/shallow';
+// import { shallow } from 'zustand/shallow';
 
 export default function UserMenu() {
   const navigate = useNavigate('/login');
@@ -20,13 +20,13 @@ export default function UserMenu() {
     navigate('/login')
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   return (
     <>

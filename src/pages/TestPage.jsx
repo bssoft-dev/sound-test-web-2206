@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import { withAuth } from "../hooks/withAuth";
 
@@ -64,12 +64,14 @@ function TestPage() {
       };
     }
   }, [isRecording]);
-  return (<Layout title="TestPage">
-    <div>
+
+  return (
+  <Layout title="TestPage">
+    {/* <div>
       <button onClick={isRecording ? null : startRecording}>
         {isRecording ? '녹음 중...' : '녹음 시작'}
       </button>
-    </div>
+    </div> */}
   </Layout>)
 }
 

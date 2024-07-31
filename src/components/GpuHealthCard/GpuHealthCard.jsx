@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Card, Grid, Stack, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
 
 export default function GpuHealthCard() {
     const [gpuHealth, setGpuHealth] = useState([])

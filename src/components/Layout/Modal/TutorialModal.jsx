@@ -26,7 +26,6 @@ export default function TutorialModal() {
   const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
   const [tech, setTech] = useState(null);
   const [serverLoading, setServerLoading] = useState(false);
-  const [serverPowerUpdate, setServerPowerUpdate] = useState(null);
 
   const handleServerPower = async () => {
     setServerLoading(true);

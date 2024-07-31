@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Button } from "@mui/material";
@@ -6,7 +6,7 @@ import { useStore } from "../../stores/useStore";
 import { shallow } from "zustand/shallow";
 
 export default function FileUploadButton() {
-    const { pathname, setAlert, fetchData, setServerHealth, bssNumPerson, handleSttResult } = useStore(
+    const { pathname, setAlert, fetchData, bssNumPerson, handleSttResult } = useStore(
       state => ({
         pathname: state.pathname, 
         setAlert: state.setAlert, 
@@ -19,7 +19,7 @@ export default function FileUploadButton() {
 
     const [baseUrl, setBaseUrl] = useState('');
     const [isMultiple, setIsMultiple] = useState(false);
-    const uploadedPathNames = ["/sound-test", "/bss-test", "/stt-test"];
+    const uploadedPathNames = ["/sound-test", "/bss-test", "/stt-test", "/danger-sound"];
     const uploadedPathName = uploadedPathNames.includes(pathname);
 
     useEffect(() => {
@@ -33,11 +33,16 @@ export default function FileUploadButton() {
           fetchData('https://bss.bs-soft.co.kr/status');
           setIsMultiple(true);
           break; 
-        // case "/audio-test":
-        //   setServerHealth(false);
         case "/stt-test":
           setIsMultiple(false);
-          setBaseUrl('https://stt.bs-soft.co.kr/analysis/stt/wavfile')
+          setBaseUrl('https://stt.bs-soft.co.kr/analysis/stt/wavfile');
+          break; 
+        case "/danger-sound":
+          setIsMultiple(false);
+          setBaseUrl('https://api-2106.bs-soft.co.kr/v1/upload-analysis');
+          break; 
+        // case "/audio-test":
+        //   setServerHealth(false);
         // default:
         }
     }, [pathname, bssNumPerson]);
@@ -68,7 +73,7 @@ export default function FileUploadButton() {
       console.log('formData', formData)
       console.log(files[0]);
       
-      if(isMultiple && files.length != 4) {
+      if(isMultiple && files.length !== 4) {
         setAlert({
           open: true, 
           type: "warning",
@@ -93,7 +98,7 @@ export default function FileUploadButton() {
         }
       })
       .then(res => {
-        if(res.status != 200) {
+        if(res.status !== 200) {
           setAlert({
             open: true, 
             type: "warning",

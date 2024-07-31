@@ -4,7 +4,7 @@ import SideNav from "./SideNav/SideNav";
 
 import "./layout.css";
 import SideMenu from "./SideNav/SideMenu";
-import { Suspense, lazy, useEffect, useLayoutEffect } from "react";
+import React, { Suspense, lazy, useEffect, useLayoutEffect } from "react";
 import { shallow } from "zustand/shallow";
 import { useStore } from "../../stores/useStore";
 import { useLocation } from "react-router-dom";

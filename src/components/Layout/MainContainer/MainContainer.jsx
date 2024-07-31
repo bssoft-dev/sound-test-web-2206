@@ -1,3 +1,4 @@
+import React from "react";
 import InnerHeader from "../InnerHeader/InnerHeader";
 import Header from "../Header/Header";
 

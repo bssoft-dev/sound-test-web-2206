@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 
@@ -87,7 +87,7 @@ function SttTestPage() {
           wavesurferRef.current.destroy();
         }
       };
-    }, []);
+    }, [setTitle]);
 
     useEffect(() => {
         console.log('sttResult: ', sttResult)

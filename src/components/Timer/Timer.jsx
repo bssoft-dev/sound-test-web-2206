@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, Typography } from "@mui/material";
-import { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { shallow } from 'zustand/shallow';
 import { grey, red } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";

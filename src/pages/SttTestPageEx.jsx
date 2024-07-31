@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout/Layout";
 import RecordWaveSurfer from "../components/WaveSurferComp/RecordWaveSurfer";
 

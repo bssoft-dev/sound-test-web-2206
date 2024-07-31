@@ -57,7 +57,7 @@ export default function Microphone() {
     .then((response) => {
       setLoading(false);
       setOpen(false);
-      if(response.status != 200) {
+      if(response.status !== 200) {
         setAlert({
           open: true, 
           type: "warning",

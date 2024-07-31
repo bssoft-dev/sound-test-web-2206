@@ -1,10 +1,10 @@
+import React, { useEffect } from "react";
 import { ReactMic } from "react-mic";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Timer from "../Timer/Timer";
 import { useRecordStore } from "../../stores/useRecordStore";
 import { shallow } from "zustand/shallow";
-import { useEffect } from "react";
 
 const useStyles = makeStyles(theme => ({
     reactmic: {

@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import { useTitle } from "../hooks/useTitle";
-import { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Divider, Grid, TextField, Typography, cardHeaderClasses } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
 import axios from "axios";

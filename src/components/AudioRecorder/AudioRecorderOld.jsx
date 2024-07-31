@@ -1,24 +1,25 @@
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { useStore } from "../../stores/useStore";
 import { shallow } from "zustand/shallow";
 
-export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording }) {
+export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnStyle, handleWaveForm, wavesurferRef, setRecording, wsURL }) {
     const [startThreshold, setStartThreshold] = useState(args.get("start_threshold"));
     const [endThreshold, setEndThreshold] = useState(args.get("end_threshold"));
     // threshold 변경 감지
     const [thresholdUpdateNeeded, setThresholdUpdateNeeded] = useState(false);
     const { setServerHealth, setAlert } = useStore(
         state => ({
-            setServerHealth: state.setServerHealth, 
+            setServerHealth: state.setServerHealth,
             setAlert: state.setAlert
         }), shallow
     );
     const [isDisabled, setIsDisabled] = useState(false);
     const text = args.get("text");
     const continuousRecording = args.get("continuousRecording");
+    const timeContinuousRecording = args.get("timeContinuousRecording");
     const [color, setColor] = useState(args.get("neutral_color"));
     const [socketData, setSocketData] = useState("");
     const websocketRef = useRef(null);
@@ -47,8 +48,9 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const audioRecorder = audioRecorderRef.current;
 
     useEffect(() => {
-        if (continuousRecording) {
-            websocketRef.current = new WebSocket("wss://stt.bs-soft.co.kr/ws/byte");
+        if (continuousRecording || wsURL) {
+            const websocketURL = wsURL ? wsURL : "wss://stt.bs-soft.co.kr/ws/byte";
+            websocketRef.current = new WebSocket(websocketURL);
             // 웹소켓 이벤트 핸들러 등록
             websocketRef.current.onopen = handleWebSocketOpen;
             websocketRef.current.onmessage = handleWebSocketMessage;
@@ -112,10 +114,10 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             );
             // we interleave both channels together
             interleaved = interleave(audioRecorder.leftBuffer, audioRecorder.rightBuffer);
-        
+
             // our final binary blob
             const blob = encodeWav(interleaved, audioRecorder.sampleRate);
-        
+
             const blobURL = URL.createObjectURL(blob);
             console.log('Blob URL:', blobURL);
             const formData = new FormData();
@@ -130,29 +132,29 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            .then(async (response) => {
-                console.log(response.data.threshold);
-                if (response.status != 200) {
+                .then(async (response) => {
+                    console.log(response.data.threshold);
+                    if (response.status != 200) {
+                        setAlert({
+                            open: true,
+                            type: "warning",
+                            message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
+                        });
+                    } else {
+                        console.log(response.data)
+                        setStartThreshold(response.data.threshold);
+                        setEndThreshold(response.data.threshold);
+                        setThresholdUpdateNeeded(true);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
                     setAlert({
                         open: true,
                         type: "warning",
                         message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
                     });
-                } else {
-                    console.log(response.data)
-                    setStartThreshold(response.data.threshold);
-                    setEndThreshold(response.data.threshold);
-                    setThresholdUpdateNeeded(true);
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                setAlert({
-                    open: true,
-                    type: "warning",
-                    message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
-                });
-            })
+                })
         }, 500);
     }
 
@@ -163,19 +165,26 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 await start();
                 if (!continuousRecording) setRecording(true);
             } else {
-                await stop(true);
-                if (!continuousRecording) setRecording(false);
+                if (!timeContinuousRecording && !continuousRecording) {
+                    await stop(true);
+                    setRecording(false);
+                }
             }
             if (handleWaveForm) {
                 handleWaveForm();
             }
         }
-    
+
         if (thresholdUpdateNeeded) {
             handleThresholdUpdate();
             setThresholdUpdateNeeded(false);
         }
     }, [thresholdUpdateNeeded])
+
+
+    const mediaRecorder = useRef(null);
+    const audioChunks = useRef([]);
+    const audioContextRef = useRef(new (window.AudioContext || window.webkitAudioContext)());
 
     //get mic stream
     const getStream = () => {
@@ -183,9 +192,98 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         return navigator.mediaDevices.getUserMedia({ audio: true, video: false });
     };
 
+    const processAudioData = async (data) => {
+        console.log("Processing audio data", data);
+        // const audioBlob = new Blob([data], { type: 'audio/webm' });
+        if (websocketRef.current.readyState === WebSocket.OPEN) {
+            websocketRef.current.send(data);
+        }
+
+        // try {
+        //     const wavBlob = await convertToWav(audioBlob);
+        //     console.log("Processing audio data", wavBlob);
+        // } catch (error) {
+        //     console.error("Error processing audio data:", error);
+        // }
+    }
+    const convertToWav = async (blob) => {
+        const arrayBuffer = await blob.arrayBuffer();
+        const audioBuffer = await audioContextRef.current.decodeAudioData(arrayBuffer);
+        const wavBlob = audioBufferToWav(audioBuffer);
+        return new Blob([wavBlob], { type: 'audio/wav' });
+    };
+
+    const audioBufferToWav = (buffer) => {
+        const numChannels = buffer.numberOfChannels;
+        const length = buffer.length * numChannels * 2 + 44; // 16-bit PCM
+        const result = new Uint8Array(length);
+        const view = new DataView(result.buffer);
+
+        // WAV 헤더 작성
+        let offset = 0;
+        const writeString = (str) => {
+            for (let i = 0; i < str.length; i++) {
+                view.setUint8(offset++, str.charCodeAt(i));
+            }
+        };
+
+        writeString('RIFF'); // ChunkID
+        view.setUint32(4, length - 8, true); // ChunkSize
+        writeString('WAVE'); // Format
+        writeString('fmt '); // Subchunk1ID
+        view.setUint32(16, 16, true); // Subchunk1Size
+        view.setUint16(20, 1, true); // AudioFormat
+        view.setUint16(22, numChannels, true); // NumChannels
+        view.setUint32(24, 44100, true); // SampleRate
+        view.setUint32(28, 44100 * 2, true); // ByteRate
+        view.setUint16(32, numChannels * 2, true); // BlockAlign
+        view.setUint16(34, 16, true); // BitsPerSample
+        writeString('data'); // Subchunk2ID
+        view.setUint32(40, length - offset - 44, true); // Subchunk2Size
+
+        // PCM 데이터 작성
+        for (let channel = 0; channel < numChannels; channel++) {
+            const channelData = buffer.getChannelData(channel);
+            for (let i = 0; i < channelData.length; i++) {
+                const sample = Math.max(-1, Math.min(1, channelData[i]));
+                view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+                offset += 2;
+            }
+        }
+
+        return result;
+    };
+
+
+    const processCompleteAudio = useCallback((audioBlob) => {
+        console.log("Processing complete audio", audioBlob);
+        // 여기에 전체 오디오 처리 로직을 구현하세요
+    }, []);
+
     const setupMic = async () => {
         try {
-            window.stream = audioRecorder.stream = await getStream();
+            const stream = await getStream();
+            window.stream = audioRecorder.stream = stream;
+            if (timeContinuousRecording) {
+                mediaRecorder.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+
+                mediaRecorder.current.ondataavailable = (event) => {
+                    console.log(event)
+                    if (event.data.size > 0) {
+                        audioChunks.current.push(event.data);
+                        processAudioData(event.data);
+                        audioChunks.current = [];
+                    }
+                };
+
+                mediaRecorder.current.onstop = () => {
+                    const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
+                    processCompleteAudio(audioBlob);
+                    audioChunks.current = [];
+                };
+
+                mediaRecorder.current.start(1000); // 1000ms마다 데이터 전송
+            }
             console.log("Got mic successfully");
             setIsDisabled(true);
         } catch (err) {
@@ -204,80 +302,11 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
         audioRecorder.recorder.disconnect(0);
     };
 
-    // const [getThresholdRecording, setGetThresholdRecording] = useState(false);
-    // let mediaRecorder;
-    // const getThresholdRecording2 = (stream) => {
-    //     mediaRecorder = new MediaRecorder(stream);
-    //     const chunks = [];
-    
-    //     mediaRecorder.ondataavailable = (e) => {
-    //       chunks.push(e.data);
-    //     };
-    
-    //     mediaRecorder.start();
-    
-    //     setTimeout(() => {
-    //       mediaRecorder.onstop = () => {
-    //         const blob = new Blob(chunks, { type: 'audio/webm' });
-    //         const url = URL.createObjectURL(blob);
-    //         console.log(url);
-    //         stream.getTracks().forEach((track) => {
-    //           track.stop();
-    //         });
-    //         const formData = new FormData();
-    //         formData.append(
-    //             "file", blob
-    //         );
-    //         axios({
-    //             url: `https://stt-cafe.bs-soft.co.kr/v1/analysis/threshold`,
-    //             method: 'POST',
-    //             data: formData,
-    //             headers: {
-    //                 'Content-Type': 'multipart/form-data'
-    //             }
-    //         })
-    //         .then(async (response) => {
-    //             console.log(response.data.threshold);
-    //             if (response.status != 200) {
-    //                 setAlert({
-    //                     open: true,
-    //                     type: "warning",
-    //                     message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
-    //                 });
-    //             } else {
-    //                 console.log(response.data)
-    //                 setStartThreshold(response.data.threshold);
-    //                 setEndThreshold(response.data.threshold);
-    //                 setThresholdUpdateNeeded(true);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             setAlert({
-    //                 open: true,
-    //                 type: "warning",
-    //                 message: "오류가 발생하였습니다. 잠시 후, 다시 시도해주세요"
-    //             });
-    //         })
-            
-    //     };
-    //     mediaRecorder.stop();
-    //     setGetThresholdRecording(false);
-    
-    //     }, 500);
-    // };
-    
     const onClicked = async (e) => {
         console.log('threshold: ', startThreshold);
-        
-        if(!continuousRecording) {
+
+        if (!continuousRecording && !timeContinuousRecording) {
             getThreshold(audioRecorder, mergeBuffers, encodeWav, interleave);
-            // if(!getThresholdRecording) {
-            //     console.log()
-            //     setGetThresholdRecording(true);
-            //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            //     getThresholdRecording2(stream);
-            // }
         } else {
             if (!audioRecorder.recording) {
                 await start();
@@ -288,7 +317,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 handleWaveForm()
             }
         }
-        
+
     };
 
     const writeUTFBytes = (view, offset, string) => {
@@ -445,7 +474,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 } else {
                     audioRecorder.pause_count += 1;
                     if (audioRecorder.pause_count > audioRecorder.pause_buffer_count) {
-                        stop(false);
+                        if (!timeContinuousRecording) stop(false);
                     }
                 }
             }
@@ -478,6 +507,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     }
 
     const stop = async (isFinish) => {
+        console.log(isFinish)
         audioRecorder.recording = false;
         setColor(args.get("neutral_color"))
         closeMic();
@@ -507,6 +537,23 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 });
                 await start();
             }
+        } else if (timeContinuousRecording) {
+            if (!isFinish) {
+                mediaRecorder.current.stop()
+                audioChunks.current = [];
+                await onStop({
+                    blob: blob,
+                    url: audioUrl,
+                    type: audioRecorder.type,
+                });
+                const formData = new FormData();
+                formData.append(
+                    "file", blob
+                );
+                console.log(blob)
+                await start();
+            }
+
         } else {
             setIsDisabled(false);
             await onStop({
@@ -530,7 +577,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             })
                 .then((response) => {
                     if (response.status != 200) {
-                        if(continuousRecording) {
+                        if (continuousRecording) {
                             setAlert({
                                 open: true,
                                 type: "warning",
@@ -567,14 +614,17 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 websocketRef.current.send(byteObj);
             }
         } else {
+            console.log('Stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             wavesurferRef.current.microphone.stop();
             setRecording(false);
         }
+
     };
 
     return (
         <Button variant="contained"
-            disabled={!continuousRecording ? isDisabled : false}
+            disabled={timeContinuousRecording ? false : !continuousRecording ? isDisabled : false}
+            // disabled={!continuousRecording ? isDisabled : false}
             color={color}
             sx={btnStyle}
             onClick={onClicked}>
