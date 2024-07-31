@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import { withAuth } from "../hooks/withAuth";
 
@@ -40,7 +40,7 @@ function TestPage() {
   const saveRecording = () => {
     const blob = new Blob(recordedBlobs, { type: 'audio/webm' });
     const url = URL.createObjectURL(blob);
-
+    console.log('녹음된 Blob 데이터:', url);
     // 여기에서 녹음된 Blob 데이터를 저장하거나 처리할 수 있습니다.
     // 예를 들면 파일 업로드 등을 수행할 수 있습니다.
   };
@@ -67,11 +67,11 @@ function TestPage() {
 
   return (
   <Layout title="TestPage">
-    {/* <div>
+    <div>
       <button onClick={isRecording ? null : startRecording}>
         {isRecording ? '녹음 중...' : '녹음 시작'}
       </button>
-    </div> */}
+    </div>
   </Layout>)
 }
 

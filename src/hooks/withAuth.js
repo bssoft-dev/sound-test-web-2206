@@ -6,7 +6,7 @@ import { useStore } from "../stores/useStore";
 export const withAuth = (Component) => (props) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { setPathname, } = useStore(
+    const { setPathname } = useStore(
         state => ({
             setPathname: state.setPathname, 
         }), shallow

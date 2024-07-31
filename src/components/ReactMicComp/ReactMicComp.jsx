@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ReactMic } from "react-mic";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";

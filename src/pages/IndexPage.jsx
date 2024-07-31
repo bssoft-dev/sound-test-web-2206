@@ -1,14 +1,13 @@
-import React, { useEffect, useLayoutEffect, } from "react";
+import React, { useEffect } from "react";
 import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
-import { Button, Card, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 
 import "./styles.css";
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import ServerHealthCard from "../components/ServerHealthCard/ServerHealthCard";
 import GpuHealthCard from "../components/GpuHealthCard/GpuHealthCard";
-import axios from "axios";
 import ServerControlCard from "../components/ServerControlCard/ServerControlCard";
 
 

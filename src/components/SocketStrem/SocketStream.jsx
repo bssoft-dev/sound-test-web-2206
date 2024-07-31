@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import MicrophoneStream from "microphone-stream";
 import { Button } from "@mui/material";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 
-export default function SocketStream({ wsURL, wavesurferRef, handleWaveForm, handleDataUpdate, recording, setRecording, setViolent, btnStyle }) {
+export default function SocketStream({ wsURL, wavesurferRef, handleWaveForm, recording, setRecording, setViolent, btnStyle }) {
 
     const micStreamRef = useRef(null);
     const rawDataBufferRef = useRef([]);

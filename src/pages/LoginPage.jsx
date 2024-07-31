@@ -10,10 +10,10 @@ const useStyles = makeStyles(theme => ({
     gradientBG: {
         width: '100vw', 
         height: '100dvh', 
-        background: 'rgb(104,190,213)',
+        // background: 'rgb(104,190,213)',
         background: 'linear-gradient(149deg, rgba(104,190,213,1) 0%, rgba(78,78,142,1) 100%)'
     }
-  }));
+}));
 
 function LoginPage() {
     const classes = useStyles();

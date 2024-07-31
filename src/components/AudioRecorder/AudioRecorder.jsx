@@ -20,7 +20,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     const text = args.get("text");
     const continuousRecording = args.get("continuousRecording");
     const [color, setColor] = useState(args.get("neutral_color"));
-    const [socketData, setSocketData] = useState("");
+    // const [socketData, setSocketData] = useState("");
     const websocketRef = useRef(null);
     const audioRecorderRef = useRef({
         stream: null,
@@ -132,7 +132,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
             })
             .then(async (response) => {
                 console.log(response.data.threshold);
-                if (response.status != 200) {
+                if (response.status !== 200) {
                     setAlert({
                         open: true,
                         type: "warning",
@@ -238,7 +238,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
     //         })
     //         .then(async (response) => {
     //             console.log(response.data.threshold);
-    //             if (response.status != 200) {
+    //             if (response.status !== 200) {
     //                 setAlert({
     //                     open: true,
     //                     type: "warning",
@@ -529,7 +529,7 @@ export default function AudioRecorder({ args, handleDataUpdate, recordIcon, btnS
                 }
             })
                 .then((response) => {
-                    if (response.status != 200) {
+                    if (response.status !== 200) {
                         if(continuousRecording) {
                             setAlert({
                                 open: true,

@@ -65,10 +65,9 @@ export const recorderParams = {
 
 function DangerSoundPage() {
   const classes = useStyles();
-  const { setTitle, sttResult } = useStore(
+  const { setTitle } = useStore(
     state => ({
       setTitle: state.setTitle,
-      sttResult: state.sttResult
     }), shallow
   );
 
@@ -89,19 +88,8 @@ function DangerSoundPage() {
     };
   }, [setTitle]);
 
-  // useEffect(() => {
-  //   console.log('sttResult: ', sttResult)
-  // }, [sttResult])
-
-  const [recordData, setRecordData] = useState([]);
   const [violent, setViolent] = useState(null);
   const [isViolent, setIsViolent] = useState(false);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setViolent('위험한 사운드가 감지되었습니다.');
-  //   }, 3000)
-  // }, [])
 
   useEffect(() => {
     let timeoutId;
@@ -123,13 +111,15 @@ function DangerSoundPage() {
     };
   }, [violent]);
 
-  const handleDataUpdate = (data) => {
-    setRecordData((prevData) => [...prevData, data]);
-  };
+  // const [recordData, setRecordData] = useState([]);
+  
+  // const handleDataUpdate = (data) => {
+  //   setRecordData((prevData) => [...prevData, data]);
+  // };
 
-  useEffect(() => {
-    console.log('recordData: ', recordData);
-  }, [recordData])
+  // useEffect(() => {
+  //   console.log('recordData: ', recordData);
+  // }, [recordData])
 
   const handleClick = () => {
     if (wavesurferRef.current === null) {
@@ -193,63 +183,44 @@ function DangerSoundPage() {
       <Grid container spacing={2}
         flexDirection="column"
         sx={{ position: 'relative', minHeight: '100%' }}>
-        {!sttResult ?
-          <>
-            <Grid item>
-              <Paper sx={{ py: 2, px: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <SocketStream
-                  wsURL="wss://api-2106.bs-soft.co.kr/ws/byte"
-                  wavesurferRef={wavesurferRef}
-                  handleWaveForm={handleClick}
-                  // handleDataUpdate={handleDataUpdate}
-                  recording={recording}
-                  setRecording={setRecording}
-                  setViolent={setViolent}
-                  btnStyle={[{
-                    borderRadius: '50%', width: { xs: '3rem', lg: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', lg: '5rem' },
-                  }, recording && { backgroundColor: "#f44336", boxShadow: 'none', animation: `${pulse} 1.5s infinite linear` }]}
-                />
-                <Grid className={classes.waveWrap}>
-                  <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
-                </Grid>
-              </Paper>
+        <Grid item>
+          <Paper sx={{ py: 2, px: 4, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <SocketStream
+              wsURL="wss://api-2106.bs-soft.co.kr/ws/byte"
+              wavesurferRef={wavesurferRef}
+              handleWaveForm={handleClick}
+              // handleDataUpdate={handleDataUpdate}
+              recording={recording}
+              setRecording={setRecording}
+              setViolent={setViolent}
+              btnStyle={[{
+                borderRadius: '50%', width: { xs: '3rem', lg: '5rem' }, minWidth: 'fit-content', height: { xs: '3rem', lg: '5rem' },
+              }, recording && { backgroundColor: "#f44336", boxShadow: 'none', animation: `${pulse} 1.5s infinite linear` }]}
+            />
+            <Grid className={classes.waveWrap}>
+              <Grid id="waveform" className={classes.recordWave} ref={waveformRef}></Grid>
             </Grid>
-            <Grid item flex="1" sx={{ mb: 4 }} >
-              <Card sx={{ height: '100%', overflowY: 'auto' }}>
-                <CardHeader title={
-                  <Typography variant="subtitle1" fontWeight={500}>위험 사운드 발생</Typography>
-                } />
-                <Divider />
-                <CardContent sx={{ textAlign: 'center' }} >
-                  {/* {recordData && recordData.map((data, index) => {
+          </Paper>
+        </Grid>
+        <Grid item flex="1" sx={{ mb: 4 }} >
+          <Card sx={{ height: '100%', overflowY: 'auto' }}>
+            <CardHeader title={
+              <Typography variant="subtitle1" fontWeight={500}>위험 사운드 발생</Typography>
+            } />
+            <Divider />
+            <CardContent sx={{ textAlign: 'center' }} >
+              {/* {recordData && recordData.map((data, index) => {
                     return (<Typography sx={{ pb: 1 }} key={index}>{data}</Typography>)
                   })} */}
-                  <Typography fontWeight={600}
-                    color="error"
-                    sx={{
-                      py: 3, height: 84, fontSize: 24, transition: 'all 3s ease-in-out',
-                      opacity: isViolent ? 1 : 0
-                    }} >{violent ? violent: ' '}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </> :
-          <Grid item flex="1" sx={{ mb: 4 }} >
-            <Card sx={{ height: '100%', overflowY: 'auto' }}>
-              <CardHeader title={
-                <Typography variant="subtitle1" fontWeight={500}>{sttResult.file}</Typography>
-              } />
-              <Divider />
-              <CardContent>
-                {sttResult.result}
-              </CardContent>
-            </Card>
-          </Grid>
-        }
-        {/* <Grid item flex={1}>
-                <embed src="https://sound.bs-soft.co.kr/receive/ws/byte"
-                width="100%" height="100%"></embed>
-            </Grid> */}
+              <Typography fontWeight={600}
+                color="error"
+                sx={{
+                  py: 3, height: 84, fontSize: 24, transition: 'all 3s ease-in-out',
+                  opacity: isViolent ? 1 : 0
+                }} >{violent ? violent : ' '}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </Layout>
   )

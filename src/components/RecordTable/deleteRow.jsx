@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import supabase from "../../utils/supabase";
 import axios from 'axios';
 
 export default function DeleteRow({ params, pathname }) {
