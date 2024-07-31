@@ -4,7 +4,7 @@ import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
 import { useTitle } from "../hooks/useTitle";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Divider, Grid, TextField, Typography, cardHeaderClasses } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, TextField, cardHeaderClasses } from "@mui/material";
 import { makeStyles, styled } from "@mui/styles";
 import axios from "axios";
 import RecordTable from "../components/RecordTable/RecordTable";
@@ -56,27 +56,28 @@ function TtsTestPage() {
     useLayoutEffect(() => {
         setTitle(title);
         setTtsSoundTableRows([]);
-    }, []);
+    }, [setTitle]);
+    
     useEffect(() => {
         fetchTtsSoundDatas();
         const channels = supabase.channel('channels_change')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'ttsSound' },
-        (payload) => {
-            console.log('Change received!', payload);
-            if(payload.eventType === "INSERT") {
-                setAlert({
-                    open: true,
-                    type: "success",
-                    message: "TTS 변환이 완료되었습니다"
-                });
-                setTtsResult(payload.new.uriBase);
-            }
-            fetchTtsSoundDatas();
-        }
-      )
-      .subscribe();
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'ttsSound' },
+                (payload) => {
+                    console.log('Change received!', payload);
+                    if(payload.eventType === "INSERT") {
+                        setAlert({
+                            open: true,
+                            type: "success",
+                            message: "TTS 변환이 완료되었습니다"
+                        });
+                        setTtsResult(payload.new.uriBase);
+                    }
+                    fetchTtsSoundDatas();
+                }
+            )
+            .subscribe();
     }, [])
 
     const [ttsText, setTtsText] = useState('');

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Tooltip } from '@mui/material';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { green, grey } from "@mui/material/colors";
@@ -22,49 +23,40 @@ export default function TutorialModal() {
   );
 
   const [open, setOpen] = useState(false);
-
+  const [serverLoading, setServerLoading] = useState(false);
   const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
   const [tech, setTech] = useState(null);
-  const [serverLoading, setServerLoading] = useState(false);
 
   const handleServerPower = async () => {
     setServerLoading(true);
-    let cmd;
-    if(serverHealth) cmd = 'stop';
-    else cmd = 'start';
-
-    console.log('cmd: ', cmd);
-    axios.get(`https://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`)
-      .then((response) => {
-        console.log('server: ', response);
-        if(response.data === 'ok') {
-          swithPah();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    let cmd = serverHealth ? 'stop' : 'start';
+    
+    try {
+      const response = await axios.get(`https://aiserver.bs-soft.co.kr/control/${tech}/${cmd}`);
+      if (response.data === 'ok') {
+        swithPah();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setServerLoading(false);
   }
 
-  // health check
-  const getServerHealth = (baseUrl) => {
-    axios.get(baseUrl)
-      .then((response)=> {
-        console.log('health', response)
-        if(response.status === 200) {
-            setServerHealth(true);
-            setVersion(response.data.version ? response.data.version : null);
-        }else {
-          setServerHealth(false);
-          setVersion(null);
-        }
-    })
-    .catch((error)=> {
-        console.log(error);
+  const getServerHealth = async (baseUrl) => {
+    try {
+      const response = await axios.get(baseUrl);
+      if (response.status === 200) {
+        setServerHealth(true);
+        setVersion(response.data.version || null);
+      } else {
         setServerHealth(false);
         setVersion(null);
-    })
-    .finally(() => setServerLoading(false))
+      }
+    } catch (error) {
+      console.error(error);
+      setServerHealth(false);
+      setVersion(null);
+    }
   }
 
   const swithPah = () => {
@@ -74,29 +66,27 @@ export default function TutorialModal() {
         break;
       case '/audio-test':
         getServerHealth('https://adl-api.bs-soft.co.kr/');
-        setTech('adl')
         break;
       case "/sound-test":
         getServerHealth('https://sound.bs-soft.co.kr/');
         break;
       case "/bss-test":
         getServerHealth('https://bss.bs-soft.co.kr/');
-        setTech('bss')
         break;
-      case "/stt-test":
-        break;
-      // default:
-      //   setServerHealth(false);
-      //   setVersion(false);
+      default:
+        setServerHealth(false);
+        setVersion(null);
     }
   }
 
   const handleOpen = async () => {
-    let res = null;
     swithPah();
-    setOpen(true)
+    setOpen(true);
   };
-  const handleClose = () => setOpen(false);
+
+  const handleClose = () => {
+    setOpen(false)
+  };
 
   return (
     <>

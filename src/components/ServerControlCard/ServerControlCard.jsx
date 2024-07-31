@@ -4,7 +4,6 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import { green } from "@mui/material/colors";
 import axios from "axios";
-import { CompareSharp } from "@mui/icons-material";
 
 export default function ServerControlCard() {
     const [serverHealth, setServerHealth] = useState(false);

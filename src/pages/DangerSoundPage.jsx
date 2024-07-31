@@ -3,11 +3,9 @@ import { useTitle } from "../hooks/useTitle";
 import Layout from "../components/Layout/Layout";
 
 import { Card, CardContent, CardHeader, Divider, Grid, Paper, Typography } from "@mui/material";
-import AudioRecorder from "../components/AudioRecorder/AudioRecorder";
 import WaveSurfer from "wavesurfer.js";
 import MicrophonePlugin from "wavesurfer.js/dist/plugin/wavesurfer.microphone.min.js";
 import { makeStyles } from "@mui/styles";
-import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import { keyframes } from '@mui/system';
 import { withAuth } from "../hooks/withAuth";
 import { useStore } from "../stores/useStore";
