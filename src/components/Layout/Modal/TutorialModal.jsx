@@ -27,6 +27,8 @@ export default function TutorialModal() {
   const serverPowerPath = pathname === "/bss-test" || pathname === "/audio-test";
   const [tech, setTech] = useState(null);
 
+  const [info, setInfo] = useState();
+
   const handleServerPower = async () => {
     setServerLoading(true);
     let cmd = serverHealth ? 'stop' : 'start';
@@ -59,21 +61,48 @@ export default function TutorialModal() {
     }
   }
 
+  const getInfo = async (tech) => {
+    console.log(tech)
+    const baseUrl = `https://aiserver.bs-soft.co.kr/info/${tech}` 
+    try {
+      const response = await axios.get(baseUrl);
+      if(response.status === 200)  {
+        setInfo(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const swithPah = () => {
     switch(pathname) {
       case '/menu-test':
-        getServerHealth('https://stt-cafe.bs-soft.co.kr/');
+        getInfo('cafe');
+        // getServerHealth('https://stt-cafe.bs-soft.co.kr/');
         break;
       case '/audio-test':
-        getServerHealth('https://adl-api.bs-soft.co.kr/');
+        getInfo('adl');
+        // getServerHealth('https://adl-api.bs-soft.co.kr/');
         break;
       case "/sound-test":
-        getServerHealth('https://sound.bs-soft.co.kr/');
+        getInfo('soundprocess');
+        // getServerHealth('https://sound.bs-soft.co.kr/');
         break;
       case "/bss-test":
-        getServerHealth('https://bss.bs-soft.co.kr/');
+        getInfo('bss');
+        // getServerHealth('https://bss.bs-soft.co.kr/');
+        break;
+      case "/stt-test":
+        getInfo('stt');
+        break;
+      case "/tts-test":
+        getInfo('tts');
+        break;
+      case "/danger-sound":
+        getInfo('warn');
         break;
       default:
+        setInfo();
         setServerHealth(false);
         setVersion(null);
     }
@@ -103,13 +132,20 @@ export default function TutorialModal() {
         keepMounted
         onClose={handleClose}
         aria-describedby="description"
+        sx={{
+          "& .MuiDialog-container": {
+            "& .MuiPaper-root": {
+              minWidth: '30vw'
+            },
+          },
+        }}
       >
         <DialogTitle>{"도움말"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="description">
+          {/* <DialogContentText id="description">
             해당 페이지에 대해 안내합니다
-          </DialogContentText>
-          <DialogContentText textAlign="center"
+          </DialogContentText> */}
+          {/* <DialogContentText textAlign="center"
             color={serverHealth ? green[600] : 'error'}
             sx={{mt: 1}}>  
             { serverHealth ? '서버 연결' : '서버 꺼짐' }
@@ -123,6 +159,9 @@ export default function TutorialModal() {
                 }
               </Button>
             }
+          </DialogContentText>  */}
+          <DialogContentText sx={{mt: 1}}>  
+            <div dangerouslySetInnerHTML={{ __html: info }} />
           </DialogContentText> 
           {version && <DialogContentText textAlign="center" >
             version: {version}

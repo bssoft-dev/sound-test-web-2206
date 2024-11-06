@@ -4,7 +4,7 @@ import { shallow } from "zustand/shallow";
 import { useStore } from "../stores/useStore";
 
 export const links = [
-    {name: '사운드 처리 테스트', url: '/sound-test', isHyperuser: true },
+    {name: '사운드 처리 테스트', url: '/sound-test', isHyperuser: false },
     {name: '화자 분리 테스트', url: '/bss-test', isHyperuser: true },
     {name: 'STT 기본모델 테스트', url: '/stt-test', isHyperuser: true },
     {name: 'TTS 기본모델 테스트', url: '/tts-test', isHyperuser: true },
